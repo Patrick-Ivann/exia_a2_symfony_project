@@ -34,7 +34,7 @@ class Curl
         curl_exec($curlObject);
 
 
-        curl_close($ch);
+        curl_close($curlObject);
     }
 
 
@@ -51,7 +51,7 @@ class Curl
         switch ($method) {
             case 'POST':
                 curl_setopt($curlObject, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+                curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
 
                 if ($data)
                     curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
@@ -77,7 +77,7 @@ class Curl
         curl_exec($curlObject);
 
 
-        curl_close($ch);
+        curl_close($curlObject);
     }
 
 

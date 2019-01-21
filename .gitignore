@@ -74,3 +74,4 @@ symfonyWorkspace.code-workspace
 .vscode
 .idea
 symfony.lock
+.idea/workspace.xml

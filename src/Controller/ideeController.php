@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Idee;
 use App\Form\IdeeFormType;
+use App\services\Curl;
+use App\Controller\RequeteController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +18,7 @@ class ideeController extends AbstractController
      * @Route("/ideeController")
      * @return Response
      */
-    public function index(Request $req)
+    public function index(Request $req, RequeteController $rctrl, Curl $crl)
     {
 
         $idee = new Idee();
@@ -34,7 +36,7 @@ class ideeController extends AbstractController
                 //Doit envoyer l'id user aussi
                 'nom_lieu' => $ideeData->getNomLieu()]);
 
-            dump($ideeDataToSend);
+            $rctrl->ajouterIdee($ideeDataToSend, $crl);
         }
 
 

@@ -24,8 +24,15 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    curl:
-        class: "../src/services"
+App\Services\Curl:
+        public: false
+
+    app.curl:
+        alias: App\Services\Curl
+        public: true
+
+    # App\curl:
+    #     class: "../src/services/curl"
 
     # curl:
     #     class :  ../src/services

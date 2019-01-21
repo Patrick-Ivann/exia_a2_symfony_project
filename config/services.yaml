@@ -24,7 +24,7 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-App\Services\Curl:
+    App\Services\Curl:
         public: false
 
     app.curl:

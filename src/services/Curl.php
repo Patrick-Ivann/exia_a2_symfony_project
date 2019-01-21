@@ -44,40 +44,45 @@ class Curl
     {
         $curlObject = curl_init();
 
-        $header = array(
-            "verification: e " . $token
+        curl_setopt($curlObject, CURLOPT_URL, $url);
 
-        );
+
+          $header = array(
+              "verification: e " . $token
+
+          );
+
         switch ($method) {
-            case 'POST':
-                curl_setopt($curlObject, CURLOPT_POST, 1);
-                curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
+              case 'POST':
 
-                if ($data)
-                    curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
-                break;
+                  curl_setopt($curlObject, CURLOPT_POST, 1);
+                  curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
 
-            case 'DELETE':
-                if ($data)
-                    curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
+                  if ($data)
+                      curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
 
-                break;
+                  break;
 
+              case 'DELETE':
+                  if ($data)
+                      curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
 
-            default:
-
-                curl_setopt($curlObject, CURLOPT_URL, $url);
-                curl_setopt($curlObject, CURLOPT_HEADER, $header);
-
-                break;
-        }
+                  break;
 
 
+              default:
 
-        curl_exec($curlObject);
+                  curl_setopt($curlObject, CURLOPT_URL, $url);
+                  curl_setopt($curlObject, CURLOPT_HEADER, $header);
+
+                  break;
+          }
 
 
-        curl_close($curlObject);
+          return curl_exec($curlObject);
+
+
+          curl_close($curlObject);
     }
 
 

@@ -19,6 +19,29 @@ class RequeteController extends AbstractController
 
     }
 
+
+    public function recupererEvenement($data = null)
+    {
+        $data = $data ? $data : "";
+
+        $query = $this->get("curl")->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/evenement/recuperer", "application/javascript", $data);
+    }
+
+    public function ajouterIdee($data)
+    {
+        $response = $this->get("curl")->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/idee/ajouter", "application/javascript", $data);
+    }
+
+    public function recupererIdee($data)
+    {
+        $data = $data ? $data : "";
+        $query = $this->get("curl")->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/idee/recuperer", "application/javascript", $data);
+    }
+
+    public function ajouterUtilisateur($data)
+    {
+        $response = $this->get("curl")->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
+    }
 }
 
 

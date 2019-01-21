@@ -15,10 +15,11 @@ class eventController extends AbstractController
 {
 
     /**
-     * @Route("/eventController")
-     * @return Response
+     * @Route("/eventAdd")
+     *
      */
-    public function add(Request $req, RequeteController $rctrl, Curl $crl): Response {
+    public function add(Request $req, RequeteController $rctrl, Curl $crl)
+    {
 
         $event = new Event();
 
@@ -46,6 +47,30 @@ class eventController extends AbstractController
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
+    }
+
+    /**
+     * @Route("/eventGet")
+     *
+     */
+    public function display(RequeteController $rctrl, Curl $crl)
+    {
+
+        //$events = $rctrl->recupererEvenement("");
+
+        $events ='[{"nom_event": "Plage","nom_lieu" : "Marseille"}, {"nom_event": "Water-Poney","nom_lieu" : "Colommiers"}]';
+        //variable de test
+
+        $eventToDisplay = json_decode($events);
+
+        try {
+            return $this->render('eventDisplay.html.twig', [
+                'events' => $eventToDisplay
+            ]);
+        } catch (\Exception $ex) {
+            return $ex->getMessage();
+        }
+
     }
 
 }

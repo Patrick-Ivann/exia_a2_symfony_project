@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron">
+        <h1>Tout les évenements</h1>
+    </div>
+
+    {% for idee in idees %}
+
+   <p>{{ idee.nom_idee }}</p>
+
+    {% endfor %}
+
+{% endblock %}

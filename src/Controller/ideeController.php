@@ -18,7 +18,7 @@ class ideeController extends AbstractController
      * @Route("/ideeController")
      * @return Response
      */
-    public function index(Request $req, RequeteController $rctrl, Curl $crl)
+    public function add(Request $req, RequeteController $rctrl, Curl $crl)
     {
 
         $idee = new Idee();
@@ -49,6 +49,30 @@ class ideeController extends AbstractController
                 return $ex->getMessage();
             }
         }
+    }
+
+    /**
+     * @Route("/ideeGet")
+     *
+     */
+    public function display(RequeteController $rctrl, Curl $crl)
+    {
+
+        //$events = $rctrl->recupererIdee("");
+
+        $idee ='[{"nom_idee": "Barbecue","nom_lieu" : "Nice"}, {"nom_idee": "Bilboquet","nom_lieu" : "Rennes"}]';
+        //variable de test
+
+        $ideeToDisplay = json_decode($idee);
+
+        try {
+            return $this->render('ideeDisplay.html.twig', [
+                'idees' => $ideeToDisplay
+            ]);
+        } catch (\Exception $ex) {
+            return $ex->getMessage();
+        }
+
     }
 }
 ?>

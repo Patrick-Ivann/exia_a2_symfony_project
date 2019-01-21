@@ -14,6 +14,8 @@ class Curl
 
         $curlObject = curl_init();
 
+        curl_setopt($curlObject, CURLOPT_URL, $url);
+
         switch ($method) {
             case 'POST':
                 curl_setopt($curlObject, CURLOPT_POST, 1);
@@ -31,7 +33,7 @@ class Curl
 
 
 
-        curl_exec($curlObject);
+        return curl_exec($curlObject);
 
 
         curl_close($curlObject);
@@ -47,42 +49,42 @@ class Curl
         curl_setopt($curlObject, CURLOPT_URL, $url);
 
 
-          $header = array(
-              "verification: e " . $token
+        $header = array(
+            "verification: e " . $token
 
-          );
+        );
 
         switch ($method) {
-              case 'POST':
+            case 'POST':
 
-                  curl_setopt($curlObject, CURLOPT_POST, 1);
-                  curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
+                curl_setopt($curlObject, CURLOPT_POST, 1);
+                curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
 
-                  if ($data)
-                      curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
+                if ($data)
+                    curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
 
-                  break;
+                break;
 
-              case 'DELETE':
-                  if ($data)
-                      curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
+            case 'DELETE':
+                if ($data)
+                    curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
 
-                  break;
-
-
-              default:
-
-                  curl_setopt($curlObject, CURLOPT_URL, $url);
-                  curl_setopt($curlObject, CURLOPT_HEADER, $header);
-
-                  break;
-          }
+                break;
 
 
-          return curl_exec($curlObject);
+            default:
+
+                curl_setopt($curlObject, CURLOPT_URL, $url);
+                curl_setopt($curlObject, CURLOPT_HEADER, $header);
+
+                break;
+        }
 
 
-          curl_close($curlObject);
+        return curl_exec($curlObject);
+
+
+        curl_close($curlObject);
     }
 
 

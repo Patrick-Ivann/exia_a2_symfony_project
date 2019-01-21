@@ -11,12 +11,14 @@ class RequeteController extends AbstractController
 {
 
     /**
+     *
      * TODO penser à rajouter le parametre de token
      */
-    public function ajouterEvenement($data)
+    public function ajouterEvenement($data, Curl $crl)
     {
-        $response = $this->get("curl")->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/evenement/ajouter", "application/javascript", $data);
+        $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/evenement/ajouter", "application/javascript", $data);
 
+        echo $response;
     }
 
 

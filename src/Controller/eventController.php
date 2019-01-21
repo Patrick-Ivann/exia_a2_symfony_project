@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Form\EventFormType;
 use App\Controller\RequeteController;
+use App\services\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ class eventController extends AbstractController
      * @Route("/eventController")
      * @return Response
      */
-    public function add(Request $req): Response {
+    public function add(Request $req, RequeteController $rctrl, Curl $crl): Response {
 
         $event = new Event();
 
@@ -33,6 +34,9 @@ class eventController extends AbstractController
                             'date_debut_event' => $eventData->getDateDebutEvent(),
                             'date_fin_event' => $eventData->getDateFinEvent(),
                             'nom_lieu' => $eventData->getNomLieu()]);
+
+            $rctrl->ajouterEvenement($eventDataToSend, $crl);
+
         }
 
         try {

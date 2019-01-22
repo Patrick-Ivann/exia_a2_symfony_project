@@ -60,10 +60,16 @@ class ideeController extends AbstractController
 
         //$events = $rctrl->recupererIdee("");
 
-        $idee ='[{"nom_idee": "Barbecue","nom_lieu" : "Nice"}, {"nom_idee": "Bilboquet","nom_lieu" : "Rennes"}]';
+        $idee ='{"nom_idee": "Barbecue","nom_lieu" : "Nice"}';
         //variable de test
 
+
         $ideeToDisplay = json_decode($idee);
+
+        if(is_object($ideeToDisplay)){
+            $idee = '[' . $idee . ']';
+            $ideeToDisplay = json_decode($idee);
+        }
 
         try {
             return $this->render('ideeDisplay.html.twig', [

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services;
+namespace App\services;
 
 
 
@@ -50,15 +50,20 @@ class Curl
 
 
         $header = array(
-            "verification: e " . $token
-
+            "verificateur: e " . $token
         );
 
         switch ($method) {
             case 'POST':
 
                 curl_setopt($curlObject, CURLOPT_POST, 1);
-                curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
+                //curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
+
+                curl_setopt($curlObject, CURLOPT_HTTPHEADER, array(
+                    /*'X-Apple-Tz: 0',
+                    'X-Apple-Store-Front: 143444,12'*/
+                    "verificateur: e " . $token
+                ));
 
                 if ($data)
                     curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
@@ -80,18 +85,18 @@ class Curl
                 break;
         }
 
-
-        return curl_exec($curlObject);
-
-
+        curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curlObject, CURLOPT_HEADER, false);
+        $response = curl_exec($curlObject);
         curl_close($curlObject);
+
+        //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
+
+        $result[] = substr($response,0);
+        return $result[0];
     }
 
 
 
 }
-
-
-
-?>
 

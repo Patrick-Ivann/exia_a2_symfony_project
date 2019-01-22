@@ -66,12 +66,8 @@
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 
-
-
-
-
 symfonyWorkspace.code-workspace
 .vscode
 .idea
-symfony.lock
+/symfony.lock
 .idea/workspace.xml

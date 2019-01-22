@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Form\EventFormType;
-use App\Controller\RequeteController;
 use App\services\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,16 +14,17 @@ class eventController extends AbstractController
 {
 
     /**
-     * @Route("/eventAdd")
-     *
+     * @Route("/events/add")
+     * @param Request $req
+     * @param \App\Controller\RequeteController $requestController
+     * @param Curl $crl
+     * @return string|Response
      */
-    public function add(Request $req, RequeteController $rctrl, Curl $crl)
+    public function add(Request $req, RequeteController $requestController, Curl $crl)
     {
 
         $event = new Event();
-
         $form = $this->createForm(EventFormType::class,$event);
-
         $form->handleRequest($req);
 
 
@@ -36,8 +36,7 @@ class eventController extends AbstractController
                             'date_fin_event' => $eventData->getDateFinEvent(),
                             'nom_lieu' => $eventData->getNomLieu()]);
 
-            $rctrl->ajouterEvenement($eventDataToSend, $crl);
-
+            $requestController->ajouterEvenement($eventDataToSend, $crl);
         }
 
         try {
@@ -50,18 +49,22 @@ class eventController extends AbstractController
     }
 
     /**
-     * @Route("/eventGet")
-     *
+     * @Route("/events")
+     * @param \App\Controller\RequeteController $requestController
+     * @param Curl $crl
+     * @return string|Response
      */
-    public function display(RequeteController $rctrl, Curl $crl)
+    public function display(RequeteController $requestController, Curl $crl)
     {
 
-        //$events = $rctrl->recupererEvenement("");
+        $events = $requestController->recupererEvenement($requestController, $crl);
 
-        $events ='[{"nom_event": "Plage","nom_lieu" : "Marseille"}, {"nom_event": "Water-Poney","nom_lieu" : "Colommiers"}]';
+        //$events ='[{"nom_event": "Plage","nom_lieu" : "Marseille"}, {"nom_event": "Water-Poney","nom_lieu" : "Colommiers"}]';
         //variable de test
 
         $eventToDisplay = json_decode($events);
+
+        //dump($eventToDisplay);
 
         try {
             return $this->render('eventDisplay.html.twig', [

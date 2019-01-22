@@ -63,7 +63,6 @@ class ideeController extends AbstractController
         //$idees ='{"nom_idee": "Barbecue","nom_lieu" : "Nice"}';
         //variable de test
 
-
         $ideesToDisplay = json_decode($idees);
 
         if(is_object($ideesToDisplay))
@@ -72,7 +71,6 @@ class ideeController extends AbstractController
             $ideesToDisplay = json_decode($idees);
         }
 
-        dump($idees);
 
         try {
             return $this->render('ideeDisplay.html.twig', [

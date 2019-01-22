@@ -256,9 +256,9 @@ class RequeteController extends AbstractController
 
 
 
-        public function ajouterPhoto($data, curl $curl)
+        public function ajouterPhoto($data, $path, curl $curl)
         {
-                return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/photo/ajouter", "application/javascript", $data);
+                return $response = $curl->faireRequeteAvecFichier("POST", "http://10.131.129.13:5000/api/photo/ajouter", "application/javascript", $data);
         }
 
 
@@ -278,10 +278,7 @@ class RequeteController extends AbstractController
                 return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/produit/recuperer/{$id}", 'application/javascript');
         }
 
-        public function ajouterProduit($data, curl $curl)
-        {
-                return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/produit/ajouter", "application/javascript", $data);
-        }
+
 
 
 

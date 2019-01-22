@@ -73,52 +73,52 @@ class RequeteController extends AbstractController
          * ACHETER
          */
 
-        public function acheter($data)
+        public function acheter($data, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/achete/ajouter", "application/javascript", $data);
+                return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/achete/ajouter", "application/javascript", $data);
         }
 
-        public function recupererAchats()
+        public function recupererAchats(curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/achete/ajouter", "application/javascript", $data);
+                return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/achete/ajouter", "application/javascript", $data);
         }
 
 
 
 
-        public function recupererProduit($id)
+        public function recupererProduit($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/achate/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/achate/recuperer/{$id}", 'application/javascript');
         }
 
-        public function recupererAcheteur($id)
+        public function recupererAcheteur($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/achate/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/achate/recuperer/{$id}", 'application/javascript');
         }
 
         /***
          * AIME
          */
 
-        public function recupererTousLesJaime()
+        public function recupererTousLesJaime(curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/aime/recuperer/", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/aime/recuperer/", 'application/javascript');
         }
 
 
-        public function recupererPhotoAimee($id)
+        public function recupererPhotoAimee($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/aime/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/aime/recuperer/{$id}", 'application/javascript');
         }
 
-        public function recupererUtilisateurAimant($id)
+        public function recupererUtilisateurAimant($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/aime/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/aime/recuperer/{$id}", 'application/javascript');
         }
 
-        public function publierUnLikeSurPhoto($data)
+        public function publierUnLikeSurPhoto($data, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/achete/ajouter", "application/javascript", $data);
+                return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/achete/ajouter", "application/javascript", $data);
         }
 
 
@@ -127,24 +127,24 @@ class RequeteController extends AbstractController
          */
 
 
-        public function recupererToutesLesEventAimee()
+        public function recupererToutesLesEventAimee(curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/aime_idee/ajouter", "application/javascript");
+                return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/aime_idee/ajouter", "application/javascript");
         }
 
-        public function recupererUtilisateurAimeIdeeEvent($id)
+        public function recupererUtilisateurAimeIdeeEvent($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/aime_idee/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/aime_idee/recuperer/{$id}", 'application/javascript');
         }
 
-        public function recupererEventIdeeAime($id)
+        public function recupererEventIdeeAime($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/aime_idee/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/aime_idee/recuperer/{$id}", 'application/javascript');
         }
 
-        public function publierUnLikeSurEventIdee($data)
+        public function publierUnLikeSurEventIdee($data, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/aime_idee/ajouter", "application/javascript", $data);
+                return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/aime_idee/ajouter", "application/javascript", $data);
         }
 
 
@@ -153,14 +153,14 @@ class RequeteController extends AbstractController
          */
 
 
-        public function recupereCommentaire()
+        public function recupereCommentaire(curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/commentaire/recuperer", "application/javascript");
+                return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/commentaire/recuperer", "application/javascript");
         }
 
-        public function recupererCommentaireParId($id)
+        public function recupererCommentaireParId($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/commentaire/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/commentaire/recuperer/{$id}", 'application/javascript');
         }
 
 
@@ -172,15 +172,15 @@ class RequeteController extends AbstractController
          */
 
 
-        public function recupererTousLesLieus()
+        public function recupererTousLesLieus(curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/lieu/recuperer", "application/javascript");
+                return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/lieu/recuperer", "application/javascript");
         }
 
 
-        public function recupererLieusParId($id)
+        public function recupererLieusParId($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/lieu/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/lieu/recuperer/{$id}", 'application/javascript');
         }
 
 
@@ -190,26 +190,26 @@ class RequeteController extends AbstractController
 
 
 
-        public function recupererToutesLesNotifS()
+        public function recupererToutesLesNotifS(curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/notif/recuperer", "application/javascript");
+                return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/notif/recuperer", "application/javascript");
         }
 
-        public function recupererIdeeNotif($id)
+        public function recupererIdeeNotif($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/notif/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/notif/recuperer/{$id}", 'application/javascript');
         }
 
 
 
-        public function recupererUtilisateurNotif($id)
+        public function recupererUtilisateurNotif($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/notif/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/notif/recuperer/{$id}", 'application/javascript');
         }
 
-        public function publierUnUtilisateurANotifie($data)
+        public function publierUnUtilisateurANotifie($data, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/notif/ajouter", "application/javascript", $data);
+                return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/notif/ajouter", "application/javascript", $data);
         }
 
 
@@ -219,21 +219,21 @@ class RequeteController extends AbstractController
          */
 
 
-        public function recupererToutesParticipation()
+        public function recupererToutesParticipation(curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/participation/recuperer", "application/javascript");
+                return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/participation/recuperer", "application/javascript");
         }
 
 
-        public function recupererUilisateurParticipant($id)
+        public function recupererUilisateurParticipant($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/participation/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/participation/recuperer/{$id}", 'application/javascript');
         }
 
 
-        public function recupererEvenementParticipe($id)
+        public function recupererEvenementParticipe($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/participation/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/participation/recuperer/{$id}", 'application/javascript');
         }
 
 
@@ -244,21 +244,21 @@ class RequeteController extends AbstractController
 
 
 
-        public function recupererToutesLesPhotos()
+        public function recupererToutesLesPhotos(curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/photo/recuperer", "application/javascript");
+                return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/photo/recuperer", "application/javascript");
         }
 
-        public function recupererPhotoParId($id)
+        public function recupererPhotoParId($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/photo/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/photo/recuperer/{$id}", 'application/javascript');
         }
 
 
 
-        public function ajouterPhoto($data)
+        public function ajouterPhoto($data, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/photo/ajouter", "application/javascript", $data);
+                return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/photo/ajouter", "application/javascript", $data);
         }
 
 
@@ -268,19 +268,19 @@ class RequeteController extends AbstractController
 
 
 
-        public function recupererTousLesProduits()
+        public function recupererTousLesProduits(curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/produit/recuperer", "application/javascript");
+                return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/produit/recuperer", "application/javascript");
         }
 
-        public function recupererProduitParId($id)
+        public function recupererProduitParId($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/produit/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/produit/recuperer/{$id}", 'application/javascript');
         }
 
-        public function ajouterProduit($data)
+        public function ajouterProduit($data, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/produit/ajouter", "application/javascript", $data);
+                return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/produit/ajouter", "application/javascript", $data);
         }
 
 
@@ -292,30 +292,30 @@ class RequeteController extends AbstractController
          */
 
 
-        public function recupererTousLesUtilisateur()
+        public function recupererTousLesUtilisateur(curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/utilisateur/recuperer", "application/javascript");
+                return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/utilisateur/recuperer", "application/javascript");
         }
 
-        public function recupererUtilisateurParId($id)
+        public function recupererUtilisateurParId($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
         }
 
-        public function recupererUtilisateurParMail($id)
+        public function recupererUtilisateurParMail($id, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
         }
 
 
-        public function ajouterUtilisateur($data)
+        public function ajouterUtilisateur($data, curl $curl)
         {
-                return $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
+                return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
         }
 
-        public function connexionUtilisateur($data)
+        public function connexionUtilisateur($data, curl $curl)
         {
-                return $response = $crl->faireRequete("POST", "http://10.131.129.13:5000/api/utilisateur/connexion", "application/javascript", $data);
+                return $response = $curl->faireRequete("POST", "http://10.131.129.13:5000/api/utilisateur/connexion", "application/javascript", $data);
         }
 
 

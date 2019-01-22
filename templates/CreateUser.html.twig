@@ -1,6 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+  <div class="jumbotron">
+    <h1>Créer Utilisateur</h1>
+  </div>
+
+{% if erreur %}
+  <h4>{{ erreur }}</h4>
+
+{% endif %}
+
   {{ form_start(form) }}
     {{ form_widget(form) }}
     <button>Ajouter</button>

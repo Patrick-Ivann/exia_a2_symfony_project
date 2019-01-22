@@ -31,10 +31,11 @@ class eventController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $eventData = $form->getData();
 
-            $eventDataToSend = json_encode(['nom_event' => $eventData->getNomEvent(),
-                            'date_debut_event' => $eventData->getDateDebutEvent(),
-                            'date_fin_event' => $eventData->getDateFinEvent(),
-                            'nom_lieu' => $eventData->getNomLieu()]);
+            $eventDataToSend = json_encode([
+                'nom_event' => $eventData->getNomEvent(),
+                'date_debut_event' => $eventData->getDateDebutEvent(),
+                'date_fin_event' => $eventData->getDateFinEvent(),
+                'nom_lieu' => $eventData->getNomLieu()]);
 
             $rctrl->ajouterEvenement($eventDataToSend, $crl);
 

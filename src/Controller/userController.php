@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\services\Curl;
 use App\Controller\RequeteController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
 use App\Form\UserFormType;
@@ -20,6 +19,8 @@ class userController extends AbstractController
     public function add(Request $req, RequeteController $rctrl, Curl $crl) {
       $user = New User();
 
+      $err = "";
+
       $form = $this->createForm(UserFormType::class, $user);
 
       $form->handleRequest($req);
@@ -27,21 +28,28 @@ class userController extends AbstractController
       if ($form->isSubmitted() && $form->isValid()) {
         $userData = $form->getData();
 
-        $userDataToSend = json_encode([
-            'prenom'=>$userData->getPrenom(),
-            'nom'=>$userData->getNom(),
-            'mail'=>$userData->getMail(),
-            'mdp'=>$userData->getMdp(),
-            'url_avatar'=>$userData->getUrlAvatar(),
-            'lieu'=>$userData->getLieu()
-        ]);
+        if($userData->getMotdepasse() === $userData->getMotDePasseVerif()) {
+            $userDataToSend = json_encode([
+                'prenom' => $userData->getPrenom(),
+                'nom' => $userData->getNom(),
+                'adresse_mail' => $userData->getAdresseMail(),
+                'mot_de_passe' => $userData->getMotDePasse(),
+                'nom_lieu' => $userData->getNomLieu()
+            ]);
 
-        $rctrl->ajouterUtilisateur($userDataToSend);
+            dump($userDataToSend);
+           // $rctrl->ajouterUtilisateur($userDataToSend, $crl);
+        }
+        else{
+            $err = "Les mot de passe sont différents";
+        }
+
       }
 
         try {
           return $this->render('CreateUser.html.twig',[
-                  'form' =>$form->createView()
+              'form' =>$form->createView(),
+              'erreur' => $err
               ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();

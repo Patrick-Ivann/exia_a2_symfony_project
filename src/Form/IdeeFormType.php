@@ -14,7 +14,7 @@ class IdeeFormType extends AbstractType
         $builder
             ->add('nom_idee')
             ->add('description_idee')
-            ->add('nom_lieu')
+            ->add('lieu')
         ;
     }
 

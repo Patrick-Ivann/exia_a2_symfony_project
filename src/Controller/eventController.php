@@ -63,6 +63,11 @@ class eventController extends AbstractController
 
         $eventToDisplay = json_decode($events);
 
+        if(is_object($eventToDisplay)){
+            $events = '[' . $events . ']';
+            $eventToDisplay = json_decode($events);
+        }
+
         try {
             return $this->render('eventDisplay.html.twig', [
                 'events' => $eventToDisplay

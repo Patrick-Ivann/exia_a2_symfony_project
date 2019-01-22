@@ -58,18 +58,21 @@ class ideeController extends AbstractController
     public function display(RequeteController $rctrl, Curl $crl)
     {
 
-        //$idees = $rctrl->recupererIdee("");
+        $idees = $rctrl->recupererIdee($crl);
 
-        $idees ='{"nom_idee": "Barbecue","nom_lieu" : "Nice"}';
+        //$idees ='{"nom_idee": "Barbecue","nom_lieu" : "Nice"}';
         //variable de test
 
 
         $ideesToDisplay = json_decode($idees);
 
-        if(is_object($ideesToDisplay)){
+        if(is_object($ideesToDisplay))
+        {
             $idees = '[' . $idees . ']';
             $ideesToDisplay = json_decode($idees);
         }
+
+        dump($idees);
 
         try {
             return $this->render('ideeDisplay.html.twig', [

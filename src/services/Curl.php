@@ -79,7 +79,7 @@ class Curl
 
                 $postfields = array(
                     'files[0]' => $data,
-                    'files[1]' => new \CURLFile($path, 'image/jpeg', 'fichier.test')
+                    'files[1]' => new \CURLFile($path, 'image/jpeg', 'Hima.jpg')
                 );
 
                 curl_setopt($curlObject, CURLOPT_POSTFIELDS, $postfields);

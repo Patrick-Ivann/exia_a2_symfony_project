@@ -15,7 +15,7 @@ class ideeController extends AbstractController
 {
 
     /**
-     * @Route("/ideeController")
+     * @Route("/ideeAdd")
      * @return Response
      */
     public function add(Request $req, RequeteController $rctrl, Curl $crl)
@@ -58,22 +58,22 @@ class ideeController extends AbstractController
     public function display(RequeteController $rctrl, Curl $crl)
     {
 
-        //$events = $rctrl->recupererIdee("");
+        //$idees = $rctrl->recupererIdee("");
 
-        $idee ='{"nom_idee": "Barbecue","nom_lieu" : "Nice"}';
+        $idees ='{"nom_idee": "Barbecue","nom_lieu" : "Nice"}';
         //variable de test
 
 
-        $ideeToDisplay = json_decode($idee);
+        $ideesToDisplay = json_decode($idees);
 
-        if(is_object($ideeToDisplay)){
-            $idee = '[' . $idee . ']';
-            $ideeToDisplay = json_decode($idee);
+        if(is_object($ideesToDisplay)){
+            $idees = '[' . $idees . ']';
+            $ideesToDisplay = json_decode($idees);
         }
 
         try {
             return $this->render('ideeDisplay.html.twig', [
-                'idees' => $ideeToDisplay
+                'idees' => $ideesToDisplay
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();

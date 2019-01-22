@@ -16,7 +16,7 @@ class RequeteController extends AbstractController
      */
     public function ajouterEvenement($data, Curl $crl)
     {
-        $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/evenement/ajouter", "application/javascript", $data);
+        $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.187:5000/api/evenement/ajouter", "application/javascript", $data);
 
         echo $response;
     }
@@ -25,23 +25,23 @@ class RequeteController extends AbstractController
     {
         $data = $data ? $data : "";
 
-        $query = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/evenement/recuperer", "application/javascript", $data);
+        $query = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.187:5000/api/evenement/recuperer", "application/javascript", $data);
     }
 
     public function ajouterIdee($data, Curl $crl)
     {
-        $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/idee/ajouter", "application/javascript", $data);
+        $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.187:5000/api/idee/ajouter", "application/javascript", $data);
     }
 
     public function recupererIdee($data, Curl $crl)
     {
         $data = $data ? $data : "";
-        $query = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/idee/recuperer", "application/javascript", $data);
+        $query = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.187:5000/api/idee/recuperer", "application/javascript", $data);
     }
 
     public function ajouterUtilisateur($data ,  Curl $crl)
     {
-        $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
+        $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.187:5000/api/utilisateur/ajouter", "application/javascript", $data);
     }
 }
 

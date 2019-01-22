@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron">
+        <h1>Créer Evenement</h1>
+    </div>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button>Ajouter</button>
+    {{ form_end(form) }}
+
+
+{% endblock %}

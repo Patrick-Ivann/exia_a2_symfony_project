@@ -37,15 +37,12 @@ class boutiqueController extends AbstractController
             $produitDataToSend = json_encode(['nom_produit' => $produitData->getNomProduit(),
                 'prix_produit' => $produitData->getPrixProduit()]);
 
-            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-            $file = $produit->getAvatar();
+            $file = $req->files->get("produit_form")["avatar"]->getPath();
 
-            
-
+            dump($req->files->get("produit_form")["avatar"]);
             //$fileName = $this->generateUniqueFileNa().'.'.$file->guessExtension();
 
-            //$rctrl->ajouterProduit($produitDataToSend, $crl);
-
+           $rctrl->ajouterProduit($produitDataToSend, $file, $crl);
         }
 
         try {

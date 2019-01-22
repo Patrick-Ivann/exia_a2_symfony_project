@@ -15,7 +15,7 @@ class ProduitFormType extends AbstractType
         $builder
             ->add('nom_produit')
             ->add('prix_produit')
-            ->add('avatar', FileType::class)
+            ->add('avatar', FileType::class, ['label' => 'Fichier'])
         ;
     }
 

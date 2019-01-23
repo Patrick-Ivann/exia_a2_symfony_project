@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Commentaire;
 use App\Entity\Event;
-use App\Entity\Produit;
+use App\Entity\Photo;
+use App\Form\CommentaireFormType;
 use App\Form\EventFormType;
+use App\Form\PhotoFormType;
 use App\Controller\RequeteController;
 use App\services\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -95,7 +98,7 @@ class eventController extends AbstractController
      * @param Curl $crl
      * @return string|Response
      */
-    public function displayById($id_event, RequeteController $rctrl, Curl $crl)
+    public function displayById($id_event,Request $req ,RequeteController $rctrl, Curl $crl)
     {
         $events = $rctrl->recupererEvenementParId($id_event,$crl);
 
@@ -103,14 +106,73 @@ class eventController extends AbstractController
 
         $photo = $rctrl->recupererPhotoParIdEvent($id_event, $crl);
 
-        dump($photo);
+        /*
+            Faire le traitement pour choper l'image et son nom
+        */
+
+        //Form en cas d'ajout photo
+        $formPhoto = $this->createFormPhoto($id_event, $req, $rctrl, $crl);
+
+        //Form en cas d'ajout de commentaire
+        $formComm = $this->createFormCommentaire($req, $rctrl, $crl);
 
         try {
             return $this->render('eventDisplayID.html.twig', [
-                'event' => $eventToDisplay
+                'event' => $eventToDisplay,
+                'formPhoto' => $formPhoto->createView(),
+                'formComm' => $formComm->createView()
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
+    }
+
+    function createFormPhoto($id_event, $req, $rctrl, $crl)
+    {
+        $photo = new Photo();
+
+        $formPhoto = $this->createForm(PhotoFormType::class,$photo);
+
+        $formPhoto->handleRequest($req);
+
+        if($formPhoto->isSubmitted() && $formPhoto->isValid()){
+            $photoData = $formPhoto->getData();
+
+            $photoDataToSend = json_encode([
+                'legende_photo' => $photoData->getLegendePhoto(),
+                'id_user' => '8',
+                'id_event' => $id_event]);
+            //foutre id_user de session
+
+            $file = $req->files->get("photo_form")["file_photo"];
+
+            $type = 'photo';
+
+            $rctrl->ajouterPhoto($photoDataToSend, $file, $type, $crl);
+        }
+        return $formPhoto;
+    }
+
+    function createFormCommentaire($req, $rctrl, $crl)
+    {
+        $commentaire = new Commentaire();
+
+        $formComm = $this->createForm(CommentaireFormType::class,$commentaire);
+
+        $formComm->handleRequest($req);
+
+        if($formComm->isSubmitted() && $formComm->isValid()){
+
+            $commentaireData = $formComm->getData();
+            $id_user = "";
+
+            $CommentaireDataToSend = json_encode([
+                'texte_commentaire' => $commentaireData->getTexteCommentaire(),'id_user' => $id_user]);
+            //foutre id_user de session
+
+
+            $rctrl->ajouterCommentaire($CommentaireDataToSend, $crl);
+        }
+        return $formComm;
     }
 }

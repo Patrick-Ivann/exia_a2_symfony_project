@@ -38,7 +38,6 @@ class boutiqueController extends AbstractController
 
             $type = 'produit';
 
-            dump($file);
             $rctrl->ajouterProduit($produitDataToSend, $file, $type ,$crl);
         }
         try {
@@ -70,6 +69,22 @@ class boutiqueController extends AbstractController
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
+    }
+
+    /**
+     * @Route("/buy/{id_event}" , name="buyById")
+     */
+    function buy($id_produit,RequeteController $rctrl, Curl $crl)
+    {
+        $id_user = "";
+        //foutre l'id user de la session
+
+        $achat = array(['$id_produit' => $id_produit,
+                        'id_user' => $id_user]);
+
+        $rctrl->acheter($achat, $crl);
+
+        return $this->redirectToRoute("");
     }
 }
 ?>

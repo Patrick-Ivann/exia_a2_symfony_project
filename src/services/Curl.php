@@ -25,10 +25,15 @@ class Curl
 
 
 
-        return curl_exec($curlObject);
-
-
+        curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curlObject);
         curl_close($curlObject);
+
+    //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
+
+        $result[] = substr($response, 0);
+        return $result[0];
+
     }
     public function faireRequeteAvecHeader($method, $url, $token, $data = false)
     {
@@ -53,49 +58,15 @@ class Curl
                 curl_setopt($curlObject, CURLOPT_HEADER, $header);
                 break;
         }
-        return curl_exec($curlObject);
+        curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curlObject, CURLOPT_HEADER, false);
+        $response = curl_exec($curlObject);
         curl_close($curlObject);
-    }
 
-    public function faireRequeteAvecFichier($method, $url, $token, $data = false, $path)
-    {
-        $curlObject = curl_init();
+    //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
 
-        $header = array(
-            "verification: e " . $token
-
-        );
-
-        switch ($method) {
-            case 'POST':
-
-                curl_setopt($curlObject, CURLOPT_POST, 1);
-                curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
-
-                if ($data)
-                    curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
-
-                break;
-
-            case 'DELETE':
-                if ($data)
-                    curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
-
-                break;
-
-                if ($data) {
-                    $postfields = array(
-                        'files[0]' => $data,
-                        'files[1]' => new \CURLFile($path, 'image/jpeg', 'Hima.jpg')
-                    );
-
-                    curl_setopt($curlObject, CURLOPT_POSTFIELDS, $postfields);
-                    break;
-
-                }
-
-
-        }
+        $result[] = substr($response, 0);
+        return $result[0];
 
     }
 
@@ -108,6 +79,7 @@ class Curl
         $curlObject = curl_init();
 
         curl_setopt($curlObject, CURLOPT_URL, $url);
+        curl_setopt($curlObject, CURLOPT_VERBOSE, 1);
 
 
         $header = array(
@@ -130,10 +102,17 @@ class Curl
 
                 if ($data) {
 
+
                     $postfields = array(
-                        'files[0]' => new CURLFile($path),
-                        'files[1]' => $data
+                        $path->guessExtension() => new \CURLFile($path, $path->getMimeType(), "jolie.png"),
+                        'formulaire' => $data
                     );
+
+
+                  //  $postfields["upfile"] = "$path"; 
+
+
+
                     curl_setopt($curlObject, CURLOPT_POSTFIELDS, $postfields);
 
                 }
@@ -169,17 +148,7 @@ class Curl
 
 }
 
-curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($curlObject, CURLOPT_HEADER, false);
-$response = curl_exec($curlObject);
-curl_close($curlObject);
 
-    //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
 
-$result[] = substr($response, 0);
-return $result[0];
 
-}
-
-}
 ?>

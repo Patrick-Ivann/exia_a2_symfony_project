@@ -6,7 +6,7 @@ use App\Entity\Idee;
 use App\Entity\Produit;
 use App\Form\IdeeFormType;
 use App\Form\ProduitFormType;
-use App\services\Curl;
+use App\Services\Curl;
 use App\Controller\RequeteController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -27,31 +27,34 @@ class boutiqueController extends AbstractController
     {
         $produit = new Produit();
 
-        $form = $this->createForm(ProduitFormType::class,$produit);
+        $form = $this->createForm(ProduitFormType::class, $produit);
 
         $form->handleRequest($req);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $produitData = $form->getData();
 
-            $produitDataToSend = json_encode(['nom_produit' => $produitData->getNomProduit(),
-                'prix_produit' => $produitData->getPrixProduit()]);
+            $produitDataToSend = json_encode([
+                'nom_produit' => $produitData->getNomProduit(),
+                'prix_produit' => $produitData->getPrixProduit(),
+              //  'extension' => $req->files->get("produit_form")["avatar"]->guessExtension()
+            ]);
 
-            $file = $req->files->get("produit_form")["avatar"]->getPath();
+            $file = $req->files->get("produit_form")["avatar"];
 
-            dump($req->files->get("produit_form")["avatar"]);
-            //$fileName = $this->generateUniqueFileNa().'.'.$file->guessExtension();
 
-           $rctrl->ajouterProduit($produitDataToSend, $file, $crl);
+
+            $rctrl->ajouterProduit($produitDataToSend, $file, $crl);
         }
 
         try {
             return $this->render('produitCreate.html.twig', [
-                'form' =>$form->createView()
+                'form' => $form->createView()
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
-        }    }
+        }
+    }
 
     /**
      * @Route("/shopGet")
@@ -59,11 +62,11 @@ class boutiqueController extends AbstractController
      */
     function display()
     {
-        $produits ='[{"nom_produit": "T-shirt","prix_produit" : "20"}, {"nom_produit": "Sweatshirt","prix_produit" : "30"}]';
+        $produits = '[{"nom_produit": "T-shirt","prix_produit" : "20"}, {"nom_produit": "Sweatshirt","prix_produit" : "30"}]';
 
         $produitsToDisplay = json_decode($produits);
 
-        if(is_object($produitsToDisplay)){
+        if (is_object($produitsToDisplay)) {
             $produits = '[' . $produits . ']';
             $produitsToDisplay = json_decode($produits);
         }

@@ -34,11 +34,7 @@ class boutiqueController extends AbstractController
                 'prix_produit' => $produitData->getPrixProduit(),
             ]);
 
-
             $file = $req->files->get("produit_form")["photo_produit"];
-
-            //dump($req->files->get("produit_form")["avatar"]);
-            //$fileName = $this->generateUniqueFileNa().'.'.$file->guessExtension();
 
             $rctrl->ajouterProduit($produitDataToSend, $file, $crl);
         }

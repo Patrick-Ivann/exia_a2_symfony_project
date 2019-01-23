@@ -39,7 +39,6 @@ class eventController extends AbstractController
                             'type_event' => $eventData->getTypeEvent(),
                             'prix' => $eventData->getPrix()]);
 
-
             $rctrl->ajouterEvenement($eventDataToSend, $crl);
         }
 
@@ -85,10 +84,33 @@ class eventController extends AbstractController
      */
     public function delete($id_event,RequeteController $rctrl, Curl $crl)
     {
-
         //$rctrl->supprimerEvenement($id_event, $crl);
 
        return $this->redirectToRoute("displayEvent");
     }
 
+    /**
+     * @Route("/event/{id_event}" , name="eventById")
+     * @param \App\Controller\RequeteController $rctrl
+     * @param Curl $crl
+     * @return string|Response
+     */
+    public function displayById($id_event, RequeteController $rctrl, Curl $crl)
+    {
+        $events = $rctrl->recupererEvenementParId($id_event,$crl);
+
+        $eventToDisplay = json_decode($events);
+
+        //$photo = $rctrl->recupererPhotoParIdEvent();
+
+
+
+        try {
+            return $this->render('eventDisplayID.html.twig', [
+                'event' => $eventToDisplay
+            ]);
+        } catch (\Exception $ex) {
+            return $ex->getMessage();
+        }
+    }
 }

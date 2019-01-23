@@ -62,7 +62,7 @@ class Curl
         $result[] = substr($response, 0);
         return $result[0];
     }
-    public function faireRequeteAvecFichier($method, $url, $token, $data = false, $path)
+    public function faireRequeteAvecFichier($method, $url, $token, $data = false, $path , $type)
     {
         $curlObject = curl_init();
         curl_setopt($curlObject, CURLOPT_URL, $url);
@@ -80,10 +80,27 @@ class Curl
                     "verificateur: e " . $token
                 ));
                 if ($data) {
-                    $postfields = array(
-                        $path->guessExtension() => new \CURLFile($path, $path->getMimeType(), "jolie.png"),
-                        'formulaire' => $data
-                    );
+                    if($type === 'produit') {
+
+                        $arr = json_decode($data, true);
+
+                        $b = $arr["nom_produit"];
+
+                        \dump($arr["nom_produit"]);
+
+                        $nomFichier = $b . '.' . $path->guessExtension();
+
+                        $postfields = array(
+                            $path->guessExtension() => new \CURLFile($path, $path->getMimeType(), $nomFichier),
+                            'formulaire' => $data
+                        );
+                    } else {
+                        $postfields = array(
+                            $path->guessExtension() => new \CURLFile($path, $path->getMimeType(), 'petit.png'),
+                            'formulaire' => $data
+                        );
+
+                    }
                     //  $postfields["upfile"] = "$path";
                     curl_setopt($curlObject, CURLOPT_POSTFIELDS, $postfields);
                 }

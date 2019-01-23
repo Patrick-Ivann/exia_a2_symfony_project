@@ -36,6 +36,7 @@ class boutiqueController extends AbstractController
 
             $file = $req->files->get("produit_form")["photo_produit"];
 
+            dump($file);
             $rctrl->ajouterProduit($produitDataToSend, $file, $crl);
         }
         try {

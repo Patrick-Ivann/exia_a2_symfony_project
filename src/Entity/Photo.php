@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PhotoRepository")
@@ -23,6 +24,7 @@ class Photo
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\File(maxSize="6000000", mimeTypes = {"application/png", "application/jpg"})
      */
     private $file_photo;
 
@@ -43,12 +45,12 @@ class Photo
         return $this;
     }
 
-    public function getFilePhoto(): ?string
+    public function getFilePhoto()
     {
         return $this->file_photo;
     }
 
-    public function setFilePhoto(string $file_photo): self
+    public function setFilePhoto($file_photo): self
     {
         $this->file_photo = $file_photo;
 

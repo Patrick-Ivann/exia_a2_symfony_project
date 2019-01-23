@@ -29,12 +29,16 @@ class photoController extends AbstractController
             $photoData = $form->getData();
 
             $photoDataToSend = json_encode([
-                'legende_photo' => $photoData->getLegendePhoto()]);
-                //Ajouter les 2 Id : User et Evenement
-                //Ajouter le fichier
+                'legende_photo' => $photoData->getLegendePhoto(),
+                'id_user' => '8',
+                'id_event' => '16']);
 
-            dump($photoDataToSend);
-            //$rctrl->ajouterEvenement($photoDataToSend, $crl);
+            $file = $req->files->get("photo_form")["file_photo"];
+
+            $type = 'photo';
+
+
+            $rctrl->ajouterPhoto($photoDataToSend, $file, $type, $crl);
 
         }
 
@@ -46,6 +50,8 @@ class photoController extends AbstractController
             return $ex->getMessage();
         }
     }
+
+
 }
 
 ?>

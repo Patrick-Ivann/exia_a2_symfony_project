@@ -6,6 +6,7 @@ use App\Entity\Photo;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class PhotoFormType extends AbstractType
 {
@@ -13,7 +14,7 @@ class PhotoFormType extends AbstractType
     {
         $builder
             ->add('legende_photo')
-            ->add('file_photo')
+            ->add('file_photo', FileType::class ,['label' => 'photo'])
         ;
     }
 

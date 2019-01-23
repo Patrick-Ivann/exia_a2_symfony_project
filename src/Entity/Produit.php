@@ -31,7 +31,7 @@ class Produit
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\File(maxSize="6000000")
+     * @Assert\File(maxSize="6000000", mimeTypes = {"application/png", "application/jpg"})
      */
     private $photo_produit;
 
@@ -69,7 +69,7 @@ class Produit
         return $this->photo_produit;
     }
 
-    public function setPhotoProduit($photo_produit)
+    public function setPhotoProduit($photo_produit) : self
     {
         $this->$photo_produit = $photo_produit;
 

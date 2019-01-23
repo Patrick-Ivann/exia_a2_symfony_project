@@ -27,17 +27,18 @@ class eventController extends AbstractController
 
         $form->handleRequest($req);
 
-
         if($form->isSubmitted() && $form->isValid()){
             $eventData = $form->getData();
 
-            $eventDataToSend = json_encode(['nom_event' => $eventData->getNomEvent(),
+            $eventDataToSend = json_encode([
+                            'nom_event' => $eventData->getNomEvent(),
                             'date_debut_event' => $eventData->getDateDebutEvent(),
                             'date_fin_event' => $eventData->getDateFinEvent(),
-                            'nom_lieu' => $eventData->getNomLieu()]);
+                            'nom_lieu' => $eventData->getNomLieu(),
+                            'type_event' => $eventData->getTypeEvent(),
+                            'prix' => $eventData->getPrix()]);
 
             $rctrl->ajouterEvenement($eventDataToSend, $crl);
-
         }
 
         try {
@@ -51,15 +52,11 @@ class eventController extends AbstractController
 
     /**
      * @Route("/eventGet")
-     *
      */
     public function display(RequeteController $rctrl, Curl $crl)
     {
 
-        //$events = $rctrl->recupererEvenement("");
-
-        $events ='[{"nom_event": "Plage","nom_lieu" : "Marseille"}, {"nom_event": "Water-Poney","nom_lieu" : "Colommiers"}]';
-        //variable de test
+        $events = $rctrl->recupererEvenement(null,$crl);
 
         $eventToDisplay = json_decode($events);
 

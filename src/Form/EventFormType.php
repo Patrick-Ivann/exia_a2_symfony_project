@@ -16,6 +16,8 @@ class EventFormType extends AbstractType
             ->add('date_debut_event')
             ->add('date_fin_event')
             ->add('nom_lieu')
+            ->add('type_event')
+            ->add('prix')
         ;
     }
 

@@ -36,6 +36,16 @@ class Event
      */
     private $nom_lieu;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $type_event;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $prix;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,4 +98,29 @@ class Event
 
         return $this;
     }
+
+    public function getTypeEvent(): ?int
+    {
+        return $this->type_event;
+    }
+
+    public function setTypeEvent(int $type_event): self
+    {
+        $this->type_event = $type_event;
+
+        return $this;
+    }
+
+    public function getPrix(): ?int
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(int $prix): self
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
 }

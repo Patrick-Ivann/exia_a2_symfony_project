@@ -33,7 +33,7 @@ class Produit
      * @ORM\Column(type="string")
      * @Assert\File(maxSize="6000000")
      */
-    private $avatar;
+    private $photo_produit;
 
     public function getId(): ?int
     {
@@ -64,14 +64,14 @@ class Produit
         return $this;
     }
 
-    public function getAvatar()
+    public function getPhotoProduit()
     {
-        return $this->avatar;
+        return $this->photo_produit;
     }
 
-    public function setAvatar($avatar)
+    public function setPhotoProduit($photo_produit)
     {
-        $this->$avatar = $avatar;
+        $this->$photo_produit = $photo_produit;
 
         return $this;
     }

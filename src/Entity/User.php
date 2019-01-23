@@ -29,25 +29,30 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Email(
-     *     message = "L'émail {{ value }} n'est pas correct.")
+     * @Assert\Email
      */
-    private $mail;
+    private $adresse_mail;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $mdp;
+    private $mot_de_passe;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $url_avatar;
+    private $mot_de_passe_verif;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\File(maxSize="6000000")
+     */
+    private $avatar;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $lieu;
+    private $nom_lieu;
 
     public function getId(): ?int
     {
@@ -78,50 +83,62 @@ class User
         return $this;
     }
 
-    public function getMail(): ?string
+    public function getAdresseMail(): ?string
     {
-        return $this->mail;
+        return $this->adresse_mail;
     }
 
-    public function setMail(string $mail): self
+    public function setAdresseMail(string $adresse_mail): self
     {
-        $this->mail = $mail;
+        $this->adresse_mail = $adresse_mail;
 
         return $this;
     }
 
-    public function getMdp(): ?string
+    public function getMotDePasse(): ?string
     {
-        return $this->mdp;
+        return $this->mot_de_passe;
     }
 
-    public function setMdp(string $mdp): self
+    public function setMotDePasse(string $mot_de_passe): self
     {
-        $this->mdp = $mdp;
+        $this->mot_de_passe = $mot_de_passe;
 
         return $this;
     }
 
-    public function getUrlAvatar(): ?string
+    public function getMotDePasseVerif(): ?string
     {
-        return $this->url_avatar;
+        return $this->mot_de_passe_verif;
     }
 
-    public function setUrlAvatar(string $url_avatar): self
+    public function setMotDePasseVerif(string $mot_de_passe_verif): self
     {
-        $this->url_avatar = $url_avatar;
+        $this->mot_de_passe_verif = $mot_de_passe_verif;
 
         return $this;
     }
 
-    public function getLieu(): ?string
+    public function getAvatar(): ?string
     {
-        return $this->lieu;
+        return $this->avatar;
     }
 
-    public function setLieu(string $lieu): self
+    public function setAvatar(string $avatar): self
     {
-        $this->lieu = $lieu;
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getNomLieu(): ?string
+    {
+        return $this->nom_lieu;
+    }
+
+    public function setNomLieu(string $nom_lieu): self
+    {
+        $this->nom_lieu = $nom_lieu;
 
         return $this;
     }

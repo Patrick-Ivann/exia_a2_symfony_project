@@ -36,8 +36,10 @@ class boutiqueController extends AbstractController
 
             $file = $req->files->get("produit_form")["photo_produit"];
 
+            $type = 'produit';
+
             dump($file);
-            $rctrl->ajouterProduit($produitDataToSend, $file, $crl);
+            $rctrl->ajouterProduit($produitDataToSend, $file, $type ,$crl);
         }
         try {
             return $this->render('produitCreate.html.twig', [
@@ -48,7 +50,7 @@ class boutiqueController extends AbstractController
         }
     }
     /**
-     * @Route("/shopGet")
+     * @Route("/boutique")
      *
      */
     function display(RequeteController $rctrl,Curl $crl)

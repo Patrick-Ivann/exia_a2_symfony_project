@@ -101,9 +101,9 @@ class eventController extends AbstractController
 
         $eventToDisplay = json_decode($events);
 
-        //$photo = $rctrl->recupererPhotoParIdEvent();
+        $photo = $rctrl->recupererPhotoParIdEvent($id_event, $crl);
 
-
+        dump($photo);
 
         try {
             return $this->render('eventDisplayID.html.twig', [

@@ -24,7 +24,7 @@ class Photo
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\File(maxSize="6000000", mimeTypes = {"application/png", "application/jpg"})
+     * @Assert\File(maxSize="6000000", mimeTypes = {"image/png", "image/jpg" , "image/jpeg"}    )
      */
     private $file_photo;
 

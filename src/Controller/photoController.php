@@ -31,7 +31,7 @@ class photoController extends AbstractController
             $photoDataToSend = json_encode([
                 'legende_photo' => $photoData->getLegendePhoto(),
                 'id_user' => '8',
-                'id_event' => '16']);
+                'id_event' => '9']);
 
             $file = $req->files->get("photo_form")["file_photo"];
 

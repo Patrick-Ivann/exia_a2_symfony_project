@@ -193,6 +193,10 @@ class RequeteController extends AbstractController
     {
         return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.20:5000/api/photo/recuperer/{$id}", 'application/javascript');
     }
+    public function recupererPhotoParIdEvent($id, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.20/api/photo/recuperer/evenement/{$id}", 'application/javascript');
+    }
     public function ajouterPhoto($data, $path, $type , curl $curl)
     {
         return $response = $curl->faireRequeteAvecFichier("POST", "http://". $this->ip .":5000/api/photo/ajouter", "application/javascript", $data, $path, $type);

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Produit;
 use App\Form\EventFormType;
 use App\Controller\RequeteController;
 use App\services\Curl;
@@ -31,7 +32,6 @@ class eventController extends AbstractController
             $eventData = $form->getData();
 
             $eventDataToSend = json_encode([
-
                             'nom_event' => $eventData->getNomEvent(),
                             'date_debut_event' => $eventData->getDateDebutEvent(),
                             'date_fin_event' => $eventData->getDateFinEvent(),
@@ -53,7 +53,7 @@ class eventController extends AbstractController
     }
 
     /**
-     * @Route("/eventGet")
+     * @Route("/eventGet", name="displayEvent")
      */
     public function display(RequeteController $rctrl, Curl $crl)
     {
@@ -75,6 +75,20 @@ class eventController extends AbstractController
             return $ex->getMessage();
         }
 
+    }
+
+    /**
+     * @Route("/deleteShop/{id_event}" , name="deleteShop")
+     * @param \App\Controller\RequeteController $rctrl
+     * @param Curl $crl
+     * @return string|Response
+     */
+    public function delete($id_event,RequeteController $rctrl, Curl $crl)
+    {
+
+        //$rctrl->supprimerEvenement($id_event, $crl);
+
+       return $this->redirectToRoute("displayEvent");
     }
 
 }

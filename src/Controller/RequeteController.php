@@ -1,11 +1,14 @@
 <?php
 namespace App\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\services\Curl;
+
 class RequeteController extends AbstractController
 {
+
     /**
      *
      * TODO penser à rajouter le parametre de token
@@ -13,6 +16,9 @@ class RequeteController extends AbstractController
     /**
      * EVENEMENT
      */
+    private $ip = '10.131.129.20';
+    private $port = '5000';
+
     public function ajouterEvenement($data, Curl $crl)
     {
         $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.20:5000/api/evenement/ajouter", "application/javascript", $data);
@@ -22,6 +28,18 @@ class RequeteController extends AbstractController
         $data = $data ? $data : "";
        return $query = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.20:5000/api/evenement/recuperer", "application/javascript", $data);
     }
+
+    /**
+     * @param $id
+     * @param Curl $crl
+     * @return mixed
+     */
+    public function supprimerEvenement($id, Curl $crl) {
+        $response = $crl->faireRequeteAvecHeader("DELETE", "http://" . $this->ip . ":" . $this->port . "/api/evenement/supprimer/" . $id, "application/javascript", null);
+        return $response;
+    }
+
+
     /**+
      * IDEE
      */

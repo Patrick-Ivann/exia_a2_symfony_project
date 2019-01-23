@@ -7,7 +7,7 @@
 
     {% for event in events %}
 
-   <p>{{ event.nom_event }}</p>
+   <p>{{ event.nom_event }} <a href="{{ path('deleteShop', {id_event: event.id_event}) }}">Supprimer</a></p>
 
     {% endfor %}
 

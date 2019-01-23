@@ -25,11 +25,15 @@ class Curl
     }
     public function faireRequeteAvecHeader($method, $url, $token, $data = false)
     {
+
+
         $curlObject = curl_init();
         curl_setopt($curlObject, CURLOPT_URL, $url);
         $header = array(
             "verificateur: e " . $token
         );
+
+
         switch ($method) {
             case 'POST':
                 curl_setopt($curlObject, CURLOPT_POST, 1);
@@ -38,8 +42,12 @@ class Curl
                     curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
                 break;
             case 'DELETE':
-                if ($data)
-                    curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
+                if ($data){
+
+                }
+                curl_setopt($curlObject, CURLOPT_CUSTOMREQUEST, "DELETE");
+                curl_setopt($curlObject, CURLOPT_HEADER, $header);
+
                 break;
             default:
                 curl_setopt($curlObject, CURLOPT_URL, $url);

@@ -40,7 +40,7 @@ class Curl
         $curlObject = curl_init();
         curl_setopt($curlObject, CURLOPT_URL, $url);
         $header = array(
-            "verification: e " . $token
+            "verificateur: e " . $token
         );
         switch ($method) {
             case 'POST':
@@ -102,9 +102,16 @@ class Curl
 
                 if ($data) {
 
+                    $arr = json_decode($data, true);
+
+                    $b = $arr["nom_produit"];
+
+                    \dump($arr["nom_produit"]);
+
+                    $nomFichier = $b . '.' . $path->guessExtension();
 
                     $postfields = array(
-                        $path->guessExtension() => new \CURLFile($path, $path->getMimeType(), "jolie.png"),
+                        $path->guessExtension() => new \CURLFile($path, $path->getMimeType(), $nomFichier),
                         'formulaire' => $data
                     );
 

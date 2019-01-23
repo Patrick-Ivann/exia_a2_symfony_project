@@ -29,7 +29,14 @@ class RequeteController extends AbstractController
         {
                 $data = $data ? $data : "";
 
-                $query = $crl->faireRequeteAvecHeader("GET", "http://localhost:5000/api/evenement/recuperer", "application/javascript", $data);
+                return $query = $crl->faireRequeteAvecHeader("GET", "http://localhost:5000/api/evenement/recuperer", "application/javascript", $data);
+        }
+
+
+
+        public function recupererEvenementParId($id, Curl $crl)
+        {
+                return $query = $crl->faireRequeteAvecHeader("GET", "http://localhost:5000/api/evenement/recuperer/{$id}", "application/javascript");
         }
 
 
@@ -46,7 +53,7 @@ class RequeteController extends AbstractController
         public function recupererIdee($data, Curl $crl)
         {
                 $data = $data ? $data : "";
-                $query = $crl->faireRequeteAvecHeader("GET", "http://localhost:5000/api/idee/recuperer", "application/javascript", $data);
+                return $query = $crl->faireRequeteAvecHeader("GET", "http://localhost:5000/api/idee/recuperer", "application/javascript", $data);
         }
 
 
@@ -163,6 +170,15 @@ class RequeteController extends AbstractController
                 return $response = $curl->faireRequeteAvecHeader('GET', "http://localhost:5000/api/commentaire/recuperer/{$id}", 'application/javascript');
         }
 
+        public function recupererCommentaireParIdPhoto($id, curl $curl)
+        {
+                return $response = $curl->faireRequeteAvecHeader('GET', "http://localhost:5000/api/commentaire/recuperer/photo/{$id}", 'application/javascript');
+        }
+
+        public function ajouterCommentaire($data, curl $curl)
+        {
+                return $response = $curl->faireRequeteAvecHeader("POST", "http://localhost:5000/api/commenter/ajouter", "application/javascript", $data);
+        }
 
 
 
@@ -254,6 +270,10 @@ class RequeteController extends AbstractController
                 return $response = $curl->faireRequeteAvecHeader('GET', "http://localhost:5000/api/photo/recuperer/{$id}", 'application/javascript');
         }
 
+        public function recupererPhotoParIdEvent($id, Curl $crl)
+        {
+                return $query = $crl->faireRequeteAvecHeader("GET", "http://localhost:5000/api/photo/recuperer/evenement/{$id}", "application/javascript");
+        }
 
 
         public function ajouterPhoto($data, $path, curl $curl)

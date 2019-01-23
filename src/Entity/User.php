@@ -35,6 +35,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email
      */
     private $mot_de_passe;
 
@@ -45,7 +46,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\File(maxSize="6000000")
+     * @Assert\File(maxSize="6000000", mimeTypes = {"image/png", "image/jpg" , "image/jpeg"})
      */
     private $avatar;
 

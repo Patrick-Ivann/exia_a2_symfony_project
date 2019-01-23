@@ -2,26 +2,30 @@
 
 namespace App\Form;
 
-use App\Entity\Idee;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class IdeeFormType extends AbstractType
+class UserFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom_idee')
-            ->add('description_idee')
-            ->add('lieu')
+            ->add('prenom')
+            ->add('nom')
+            ->add('adresse_mail')
+            ->add('mot_de_passe')
+            ->add('mot_de_passe_verif', null, ['label'=>'Retaper le mot de passe'])
+            ->add('avatar', FileType::class)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Idee::class,
+            'data_class' => User::class,
         ]);
     }
 }

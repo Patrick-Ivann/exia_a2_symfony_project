@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Services\Curl;
+use App\services\Curl;
 
 class RequeteController extends AbstractController
 {
@@ -21,7 +21,6 @@ class RequeteController extends AbstractController
     /**
      * EVENEMENT
      */
-
     /**
      * @param $data
      * @param Curl $crl
@@ -64,19 +63,15 @@ class RequeteController extends AbstractController
     {
         $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/idee/ajouter", "application/javascript", $data);
     }
-
-    public function recupererIdee($data, Curl $crl)
+    public function recupererIdee(Curl $crl, $data = null)
     {
         $data = $data ? $data : "";
-        $query = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/idee/recuperer", "application/javascript", $data);
+       return $query = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.187:5000/api/idee/recuperer", "application/javascript", $data);
     }
 
-
-    /*
-
-    public function ajouterUtilisateur($data, Curl $crl)
+    public function ajouterUtilisateur($data ,  Curl $crl)
     {
-            $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
+        $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
     }
 
 
@@ -349,3 +344,31 @@ class RequeteController extends AbstractController
 
 
 
+
+    }
+    /**
+     *
+     * UTILISATEUR
+     */
+    public function recupererTousLesUtilisateur(curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/utilisateur/recuperer", "application/javascript");
+    }
+    public function recupererUtilisateurParId($id, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
+    }
+    public function recupererUtilisateurParMail($id, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
+    }
+    public function ajouterUtilisateur($data, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
+    }
+    public function connexionUtilisateur($data, curl $curl)
+    {
+        return $response = $curl->faireRequete("POST", "http://10.131.129.13:5000/api/utilisateur/connexion", "application/javascript", $data);
+    }
+}
+?>

@@ -15,8 +15,7 @@ class ideeController extends AbstractController
 {
 
     /**
-     * @Route("/ideeController")
-     * @return Response
+     * @Route("/ideeAdd")
      */
     public function add(Request $req, RequeteController $rctrl, Curl $crl)
     {
@@ -31,12 +30,14 @@ class ideeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $ideeData = $form->getData();
 
-            $ideeDataToSend = json_encode(['nom_idee' => $ideeData->getNomIdee(),
+            $ideeDataToSend = json_encode([
+                'nom_idee' => $ideeData->getNomIdee(),
                 'description_idee' => $ideeData->getDescriptionIdee(),
-                //Doit envoyer l'id user aussi
-                'nom_lieu' => $ideeData->getNomLieu()]);
+                //Doit envoyer l'id user evoyer par la session
+                'lieu' => $ideeData->getLieu()]);
 
-            $rctrl->ajouterIdee($ideeDataToSend, $crl);
+            dump($ideeDataToSend);
+           // $rctrl->ajouterIdee($ideeDataToSend, $crl);
         }
 
 
@@ -58,22 +59,20 @@ class ideeController extends AbstractController
     public function display(RequeteController $rctrl, Curl $crl)
     {
 
-        //$events = $rctrl->recupererIdee("");
+        $idees = $rctrl->recupererIdee($crl);
 
-        $idee ='{"nom_idee": "Barbecue","nom_lieu" : "Nice"}';
-        //variable de test
+        $ideesToDisplay = json_decode($idees);
 
-
-        $ideeToDisplay = json_decode($idee);
-
-        if(is_object($ideeToDisplay)){
-            $idee = '[' . $idee . ']';
-            $ideeToDisplay = json_decode($idee);
+        if(is_object($ideesToDisplay))
+        {
+            $idees = '[' . $idees . ']';
+            $ideesToDisplay = json_decode($idees);
         }
+
 
         try {
             return $this->render('ideeDisplay.html.twig', [
-                'idees' => $ideeToDisplay
+                'idees' => $ideesToDisplay
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();

@@ -307,9 +307,6 @@ class RequeteController extends AbstractController
         return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/produit/ajouter", "application/javascript", $data);
     }
 
-
-
-
     /**
      *
      * UTILISATEUR

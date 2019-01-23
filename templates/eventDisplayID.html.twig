@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="jumbotron">
+        <h1>{{ event.nom_event }}</h1>
+        <h2>{{ event.prix }}</h2>
+        <h3>{{ event.date_debut_event }}</h3>
+        <h3>{{ event.date_fin_event }}</h3>
+    </div>
+
+    {# Voici le formulaire pour ajouter une image sur l'evenement courant #}
+
+    {{ form_start(formPhoto) }}
+    {{ form_widget(formPhoto) }}
+    <button>Ajouter</button>
+    {{ form_end(formPhoto) }}
+
+    {# Voici le formulaire pour ajouter un commentaire sur la photo selectioné #}
+
+    {{ form_start(formComm) }}
+    {{ form_widget(formComm) }}
+    <button>Ajouter</button>
+    {{ form_end(formComm) }}
+
+{% endblock %}

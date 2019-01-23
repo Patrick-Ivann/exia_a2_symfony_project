@@ -16,7 +16,6 @@ class ideeController extends AbstractController
 
     /**
      * @Route("/ideeAdd")
-     * @return Response
      */
     public function add(Request $req, RequeteController $rctrl, Curl $crl)
     {
@@ -31,12 +30,14 @@ class ideeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $ideeData = $form->getData();
 
-            $ideeDataToSend = json_encode(['nom_idee' => $ideeData->getNomIdee(),
+            $ideeDataToSend = json_encode([
+                'nom_idee' => $ideeData->getNomIdee(),
                 'description_idee' => $ideeData->getDescriptionIdee(),
-                //Doit envoyer l'id user aussi
-                'nom_lieu' => $ideeData->getNomLieu()]);
+                //Doit envoyer l'id user evoyer par la session
+                'lieu' => $ideeData->getLieu()]);
 
-            $rctrl->ajouterIdee($ideeDataToSend, $crl);
+            dump($ideeDataToSend);
+           // $rctrl->ajouterIdee($ideeDataToSend, $crl);
         }
 
 
@@ -60,10 +61,6 @@ class ideeController extends AbstractController
 
         $idees = $rctrl->recupererIdee($crl);
 
-        //$idees ='{"nom_idee": "Barbecue","nom_lieu" : "Nice"}';
-        //variable de test
-
-
         $ideesToDisplay = json_decode($idees);
 
         if(is_object($ideesToDisplay))
@@ -72,7 +69,6 @@ class ideeController extends AbstractController
             $ideesToDisplay = json_decode($idees);
         }
 
-        dump($idees);
 
         try {
             return $this->render('ideeDisplay.html.twig', [

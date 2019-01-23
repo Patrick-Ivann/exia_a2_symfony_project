@@ -4,8 +4,10 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class UserFormType extends AbstractType
 {
@@ -14,10 +16,10 @@ class UserFormType extends AbstractType
         $builder
             ->add('prenom')
             ->add('nom')
-            ->add('mail' , null, ['label' => 'Votre Email'])
-            ->add('mdp', null ,['label' => 'Mot de passe'])
-            ->add('url_avatar' , null ,['label' => 'Url de votre avatar'])
-            ->add('lieu' , null ,['label' => 'Ville'])
+            ->add('adresse_mail')
+            ->add('mot_de_passe', PasswordType::class)
+            ->add('mot_de_passe_verif', PasswordType::class, ['label'=>'Retaper le mot de passe'])
+            ->add('avatar', FileType::class)
         ;
     }
 

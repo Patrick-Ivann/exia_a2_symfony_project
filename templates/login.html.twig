@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="jumbotron">
+    <h1>Se connecter</h1>
+  </div>
+
+{% if erreur %}
+  <h4>{{ erreur }}</h4>
+
+{% endif %}
+
+  {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}

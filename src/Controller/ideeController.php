@@ -44,7 +44,7 @@ class ideeController extends AbstractController
         {
             try {
                 return $this->render('ideeCreate.html.twig',[
-                    'form' =>$form->createView()
+                    'form' => $form->createView()
                 ]);
             } catch (\Exception $ex) {
                 return $ex->getMessage();

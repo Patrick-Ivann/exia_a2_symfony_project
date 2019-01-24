@@ -1,0 +1,45 @@
+
+/** HEADER */
+.navbar {
+    background-color: black;
+}
+
+/** FOOTER */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /*margin-bottom: 60px;*/
+}
+.footer {
+    /*position: absolute;
+    bottom: 0;*/
+    margin-top: 50px;
+    width: 100%;
+    height: auto;
+    background-color: black;
+    color: white;
+    padding-top: 30px;
+}
+.networks {
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 15px;
+}
+.network {
+    background-color: darkred;
+    height: 40px;
+}
+.credits {
+    padding-bottom: 20px;
+}
+.contents {
+    padding-bottom: 30px;
+}
+.mentions {
+    padding-bottom: 10px;
+}
+.mention {
+    text-align: center;
+}

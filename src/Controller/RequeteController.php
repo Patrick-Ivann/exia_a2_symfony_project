@@ -5,12 +5,12 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Services\Curl;
+use App\services\Curl;
 
 class RequeteController extends AbstractController
 {
 
-    private $ip = "10.131.129.187";
+    private $ip = "10.131.129.101";
     private $port = "5000";
 
     /**
@@ -21,7 +21,6 @@ class RequeteController extends AbstractController
     /**
      * EVENEMENT
      */
-
     /**
      * @param $data
      * @param Curl $crl
@@ -50,7 +49,8 @@ class RequeteController extends AbstractController
      * @param Curl $crl
      * @return mixed
      */
-    public function supprimerEvenement($id, Curl $crl) {
+    public function supprimerEvenement($id, Curl $crl)
+    {
         $response = $crl->faireRequeteAvecHeader("DELETE", "http://" . $this->ip . ":" . $this->port . "/api/evenement/supprimer/" . $id, "application/javascript", null);
         return $response;
     }
@@ -65,60 +65,25 @@ class RequeteController extends AbstractController
         $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/idee/ajouter", "application/javascript", $data);
     }
 
-    public function recupererIdee($data, Curl $crl)
+    public function recupererIdee(Curl $crl, $data = null)
     {
         $data = $data ? $data : "";
-        $query = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/idee/recuperer", "application/javascript", $data);
+        return $query = $crl->faireRequeteAvecHeader("GET", "http://10.131.129.187:5000/api/idee/recuperer", "application/javascript", $data);
     }
-
-
-    /*
 
     public function ajouterUtilisateur($data, Curl $crl)
     {
-            $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
+        $response = $crl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":" . $this->port . "/api/utilisateur/ajouter", "application/javascript", $data);
+        echo $response;
     }
 
-
-    public function connexionUtilisateur($data)
+    public function connexionUtilisateur($data, Curl $crl)
     {
-            return $response = $crl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
-
-    }
-
-     */
-
-
-
-
-    /**
-     * ACHETER
-     */
-
-    public function acheter($data, curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader("POST",
-            "http://10.131.129.13:5000/api/achete/ajouter",
-            "application/javascript", $data);
-    }
-
-    public function recupererAchats(curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/achete/ajouter", "application/javascript", $data);
+        $response = $crl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":" . $this->port . "/api/utilisateur/connexion", "application/javascript", $data);
+        return $response;
     }
 
 
-
-
-    public function recupererProduit($id, curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/achate/recuperer/{$id}", 'application/javascript');
-    }
-
-    public function recupererAcheteur($id, curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/achate/recuperer/{$id}", 'application/javascript');
-    }
 
     /***
      * AIME
@@ -143,6 +108,26 @@ class RequeteController extends AbstractController
     public function publierUnLikeSurPhoto($data, curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/achete/ajouter", "application/javascript", $data);
+    }
+
+    /**
+     * ACHETER
+     */
+    public function acheter($data, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/achete/ajouter", "application/javascript", $data);
+    }
+    public function recupererAchats(curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/achete/ajouter", "application/javascript", $data);
+    }
+    public function recupererProduit($id, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://".$this->ip.":5000/api/achate/recuperer/{$id}", 'application/javascript');
+    }
+    public function recupererAcheteur($id, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://".$this->ip.":5000/api/achate/recuperer/{$id}", 'application/javascript');
     }
 
 
@@ -188,8 +173,6 @@ class RequeteController extends AbstractController
     }
 
 
-
-
     /**
      * LIEU
      *
@@ -213,7 +196,6 @@ class RequeteController extends AbstractController
      */
 
 
-
     public function recupererToutesLesNotifS(curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/notif/recuperer", "application/javascript");
@@ -225,7 +207,6 @@ class RequeteController extends AbstractController
     }
 
 
-
     public function recupererUtilisateurNotif($id, curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/notif/recuperer/{$id}", 'application/javascript');
@@ -235,7 +216,6 @@ class RequeteController extends AbstractController
     {
         return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/notif/ajouter", "application/javascript", $data);
     }
-
 
 
     /**
@@ -261,11 +241,9 @@ class RequeteController extends AbstractController
     }
 
 
-
     /**
      * PHOTO
      */
-
 
 
     public function recupererToutesLesPhotos(curl $curl)
@@ -279,7 +257,6 @@ class RequeteController extends AbstractController
     }
 
 
-
     public function ajouterPhoto($data, curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/photo/ajouter", "application/javascript", $data);
@@ -289,33 +266,26 @@ class RequeteController extends AbstractController
     /**
      * PRODUIT
      */
-
-
-
     public function recupererTousLesProduits(curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/produit/recuperer", "application/javascript");
+        return $response = $curl->faireRequeteAvecHeader("GET", "http://".$this->ip.":5000/api/produit/recuperer", "application/javascript");
     }
-
     public function recupererProduitParId($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/produit/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://".$this->ip.":5000/api/produit/recuperer/{$id}", 'application/javascript');
     }
-
-    public function ajouterProduit($data, curl $curl)
+    public function ajouterProduit($data, $path, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/produit/ajouter", "application/javascript", $data);
+        $response = $curl->faireRequeteAvecFichier("POST", "http://".$this->ip.":5000/api/produit/ajouter", "application/javascript", $data, $path);
+        echo $response;
     }
-
-
-
-
+}
     /**
      *
      * UTILISATEUR
      */
 
-
+/*
     public function recupererTousLesUtilisateur(curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/utilisateur/recuperer", "application/javascript");
@@ -329,9 +299,9 @@ class RequeteController extends AbstractController
     public function recupererUtilisateurParMail($id, curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
-    }
+    }*/
 
-
+/*
     public function ajouterUtilisateur($data, curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
@@ -340,15 +310,26 @@ class RequeteController extends AbstractController
     public function connexionUtilisateur($data, curl $curl)
     {
         return $response = $curl->faireRequete("POST", "http://10.131.129.13:5000/api/utilisateur/connexion", "application/javascript", $data);
+    }*/
+
+   /* public function recupererTousLesUtilisateur(curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/utilisateur/recuperer", "application/javascript");
     }
-
-
-
-
-
-
-
-}
-
-
-
+    public function recupererUtilisateurParId($id, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
+    }
+    public function recupererUtilisateurParMail($id, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
+    }
+    public function ajouterUtilisateur($data, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/utilisateur/ajouter", "application/javascript", $data);
+    }
+    public function connexionUtilisateur($data, curl $curl)
+    {
+        return $response = $curl->faireRequete("POST", "http://10.131.129.13:5000/api/utilisateur/connexion", "application/javascript", $data);
+    }
+}*/

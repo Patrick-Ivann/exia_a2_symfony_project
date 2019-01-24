@@ -8,7 +8,24 @@
         <h2>{{ event.prix }}</h2>
         <h3>{{ event.date_debut_event }}</h3>
         <h3>{{ event.date_fin_event }}</h3>
+        <a href="{{ path('participeById', {id_event: event.id_event}) }}">Participer a cet évenement</a>
     </div>
+
+    {% for key,photo in photo %}
+
+    <p>Id photo {{ photo.id_photo }}
+        <a href="{{ path('likeById', {id_photo: photo.id_photo}) }}">Like</a>
+        <a href="{{ path('signalebyId', {id_photo: photo.id_photo}) }}">Signaler</a>
+    </p>
+
+        <p>Commentaire</p>
+        <p> {{ commentaire[key] }} </p>
+
+
+
+
+    {% endfor %}
+
 
     {# Voici le formulaire pour ajouter une image sur l'evenement courant #}
 
@@ -16,12 +33,5 @@
     {{ form_widget(formPhoto) }}
     <button>Ajouter</button>
     {{ form_end(formPhoto) }}
-
-    {# Voici le formulaire pour ajouter un commentaire sur la photo selectioné #}
-
-    {{ form_start(formComm) }}
-    {{ form_widget(formComm) }}
-    <button>Ajouter</button>
-    {{ form_end(formComm) }}
 
 {% endblock %}

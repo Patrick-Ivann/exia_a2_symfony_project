@@ -6,12 +6,17 @@ namespace App\Services;
 
 class Curl
 {
+
+    /**
+     * @param $method
+     * @param $url
+     * @param bool $data
+     * @return mixed
+     */
     public function faireRequete($method, $url, $data = false)
     {
         $curlObject = curl_init();
-
         curl_setopt($curlObject, CURLOPT_URL, $url);
-
         switch ($method) {
             case 'POST':
                 curl_setopt($curlObject, CURLOPT_POST, 1);
@@ -25,10 +30,10 @@ class Curl
         curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curlObject);
 
+
         if (curl_exec($curlObject) === false) {
             echo 'Erreur Curl : ' . curl_error($curlObject);
         }
-
         if (!curl_errno($curlObject)) {
             switch ($http_code = curl_getinfo($curlObject, CURLINFO_HTTP_CODE)) {
                 case 200:
@@ -37,23 +42,28 @@ class Curl
                     echo 'Erreur HTTP: ', $http_code, "\n";
             }
         }
-
-
         curl_close($curlObject);
         //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
         $result[] = substr($response, 0);
         return $result[0];
     }
+
+    /**
+     * @param $method
+     * @param $url
+     * @param $token
+     * @param bool $data
+     * @return mixed
+     */
     public function faireRequeteAvecHeader($method, $url, $token, $data = false)
     {
-
-
         $curlObject = curl_init();
+
         curl_setopt($curlObject, CURLOPT_URL, $url);
+
         $header = array(
             "verificateur: e " . $token
         );
-
 
         switch ($method) {
             case 'POST':
@@ -62,14 +72,15 @@ class Curl
                 if ($data)
                     curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
                 break;
+
+
             case 'DELETE':
                 if ($data) {
-
                 }
                 curl_setopt($curlObject, CURLOPT_CUSTOMREQUEST, "DELETE");
                 curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
-
                 break;
+
             default:
                 curl_setopt($curlObject, CURLOPT_URL, $url);
                 curl_setopt($curlObject, CURLOPT_HEADER, $header);
@@ -78,12 +89,9 @@ class Curl
         curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curlObject, CURLOPT_HEADER, false);
         $response = curl_exec($curlObject);
-
-
         if (curl_exec($curlObject) === false) {
             echo 'Erreur Curl : ' . curl_error($curlObject);
         }
-
         if (!curl_errno($curlObject)) {
             switch ($http_code = curl_getinfo($curlObject, CURLINFO_HTTP_CODE)) {
                 case 200:
@@ -92,7 +100,6 @@ class Curl
                     echo 'Erreur HTTP: ', $http_code, "\n";
             }
         }
-
         curl_close($curlObject);
         //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
         $result[] = substr($response, 0);
@@ -117,15 +124,10 @@ class Curl
                 ));
                 if ($data) {
                     if ($type === 'produit') {
-
                         $arr = json_decode($data, true);
-
                         $b = $arr["nom_produit"];
-
                         \dump($arr["nom_produit"]);
-
                         $nomFichier = $b . '.' . $path->guessExtension();
-
                         $postfields = array(
                             $path->guessExtension() => new \CURLFile($path, $path->getMimeType(), $nomFichier),
                             'formulaire' => $data
@@ -135,7 +137,6 @@ class Curl
                             $path->guessExtension() => new \CURLFile($path, $path->getMimeType(), 'petit.png'),
                             'formulaire' => $data
                         );
-
                     }
                     //  $postfields["upfile"] = "$path";
                     curl_setopt($curlObject, CURLOPT_POSTFIELDS, $postfields);
@@ -153,11 +154,9 @@ class Curl
         curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curlObject);
         //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
-
         if (curl_exec($curlObject) === false) {
             echo 'Erreur Curl : ' . curl_error($curlObject);
         }
-
         if (!curl_errno($curlObject)) {
             switch ($http_code = curl_getinfo($curlObject, CURLINFO_HTTP_CODE)) {
                 case 200:
@@ -166,15 +165,8 @@ class Curl
                     echo 'Erreur HTTP: ', $http_code, "\n";
             }
         }
-
-        curl_close($curlObject);
-
         $result[] = substr($response, 0);
         return $result[0];
     }
 }
-
-
-
-
 ?>

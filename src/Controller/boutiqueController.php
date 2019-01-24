@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class boutiqueController extends AbstractController
@@ -57,8 +58,10 @@ class boutiqueController extends AbstractController
     }
 
     /**
-     * @Route("/shopGet")
-     *
+     * @Route("/boutique", name="boutique")
+     * @param \App\Controller\RequeteController $rctrl
+     * @param Curl $crl
+     * @return string|Response
      */
     function display()
     {
@@ -78,9 +81,23 @@ class boutiqueController extends AbstractController
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
+    }
 
+    /**
+     * @Route("/buy/{id_produit}" , name="buyById")
+     */
+    function buy($id_produit, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        $id_user = $session->get("id_user");
+
+        $achat = json_encode([
+            'id_produit' => $id_produit,
+            'id_user' => $id_user
+        ]);
+
+        $rctrl->acheter($achat, $crl);
+
+        return $this->redirectToRoute("boutique");
     }
 }
-
-
 ?>

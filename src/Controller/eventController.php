@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Commentaire;
@@ -14,17 +13,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class eventController extends AbstractController
 {
-
     /**
-     * @Route("/eventAdd")
-     *
+     * @Route("/events/add")
+     * @param Request $req
+     * @param \App\Controller\RequeteController $rctrl
+     * @param Curl $crl
+     * @return string|Response
      */
     public function add(Request $req, RequeteController $rctrl, Curl $crl)
     {
-
         $event = new Event();
 
         $form = $this->createForm(EventFormType::class, $event);
@@ -32,6 +33,7 @@ class eventController extends AbstractController
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $eventData = $form->getData();
 
             $eventDataToSend = json_encode([
@@ -45,7 +47,6 @@ class eventController extends AbstractController
 
             $rctrl->ajouterEvenement($eventDataToSend, $crl);
         }
-
         try {
             return $this->render('eventCreate.html.twig', [
                 'form' => $form->createView()
@@ -56,11 +57,13 @@ class eventController extends AbstractController
     }
 
     /**
-     * @Route("/eventGet", name="displayEvent")
+     * @Route("/events" , name="events"))
+     * @param \App\Controller\RequeteController $rctrl
+     * @param Curl $crl
+     * @return string|Response
      */
     public function display(RequeteController $rctrl, Curl $crl)
     {
-
         $events = $rctrl->recupererEvenement(null, $crl);
 
         $eventToDisplay = json_decode($events);
@@ -77,7 +80,6 @@ class eventController extends AbstractController
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
-
     }
 
     /**
@@ -89,7 +91,6 @@ class eventController extends AbstractController
     public function delete($id_event, RequeteController $rctrl, Curl $crl)
     {
         $rctrl->supprimerEvenement($id_event, $crl);
-
         return $this->redirectToRoute("displayEvent");
     }
 
@@ -107,34 +108,30 @@ class eventController extends AbstractController
 
         $photo = $rctrl->recupererPhotoParIdEvent($id_event, $crl);
 
+        $photoToDisplay = json_decode($photo);
 
-        if (is_array($photo)) {
+        dump($photoToDisplay);
 
-            foreach ($photo as $key => $value) {
+        foreach ($photoToDisplay as $photo) {
 
-                \dump($value);
-                $decodedPHoto = json_decode($value);
-                \dump($decodedPHoto->{"id_photo"});
+            $commentaire[] = $rctrl->recupererCommentaireParIdPhoto($photo->{"id_photo"}, $crl);
 
+            $formComm[] = $this->createFormCommentaire(1, $req, $rctrl, $crl);
 
-                $commentaire = $rctrl->recupererCommentaireParIdPhoto($decodedPHoto->{"id_photo"}, $crl);
-
-                \dump($commentaire);
-
-
-            }
-        } else {
-
-            \dump($photo);
-            $decodedPHoto = json_decode($photo);
-/*            \dump($decodedPHoto->{"id_photo"});
-
-
-            $commentaire = $rctrl->recupererCommentaireParIdPhoto($decodedPHoto->{"id_photo"}, $crl);
-
-            \dump($commentaire);
-             */
         }
+/*
+        foreach ($commentaire as $commentaire)
+        {
+            $commentaireToDisplay[] = json_decode($commentaire);
+        }
+        dump($commentaireToDisplay); */
+
+        foreach ($formComm as $form) {
+            $formCommCreated[] = $form->createView();
+        }
+
+        dump($formCommCreated);
+        dump($commentaire);
         /*
             Faire le traitement pour choper l'image et son nom
          */
@@ -143,13 +140,14 @@ class eventController extends AbstractController
         $formPhoto = $this->createFormPhoto($id_event, $req, $rctrl, $crl);
 
         //Form en cas d'ajout de commentaire
-        $formComm = $this->createFormCommentaire($req, $rctrl, $crl);
 
         try {
             return $this->render('eventDisplayID.html.twig', [
                 'event' => $eventToDisplay,
+                'photo' => $photoToDisplay,
+                'commentaire' => $commentaire,
                 'formPhoto' => $formPhoto->createView(),
-                'formComm' => $formComm->createView()
+                'formCommCreated' => $formCommCreated
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
@@ -172,8 +170,8 @@ class eventController extends AbstractController
                 'id_user' => '8',
                 'id_event' => $id_event
             ]);
-            //foutre id_user de session
 
+            //foutre id_user de session
             $file = $req->files->get("photo_form")["file_photo"];
 
             $type = 'photo';
@@ -183,7 +181,7 @@ class eventController extends AbstractController
         return $formPhoto;
     }
 
-    function createFormCommentaire($req, $rctrl, $crl)
+    function createFormCommentaire($id_photo, $req, $rctrl, $crl)
     {
         $commentaire = new Commentaire();
 
@@ -193,21 +191,74 @@ class eventController extends AbstractController
 
         if ($formComm->isSubmitted() && $formComm->isValid()) {
 
-
-
             $commentaireData = $formComm->getData();
-            $id_user = "9";
+
+            $id_user = "";
 
             $CommentaireDataToSend = json_encode([
                 'texte_commentaire' => $commentaireData->getTexteCommentaire(),
                 'id_user' => $id_user,
-
+                'id_photo' => $id_photo
             ]);
+
             //foutre id_user de session
-
-
             $rctrl->ajouterCommentaire($CommentaireDataToSend, $crl);
         }
         return $formComm;
     }
+
+    /**
+     * @Route("/like/{id_photo}" , name="likeById")
+     */
+    function like($id_photo, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        $id_user = $session->get("id_user");
+
+        $like = json_encode([
+            'id_photo' => $id_photo,
+            'id_user' => $id_user
+        ]);
+
+        $rctrl->publierUnLikeSurPhoto($like, $crl);
+
+        return $this->redirectToRoute("events");
+    }
+
+
+    /**
+     * @Route("/signale/{id_photo}" , name="signaleById")
+     */
+    function signale($id_photo, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        $id_user = $session->get("id_user");
+
+        $signale = json_encode([
+            'id_photo' => $id_photo,
+            'id_user' => $id_user
+        ]);
+
+
+        //Creer cet requête
+        $rctrl->signalerUnePhotoParId($signale, $crl);
+
+        return $this->redirectToRoute("events");
+    }
+
+    /**
+     * @Route("/participe/{id_event}" , name="participeById")
+     */
+    function participe($id_event, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        $id_user = $session->get("id_user");
+
+        $participe = json_encode([
+            'id_event' => $id_event,
+            'id_user' => $id_user
+        ]);
+
+        $rctrl->participerUnEvenementParId($participe, $crl);
+
+        return $this->redirectToRoute("events");
+    }
 }
+?>

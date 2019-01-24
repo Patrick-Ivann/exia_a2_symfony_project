@@ -72,7 +72,7 @@ class boutiqueController extends AbstractController
     }
 
     /**
-     * @Route("/buy/{id_event}" , name="buyById")
+     * @Route("/buy/{id_produit}" , name="buyById")
      */
     function buy($id_produit,RequeteController $rctrl, Curl $crl)
     {

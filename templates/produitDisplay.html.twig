@@ -7,7 +7,7 @@
 
     {% for produit in produits %}
 
-        {{ produit.nom_produit }} <a href="{{ path('buyById',  {id_produit:event.id_produit}) }}">Acheter ce produit</a>
+        {{ produit.nom_produit }} <a href="{{ path('buyById',  {id_produit : produit.id_produit}) }}">Acheter ce produit</a> </br>
 
     {% endfor %}
 

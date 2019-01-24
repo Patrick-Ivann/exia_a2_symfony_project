@@ -78,12 +78,5 @@ class ideeController extends AbstractController
 
     }
 
-    /**
-     * @Route("/buy/{id_event_idee}" , name="buyById")
-     */
-    public function like()
-    {
-
-    }
 }
 ?>

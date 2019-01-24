@@ -21,7 +21,7 @@ class eventController extends AbstractController
      * @param Curl $crl
      * @return string|Response
      */
-    public function add(Request $req, RequeteController $requestController, Curl $crl)
+    public function add(Request $req, RequeteController $rctrl, Curl $crl)
     {
         $event = new Event();
 

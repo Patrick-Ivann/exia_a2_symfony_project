@@ -10,7 +10,7 @@ use App\services\Curl;
 class RequeteController extends AbstractController
 {
 
-    private $ip = "10.131.129.101";
+    private $ip = "10.131.50.3";
     private $port = "5000";
 
     /**
@@ -70,32 +70,10 @@ class RequeteController extends AbstractController
     {
             $response = $crl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/utilisateur/ajouter", "application/javascript", $data);
     }
-    public function connexionUtilisateur($data)
+    public function connexionUtilisateur($data, $crl)
     {
-            return $response = $crl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/utilisateur/ajouter", "application/javascript", $data);
+            return $response = $crl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/utilisateur/connexion", "application/javascript", $data);
     }
-     */
-    /**
-     * ACHETER
-     */
-    public function acheter($data, curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/achete/ajouter", "application/javascript", $data);
-    }
-    public function recupererAchats(curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/achete/ajouter", "application/javascript", $data);
-    }
-    public function recupererProduit($id, curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://".$this->ip.":5000/api/achate/recuperer/{$id}", 'application/javascript');
-    }
-    public function recupererAcheteur($id, curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://".$this->ip.":5000/api/achate/recuperer/{$id}", 'application/javascript');
-    }
-
-
 
     /***
      * AIME
@@ -131,7 +109,7 @@ class RequeteController extends AbstractController
     }
     public function recupererAchats(curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/achete/ajouter", "application/javascript", $data);
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/achete/ajouter", "application/javascript");
     }
     public function recupererProduit($id, curl $curl)
     {

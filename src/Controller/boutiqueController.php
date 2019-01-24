@@ -51,7 +51,7 @@ class boutiqueController extends AbstractController
     }
 
     /**
-     * @Route("/boutique", name='boutique')
+     * @Route("/boutique", name="boutique")
      * @param \App\Controller\RequeteController $rctrl
      * @param Curl $crl
      * @return string|Response

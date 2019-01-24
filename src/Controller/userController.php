@@ -33,7 +33,7 @@ class userController extends AbstractController
      * @param Curl $crl
      * @return string|\Symfony\Component\HttpFoundation\Response
      */
-    public function add(Request $req, RequeteController $requeteController, Curl $crl) {
+    public function register(Request $req, RequeteController $requeteController, Curl $crl) {
         $user = New User();
 
         $errors = "";
@@ -55,7 +55,7 @@ class userController extends AbstractController
 
                 $requeteController->ajouterUtilisateur($userDataToSend, $crl);
 
-                return $this->redirect("/exia_a2_symfony_project/public/home");
+                return $this->redirect("/exia_a2_symfony_project/public/login");
             } else {
                 $errors = "Les mots de passe renseignés ne correspondent pas.";
             }

@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Controller;
-
 use App\Entity\Idee;
 use App\Entity\Produit;
 use App\Form\IdeeFormType;
@@ -9,16 +7,14 @@ use App\Form\ProduitFormType;
 use App\services\Curl;
 use App\Controller\RequeteController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
 class boutiqueController extends AbstractController
 {
-
     /**
      * @Route("/produitAdd")
      *
@@ -27,46 +23,51 @@ class boutiqueController extends AbstractController
     {
         $produit = new Produit();
 
-        $form = $this->createForm(ProduitFormType::class,$produit);
+        $form = $this->createForm(ProduitFormType::class, $produit);
 
         $form->handleRequest($req);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $produitData = $form->getData();
 
-            $produitDataToSend = json_encode(['nom_produit' => $produitData->getNomProduit(),
-                'prix_produit' => $produitData->getPrixProduit()]);
+            $produitDataToSend = json_encode([
+                'nom_produit' => $produitData->getNomProduit(),
+                'prix_produit' => $produitData->getPrixProduit(),
+            ]);
 
-            $file = $req->files->get("produit_form")["avatar"]->getPath();
+            $file = $req->files->get("produit_form")["photo_produit"];
 
-            //dump($req->files->get("produit_form")["avatar"]);
-            //$fileName = $this->generateUniqueFileNa().'.'.$file->guessExtension();
+            $type = 'produit';
 
-           $rctrl->ajouterProduit($produitDataToSend, $file, $crl);
+            $rctrl->ajouterProduit($produitDataToSend, $file, $type ,$crl);
         }
-
         try {
             return $this->render('produitCreate.html.twig', [
-                'form' =>$form->createView()
+                'form' => $form->createView()
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
-        }    }
+        }
+    }
 
     /**
-     * @Route("/shopGet")
-     *
+     * @Route("/boutique")
+     * @param \App\Controller\RequeteController $rctrl
+     * @param Curl $crl
+     * @return string|Response
      */
-    function display()
+    function display(RequeteController $rctrl,Curl $crl)
     {
-        $produits ='[{"nom_produit": "T-shirt","prix_produit" : "20"}, {"nom_produit": "Sweatshirt","prix_produit" : "30"}]';
+        $produits = $rctrl->recupererTousLesProduits($crl);
 
         $produitsToDisplay = json_decode($produits);
 
-        if(is_object($produitsToDisplay)){
+        if (is_object($produitsToDisplay)) {
             $produits = '[' . $produits . ']';
             $produitsToDisplay = json_decode($produits);
         }
+
+        dump($produitsToDisplay);
 
         try {
             return $this->render('produitDisplay.html.twig', [
@@ -75,9 +76,23 @@ class boutiqueController extends AbstractController
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
+    }
 
+    /**
+     * @Route("/buy/{id_produit}" , name="buyById")
+     */
+    function buy($id_produit, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        $id_user = $session->get("id_user");
+
+        $achat = json_encode([
+            'id_produit' => $id_produit,
+            'id_user' => $id_user
+        ]);
+
+        $rctrl->acheter($achat, $crl);
+
+        return $this->redirect("/exia_a2_symfony_project/public/home");
     }
 }
-
-
 ?>

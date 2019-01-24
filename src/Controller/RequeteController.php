@@ -84,32 +84,6 @@ class RequeteController extends AbstractController
     }
 
 
-    /**
-     * ACHETER
-     */
-
-    public function acheter($data, curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader("POST",
-            "http://10.131.129.13:5000/api/achete/ajouter",
-            "application/javascript", $data);
-    }
-
-    public function recupererAchats(curl $curl, $data = null)
-    {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/achete/ajouter", "application/javascript", $data);
-    }
-
-
-    public function recupererProduit($id, curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/achate/recuperer/{$id}", 'application/javascript');
-    }
-
-    public function recupererAcheteur($id, curl $curl)
-    {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/achate/recuperer/{$id}", 'application/javascript');
-    }
 
     /***
      * AIME
@@ -134,6 +108,26 @@ class RequeteController extends AbstractController
     public function publierUnLikeSurPhoto($data, curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/achete/ajouter", "application/javascript", $data);
+    }
+
+    /**
+     * ACHETER
+     */
+    public function acheter($data, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/achete/ajouter", "application/javascript", $data);
+    }
+    public function recupererAchats(curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/achete/ajouter", "application/javascript", $data);
+    }
+    public function recupererProduit($id, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://".$this->ip.":5000/api/achate/recuperer/{$id}", 'application/javascript');
+    }
+    public function recupererAcheteur($id, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://".$this->ip.":5000/api/achate/recuperer/{$id}", 'application/javascript');
     }
 
 
@@ -272,21 +266,18 @@ class RequeteController extends AbstractController
     /**
      * PRODUIT
      */
-
-
     public function recupererTousLesProduits(curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("GET", "http://10.131.129.13:5000/api/produit/recuperer", "application/javascript");
+        return $response = $curl->faireRequeteAvecHeader("GET", "http://".$this->ip.":5000/api/produit/recuperer", "application/javascript");
     }
-
     public function recupererProduitParId($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/produit/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://".$this->ip.":5000/api/produit/recuperer/{$id}", 'application/javascript');
     }
-
-    public function ajouterProduit($data, curl $curl)
+    public function ajouterProduit($data, $path, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://10.131.129.13:5000/api/produit/ajouter", "application/javascript", $data);
+        $response = $curl->faireRequeteAvecFichier("POST", "http://".$this->ip.":5000/api/produit/ajouter", "application/javascript", $data, $path);
+        echo $response;
     }
 }
     /**

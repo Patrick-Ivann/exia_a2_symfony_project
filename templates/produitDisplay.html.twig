@@ -1,14 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="jumbotron">
-        <h1>Tout les Produits</h1>
+
+    {% include 'bases/styles.html.twig' %}
+
+    {% include 'bases/header.html.twig' %}
+
+    <div class="container mt-4">
+        <h1>Les produits de la boutique</h1>
+        <hr>
+        {% for produit in produits %}
+
+            {{ produit.nom_produit }} <a href="{{ path('buyById',  {id_produit : produit.id_produit}) }}">Acheter ce produit</a> </br>
+
+        {% endfor %}
     </div>
 
-    {% for produit in produits %}
-
-   <p>{{ produit.nom_produit }}</p>
-
-    {% endfor %}
+    {% include 'bases/footer.html.twig' %}
 
 {% endblock %}
+

@@ -111,12 +111,12 @@ class eventController extends AbstractController
             $formComm[] = $this->createFormCommentaire(1, $req, $rctrl, $crl);
 
         }
-
+/*
         foreach ($commentaire as $commentaire)
         {
             $commentaireToDisplay[] = json_decode($commentaire);
         }
-        dump($commentaireToDisplay);
+        dump($commentaireToDisplay); */
 
         foreach($formComm as $form)
         {
@@ -124,6 +124,7 @@ class eventController extends AbstractController
         }
 
         dump($formCommCreated);
+        dump($commentaire);
         /*
             Faire le traitement pour choper l'image et son nom
          */
@@ -137,7 +138,7 @@ class eventController extends AbstractController
             return $this->render('eventDisplayID.html.twig', [
                 'event' => $eventToDisplay,
                 'photo' => $photoToDisplay,
-                'commentaire' => $commentaireToDisplay,
+                'commentaire' => $commentaire,
                 'formPhoto' => $formPhoto->createView(),
                 'formCommCreated' => $formCommCreated
             ]);

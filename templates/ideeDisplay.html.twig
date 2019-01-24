@@ -9,6 +9,8 @@
 
    <p>{{ idee.nom_idee }}</p>
 
+   <a href="{{ path('buyById',  {id_event_idee : idee.id_event_id}) }}">Liker cette idee</a>
+
     {% endfor %}
 
 {% endblock %}

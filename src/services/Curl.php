@@ -152,7 +152,6 @@ class Curl
         }
         curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curlObject);
-        curl_close($curlObject);
         //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
 
         if (curl_exec($curlObject) === false) {
@@ -168,6 +167,7 @@ class Curl
             }
         }
 
+        curl_close($curlObject);
 
         $result[] = substr($response, 0);
         return $result[0];

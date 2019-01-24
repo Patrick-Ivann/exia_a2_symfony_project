@@ -108,14 +108,33 @@ class eventController extends AbstractController
         $photo = $rctrl->recupererPhotoParIdEvent($id_event, $crl);
 
 
-        \dump($photo);
-        $decodedPHoto = json_decode($photo);
-        \dump($decodedPHoto->{"id_photo"});
+        if (is_array($photo)) {
+
+            foreach ($photo as $key => $value) {
+
+                \dump($value);
+                $decodedPHoto = json_decode($value);
+                \dump($decodedPHoto->{"id_photo"});
 
 
-        $commentaire = $rctrl->recupererCommentaireParIdPhoto($decodedPHoto->{"id_photo"}, $crl);
+                $commentaire = $rctrl->recupererCommentaireParIdPhoto($decodedPHoto->{"id_photo"}, $crl);
 
-        \dump($commentaire);
+                \dump($commentaire);
+
+
+            }
+        } else {
+
+            \dump($photo);
+            $decodedPHoto = json_decode($photo);
+/*            \dump($decodedPHoto->{"id_photo"});
+
+
+            $commentaire = $rctrl->recupererCommentaireParIdPhoto($decodedPHoto->{"id_photo"}, $crl);
+
+            \dump($commentaire);
+             */
+        }
         /*
             Faire le traitement pour choper l'image et son nom
          */
@@ -175,11 +194,12 @@ class eventController extends AbstractController
         if ($formComm->isSubmitted() && $formComm->isValid()) {
 
             $commentaireData = $formComm->getData();
-            $id_user = "";
+            $id_user = "9";
 
             $CommentaireDataToSend = json_encode([
                 'texte_commentaire' => $commentaireData->getTexteCommentaire(),
                 'id_user' => $id_user,
+
             ]);
             //foutre id_user de session
 

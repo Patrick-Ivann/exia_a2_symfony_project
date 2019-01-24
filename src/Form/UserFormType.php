@@ -16,10 +16,11 @@ class UserFormType extends AbstractType
         $builder
             ->add('prenom')
             ->add('nom')
+            ->add('nom_lieu')
             ->add('adresse_mail')
             ->add('mot_de_passe', PasswordType::class)
             ->add('mot_de_passe_verif', PasswordType::class, ['label'=>'Retaper le mot de passe'])
-            ->add('avatar', FileType::class)
+            //->add('avatar', FileType::class)
         ;
     }
 

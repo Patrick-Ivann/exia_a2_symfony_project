@@ -2,6 +2,13 @@
 namespace App\services;
 class Curl
 {
+
+    /**
+     * @param $method
+     * @param $url
+     * @param bool $data
+     * @return mixed
+     */
     public function faireRequete($method, $url, $data = false)
     {
         $curlObject = curl_init();
@@ -34,13 +41,24 @@ class Curl
         $result[] = substr($response, 0);
         return $result[0];
     }
+
+    /**
+     * @param $method
+     * @param $url
+     * @param $token
+     * @param bool $data
+     * @return mixed
+     */
     public function faireRequeteAvecHeader($method, $url, $token, $data = false)
     {
         $curlObject = curl_init();
+
         curl_setopt($curlObject, CURLOPT_URL, $url);
+
         $header = array(
             "verificateur: e " . $token
         );
+
         switch ($method) {
             case 'POST':
                 curl_setopt($curlObject, CURLOPT_POST, 1);
@@ -48,12 +66,14 @@ class Curl
                 if ($data)
                     curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
                 break;
+
             case 'DELETE':
                 if ($data) {
                 }
                 curl_setopt($curlObject, CURLOPT_CUSTOMREQUEST, "DELETE");
                 curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
                 break;
+
             default:
                 curl_setopt($curlObject, CURLOPT_URL, $url);
                 curl_setopt($curlObject, CURLOPT_HEADER, $header);

@@ -28,6 +28,7 @@ class User
     private $adresse_mail;
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex("/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/")
      */
     private $mot_de_passe;
     /**

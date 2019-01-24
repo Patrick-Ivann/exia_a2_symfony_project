@@ -15,10 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class eventController extends AbstractController
 {
     /**
-     * @Route("/eventAdd")
-     *
+     * @Route("/events/add")
+     * @param Request $req
+     * @param \App\Controller\RequeteController $requestController
+     * @param Curl $crl
+     * @return string|Response
      */
-    public function add(Request $req, RequeteController $rctrl, Curl $crl)
+    public function add(Request $req, RequeteController $requestController, Curl $crl)
     {
         $event = new Event();
 
@@ -51,7 +54,10 @@ class eventController extends AbstractController
     }
 
     /**
-     * @Route("/eventGet", name="displayEvent")
+     * @Route("/events" , name="displayEvent"))
+     * @param \App\Controller\RequeteController $requestController
+     * @param Curl $crl
+     * @return string|Response
      */
     public function display(RequeteController $rctrl, Curl $crl)
     {

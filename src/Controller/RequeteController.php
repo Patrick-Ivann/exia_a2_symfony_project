@@ -10,7 +10,7 @@ use App\services\Curl;
 class RequeteController extends AbstractController
 {
 
-    private $ip = "10.131.129.20";
+    private $ip = "10.131.129.101";
     private $port = "5000";
 
     /**

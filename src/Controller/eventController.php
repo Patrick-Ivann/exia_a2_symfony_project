@@ -99,15 +99,31 @@ class eventController extends AbstractController
 
         $photo = $rctrl->recupererPhotoParIdEvent($id_event, $crl);
 
-        \dump($photo);
-
         $photoToDisplay = json_decode($photo);
 
-        \dump($photoToDisplay->{"id_photo"});
+        dump($photoToDisplay);
 
-        $commentaire = $rctrl->recupererCommentaireParIdPhoto($photoToDisplay->{"id_photo"}, $crl);
+        foreach ($photoToDisplay as $photo)
+        {
 
-        \dump($commentaire);
+            $commentaire[] = $rctrl->recupererCommentaireParIdPhoto($photo->{"id_photo"}, $crl);
+
+            $formComm[] = $this->createFormCommentaire(1, $req, $rctrl, $crl);
+
+        }
+
+        foreach ($commentaire as $commentaire)
+        {
+            $commentaireToDisplay[] = json_decode($commentaire);
+        }
+        dump($commentaireToDisplay);
+
+        foreach($formComm as $form)
+        {
+            $formCommCreated[] = $form->createView();
+        }
+
+        dump($formCommCreated);
         /*
             Faire le traitement pour choper l'image et son nom
          */
@@ -116,14 +132,14 @@ class eventController extends AbstractController
         $formPhoto = $this->createFormPhoto($id_event, $req, $rctrl, $crl);
 
         //Form en cas d'ajout de commentaire
-        $formComm = $this->createFormCommentaire($req, $rctrl, $crl);
 
         try {
             return $this->render('eventDisplayID.html.twig', [
                 'event' => $eventToDisplay,
                 'photo' => $photoToDisplay,
+                'commentaire' => $commentaireToDisplay,
                 'formPhoto' => $formPhoto->createView(),
-                'formComm' => $formComm->createView()
+                'formCommCreated' => $formCommCreated
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
@@ -158,7 +174,7 @@ class eventController extends AbstractController
         return $formPhoto;
     }
 
-    function createFormCommentaire($req, $rctrl, $crl)
+    function createFormCommentaire($id_photo, $req, $rctrl, $crl)
     {
         $commentaire = new Commentaire();
 
@@ -175,6 +191,7 @@ class eventController extends AbstractController
             $CommentaireDataToSend = json_encode([
                 'texte_commentaire' => $commentaireData->getTexteCommentaire(),
                 'id_user' => $id_user,
+                'id_photo' => $id_photo
             ]);
 
             //foutre id_user de session

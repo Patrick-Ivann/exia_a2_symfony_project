@@ -41,7 +41,7 @@ class RequeteController extends AbstractController
     {
         $response = $crl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/idee/ajouter", "application/javascript", $data);
     }
-    public function recupererIdee($data, Curl $crl)
+    public function recupererIdee(Curl $crl, $data = null)
     {
         $data = $data ? $data : "";
         return $query = $crl->faireRequeteAvecHeader("GET", "http://".$this->ip.":5000/api/idee/recuperer", "application/javascript", $data);

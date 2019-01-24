@@ -36,10 +36,9 @@ class ideeController extends AbstractController
                 //Doit envoyer l'id user evoyer par la session
                 'lieu' => $ideeData->getLieu()]);
 
-            dump($ideeDataToSend);
-           // $rctrl->ajouterIdee($ideeDataToSend, $crl);
-        }
 
+           $rctrl->ajouterIdee($ideeDataToSend, $crl);
+        }
 
         {
             try {
@@ -68,8 +67,7 @@ class ideeController extends AbstractController
             $idees = '[' . $idees . ']';
             $ideesToDisplay = json_decode($idees);
         }
-
-
+        dump($ideesToDisplay);
         try {
             return $this->render('ideeDisplay.html.twig', [
                 'idees' => $ideesToDisplay
@@ -77,6 +75,14 @@ class ideeController extends AbstractController
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
+
+    }
+
+    /**
+     * @Route("/buy/{id_event_idee}" , name="buyById")
+     */
+    public function like()
+    {
 
     }
 }

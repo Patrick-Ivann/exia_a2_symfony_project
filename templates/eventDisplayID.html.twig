@@ -10,6 +10,16 @@
         <h3>{{ event.date_fin_event }}</h3>
     </div>
 
+    {% for photo in photo %}
+
+    <p>Id photo {{ photo.id_photo }}</p>
+        <p>Commentaire</p>
+        <p> {{ commentaire.0.0 }} </p>
+
+
+    {% endfor %}
+
+
     {# Voici le formulaire pour ajouter une image sur l'evenement courant #}
 
     {{ form_start(formPhoto) }}
@@ -19,9 +29,14 @@
 
     {# Voici le formulaire pour ajouter un commentaire sur la photo selectioné #}
 
+
+    {% for formComm in formCommCreated %}
+
     {{ form_start(formComm) }}
     {{ form_widget(formComm) }}
     <button>Ajouter</button>
     {{ form_end(formComm) }}
+
+    {% endfor %}
 
 {% endblock %}

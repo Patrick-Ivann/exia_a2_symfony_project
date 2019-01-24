@@ -7,7 +7,7 @@
 
     {% for idee in idees %}
 
-   <p>{{ idee.nom_idee }}</p>
+   <p>{{ idee.nom_idee }} <a href="{{ path('voteById', {id_event_idee: idee.id_event_idee}) }}">Upvote</a> </p>
 
     {% endfor %}
 

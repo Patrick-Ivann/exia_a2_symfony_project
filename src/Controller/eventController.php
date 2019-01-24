@@ -12,12 +12,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class eventController extends AbstractController
 {
     /**
      * @Route("/events/add")
      * @param Request $req
-     * @param \App\Controller\RequeteController $requestController
+     * @param \App\Controller\RequeteController $rctrl
      * @param Curl $crl
      * @return string|Response
      */
@@ -54,8 +55,8 @@ class eventController extends AbstractController
     }
 
     /**
-     * @Route("/events" , name="displayEvent"))
-     * @param \App\Controller\RequeteController $requestController
+     * @Route("/events" , name="events"))
+     * @param \App\Controller\RequeteController $rctrl
      * @param Curl $crl
      * @return string|Response
      */
@@ -205,6 +206,60 @@ class eventController extends AbstractController
             $rctrl->ajouterCommentaire($CommentaireDataToSend, $crl);
         }
         return $formComm;
+    }
+
+    /**
+     * @Route("/like/{id_photo}" , name="likeById")
+     */
+    function like($id_photo, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        $id_user = $session->get("id_user");
+
+        $like = json_encode([
+            'id_photo' => $id_photo,
+            'id_user' => $id_user
+        ]);
+
+        $rctrl->publierUnLikeSurPhoto($like, $crl);
+
+        return $this->redirectToRoute("events");
+    }
+
+
+    /**
+     * @Route("/signale/{id_photo}" , name="signaleById")
+     */
+    function signale($id_photo, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        $id_user = $session->get("id_user");
+
+        $signale = json_encode([
+            'id_photo' => $id_photo,
+            'id_user' => $id_user
+        ]);
+
+
+        //Creer cet requête
+        $rctrl->signalerUnePhotoParId($signale, $crl);
+
+        return $this->redirectToRoute("events");
+    }
+
+    /**
+     * @Route("/participe/{id_event}" , name="participeById")
+     */
+    function participe($id_event, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        $id_user = $session->get("id_user");
+
+        $participe = json_encode([
+            'id_event' => $id_event,
+            'id_user' => $id_user
+        ]);
+
+        $rctrl->participerUnEvenementParId($participe, $crl);
+
+        return $this->redirectToRoute("events");
     }
 }
 ?>

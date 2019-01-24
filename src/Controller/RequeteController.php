@@ -257,9 +257,9 @@ class RequeteController extends AbstractController
     {
         return $query = $crl->faireRequeteAvecHeader("GET", "http://".$this->ip.":5000/api/photo/recuperer/evenement/{$id}", "application/javascript");
     }
-    public function ajouterPhoto($data, $path, curl $curl)
+    public function ajouterPhoto($data, $path, $type, curl $curl)
     {
-        $response = $curl->faireRequeteAvecFichier("POST", "http://".$this->ip.":5000/api/produit/ajouter", "application/javascript", $data, $path);
+        $response = $curl->faireRequeteAvecFichier("POST", "http://".$this->ip.":5000/api/produit/ajouter", "application/javascript", $data, $path, $type);
     }
 
 
@@ -274,9 +274,9 @@ class RequeteController extends AbstractController
     {
         return $response = $curl->faireRequeteAvecHeader('GET', "http://".$this->ip.":5000/api/produit/recuperer/{$id}", 'application/javascript');
     }
-    public function ajouterProduit($data, $path, curl $curl)
+    public function ajouterProduit($data, $path, $type, curl $curl)
     {
-        $response = $curl->faireRequeteAvecFichier("POST", "http://".$this->ip.":5000/api/produit/ajouter", "application/javascript", $data, $path);
+        $response = $curl->faireRequeteAvecFichier("POST", "http://".$this->ip.":5000/api/produit/ajouter", "application/javascript", $data, $path, $type);
         echo $response;
     }
 }

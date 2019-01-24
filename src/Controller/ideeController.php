@@ -9,6 +9,7 @@ use App\Controller\RequeteController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ideeController extends AbstractController
@@ -52,7 +53,7 @@ class ideeController extends AbstractController
     }
 
     /**
-     * @Route("/ideeGet")
+     * @Route("/idees", name="idees")
      *
      */
     public function display(RequeteController $rctrl, Curl $crl)
@@ -77,6 +78,25 @@ class ideeController extends AbstractController
         }
 
     }
+
+
+    /**
+     * @Route("/vote/{id_event_idee}" , name="voteById")
+     */
+    function vote($id_event_idee, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        $id_user = $session->get("id_user");
+
+        $like = json_encode([
+            'id_event_idee' => $id_event_idee,
+            'id_user' => $id_user
+        ]);
+
+        $rctrl->publierUnLikeSurEventIdee($like, $crl);
+
+        return $this->redirectToRoute("idees");
+    }
+
 
 }
 ?>

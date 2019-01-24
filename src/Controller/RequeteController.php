@@ -40,6 +40,12 @@ class RequeteController extends AbstractController
         }
 
 
+        public function supprimerEvenement($id, Curl $crl)
+        {
+                return $query = $crl->faireRequeteAvecHeader("DELETE", "http://localhost:5000/api/evenement/supprimer/{$id}", "application/javascript");
+
+        }
+
 
         /**+
          * IDEE

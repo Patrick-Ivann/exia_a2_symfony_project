@@ -24,6 +24,21 @@ class Curl
         }
         curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curlObject);
+
+        if (curl_exec($curlObject) === false) {
+            echo 'Erreur Curl : ' . curl_error($curlObject);
+        }
+
+        if (!curl_errno($curlObject)) {
+            switch ($http_code = curl_getinfo($curlObject, CURLINFO_HTTP_CODE)) {
+                case 200:
+                    break;
+                default:
+                    echo 'Erreur HTTP: ', $http_code, "\n";
+            }
+        }
+
+
         curl_close($curlObject);
         //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
         $result[] = substr($response, 0);
@@ -52,7 +67,7 @@ class Curl
 
                 }
                 curl_setopt($curlObject, CURLOPT_CUSTOMREQUEST, "DELETE");
-                curl_setopt($curlObject, CURLOPT_HEADER, $header);
+                curl_setopt($curlObject, CURLOPT_HTTPHEADER, $header);
 
                 break;
             default:
@@ -63,6 +78,21 @@ class Curl
         curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curlObject, CURLOPT_HEADER, false);
         $response = curl_exec($curlObject);
+
+
+        if (curl_exec($curlObject) === false) {
+            echo 'Erreur Curl : ' . curl_error($curlObject);
+        }
+
+        if (!curl_errno($curlObject)) {
+            switch ($http_code = curl_getinfo($curlObject, CURLINFO_HTTP_CODE)) {
+                case 200:
+                    break;
+                default:
+                    echo 'Erreur HTTP: ', $http_code, "\n";
+            }
+        }
+
         curl_close($curlObject);
         //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
         $result[] = substr($response, 0);
@@ -124,6 +154,21 @@ class Curl
         $response = curl_exec($curlObject);
         curl_close($curlObject);
         //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
+
+        if (curl_exec($curlObject) === false) {
+            echo 'Erreur Curl : ' . curl_error($curlObject);
+        }
+
+        if (!curl_errno($curlObject)) {
+            switch ($http_code = curl_getinfo($curlObject, CURLINFO_HTTP_CODE)) {
+                case 200:
+                    break;
+                default:
+                    echo 'Erreur HTTP: ', $http_code, "\n";
+            }
+        }
+
+
         $result[] = substr($response, 0);
         return $result[0];
     }

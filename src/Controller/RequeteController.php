@@ -138,7 +138,6 @@ class RequeteController extends AbstractController
     }
     /**
      * LIEU
-     *
      */
     public function recupererTousLesLieus(curl $curl)
     {

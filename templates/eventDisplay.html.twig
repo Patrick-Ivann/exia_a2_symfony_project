@@ -7,7 +7,13 @@
 
     {% for event in events %}
 
-   <p>{{ event.nom_event }}</p>
+    <p><a href="{{ path('eventById', {id_event:event.id_event}) }}">{{ event.nom_event }}</a>
+       <a href="{{ path('deleteShop', {id_event: event.id_event}) }}">
+           Supprimer
+       </a>
+   </p>
+
+
 
     {% endfor %}
 

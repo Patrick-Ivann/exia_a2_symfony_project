@@ -34,7 +34,7 @@ class Idee
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom_lieu;
+    private $lieu;
 
     public function getId(): ?int
     {
@@ -77,14 +77,14 @@ class Idee
         return $this;
     }
 
-    public function getNomLieu(): ?string
+    public function getLieu(): ?string
     {
-        return $this->nom_lieu;
+        return $this->lieu;
     }
 
-    public function setNomLieu(string $nom_lieu): self
+    public function setLieu(string $lieu): self
     {
-        $this->nom_lieu = $nom_lieu;
+        $this->lieu = $lieu;
 
         return $this;
     }

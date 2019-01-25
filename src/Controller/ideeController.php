@@ -4,19 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Idee;
 use App\Form\IdeeFormType;
-use App\services\Curl;
+use App\Services\Curl;
 use App\Controller\RequeteController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ideeController extends AbstractController
 {
 
     /**
-     * @Route("/ideeController")
-     * @return Response
+     * @Route("/ideeAdd", name="ideeAdd")
      */
     public function add(Request $req, RequeteController $rctrl, Curl $crl)
     {
@@ -31,19 +31,21 @@ class ideeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $ideeData = $form->getData();
 
-            $ideeDataToSend = json_encode(['nom_idee' => $ideeData->getNomIdee(),
+            $ideeDataToSend = json_encode([
+                'nom_idee' => $ideeData->getNomIdee(),
                 'description_idee' => $ideeData->getDescriptionIdee(),
-                //Doit envoyer l'id user aussi
-                'nom_lieu' => $ideeData->getNomLieu()]);
+                //Doit envoyer l'id user evoyer par la session
+                'lieu' => $ideeData->getLieu()
+            ]);
+
 
             $rctrl->ajouterIdee($ideeDataToSend, $crl);
         }
 
-
         {
             try {
-                return $this->render('ideeCreate.html.twig',[
-                    'form' =>$form->createView()
+                return $this->render('ideeCreate.html.twig', [
+                    'form' => $form->createView()
                 ]);
             } catch (\Exception $ex) {
                 return $ex->getMessage();
@@ -52,27 +54,49 @@ class ideeController extends AbstractController
     }
 
     /**
-     * @Route("/ideeGet")
+     * @Route("/idees", name="idees")
      *
      */
     public function display(RequeteController $rctrl, Curl $crl)
     {
 
-        //$events = $rctrl->recupererIdee("");
+        $idees = $rctrl->recupererIdee($crl);
 
-        $idee ='[{"nom_idee": "Barbecue","nom_lieu" : "Nice"}, {"nom_idee": "Bilboquet","nom_lieu" : "Rennes"}]';
-        //variable de test
+        $ideesToDisplay = json_decode($idees);
 
-        $ideeToDisplay = json_decode($idee);
-
+        if (is_object($ideesToDisplay)) {
+            $idees = '[' . $idees . ']';
+            $ideesToDisplay = json_decode($idees);
+        }
+        dump($ideesToDisplay);
         try {
             return $this->render('ideeDisplay.html.twig', [
-                'idees' => $ideeToDisplay
+                'idees' => $ideesToDisplay
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
 
     }
+
+
+    /**
+     * @Route("/vote/{id_event_idee}" , name="voteById")
+     */
+    function vote($id_event_idee, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        $id_user = $session->get("id_user");
+
+        $like = json_encode([
+            'id_event_idee' => $id_event_idee,
+            'id_user' => $id_user
+        ]);
+
+        $rctrl->publierUnLikeSurEventIdee($like, $crl);
+
+        return $this->redirectToRoute("idees");
+    }
+
+
 }
 ?>

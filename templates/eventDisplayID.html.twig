@@ -11,20 +11,25 @@
         <a href="{{ path('participeById', {id_event: event.id_event}) }}">Participer a cet évenement</a>
     </div>
 
-    {% for key,photo in photo %}
-
-    <p>Id photo {{ photo.id_photo }}
-        <a href="{{ path('likeById', {id_photo: photo.id_photo}) }}">Like</a>
-        <a href="{{ path('signalebyId', {id_photo: photo.id_photo}) }}">Signaler</a>
-    </p>
-
-        <p>Commentaire</p>
-        <p> {{ commentaire[key] }} </p>
+    {% if photo %}
+        {% for key,photo in photo %}
 
 
+          <a href="{{ path('photoById', {id_photo: photo.id_photo}) }}">Consulter</a>
 
+        <p>Id photo {{ photo.id_photo }}
+            <a href="{{ path('likeById', {id_photo: photo.id_photo}) }}">Like</a>
+           {# <a href="{{ path('signalebyId', {id_photo: photo.id_photo}) }}">Signaler</a> #}
+        </p>
 
-    {% endfor %}
+            <p>Commentaire</p>
+            <p> {{ commentaire[key] }} </p>
+
+        {% endfor %}
+
+    {% else %}
+        <h1>Cet évenement ne comporte pas de photo(s)</h1>
+    {% endif %}
 
 
     {# Voici le formulaire pour ajouter une image sur l'evenement courant #}

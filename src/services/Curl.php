@@ -25,7 +25,7 @@ class Curl
         }
         curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curlObject);
-        if (curl_exec($curlObject) === false) {
+        if ($response === false) {
             echo 'Erreur Curl : ' . curl_error($curlObject);
         }
         if (!curl_errno($curlObject)) {
@@ -82,7 +82,7 @@ class Curl
         curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curlObject, CURLOPT_HEADER, false);
         $response = curl_exec($curlObject);
-        if (curl_exec($curlObject) === false) {
+        if ($response === false) {
             echo 'Erreur Curl : ' . curl_error($curlObject);
         }
         if (!curl_errno($curlObject)) {
@@ -148,7 +148,7 @@ class Curl
         $response = curl_exec($curlObject);
         curl_close($curlObject);
         //dump(curl_getinfo($curlObject, CURLINFO_HTTP_CODE));
-        if (curl_exec($curlObject) === false) {
+        if ($response === false) {
             echo 'Erreur Curl : ' . curl_error($curlObject);
         }
         if (!curl_errno($curlObject)) {

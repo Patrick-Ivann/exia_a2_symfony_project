@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommentaireFormType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -22,4 +23,5 @@ class CommentaireFormType extends AbstractType
             'data_class' => Commentaire::class,
         ]);
     }
+
 }

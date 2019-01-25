@@ -10,7 +10,7 @@ use App\services\Curl;
 class RequeteController extends AbstractController
 {
 
-    private $ip = "10.131.50.3";
+    private $ip = "10.131.129.4";
     private $port = "5000";
 
     /**
@@ -167,7 +167,7 @@ class RequeteController extends AbstractController
     }
     public function ajouterCommentaire($data, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/commenter/ajouter", "application/javascript", $data);
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://".$this->ip.":5000/api/commentaire/ajouter", "application/javascript", $data);
     }
 
 

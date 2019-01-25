@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Idee;
 use App\Form\IdeeFormType;
-use App\services\Curl;
+use App\Services\Curl;
 use App\Controller\RequeteController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ class ideeController extends AbstractController
 {
 
     /**
-     * @Route("/ideeAdd")
+     * @Route("/ideeAdd", name="ideeAdd")
      */
     public function add(Request $req, RequeteController $rctrl, Curl $crl)
     {
@@ -35,15 +35,16 @@ class ideeController extends AbstractController
                 'nom_idee' => $ideeData->getNomIdee(),
                 'description_idee' => $ideeData->getDescriptionIdee(),
                 //Doit envoyer l'id user evoyer par la session
-                'lieu' => $ideeData->getLieu()]);
+                'lieu' => $ideeData->getLieu()
+            ]);
 
 
-           $rctrl->ajouterIdee($ideeDataToSend, $crl);
+            $rctrl->ajouterIdee($ideeDataToSend, $crl);
         }
 
         {
             try {
-                return $this->render('ideeCreate.html.twig',[
+                return $this->render('ideeCreate.html.twig', [
                     'form' => $form->createView()
                 ]);
             } catch (\Exception $ex) {
@@ -63,8 +64,7 @@ class ideeController extends AbstractController
 
         $ideesToDisplay = json_decode($idees);
 
-        if(is_object($ideesToDisplay))
-        {
+        if (is_object($ideesToDisplay)) {
             $idees = '[' . $idees . ']';
             $ideesToDisplay = json_decode($idees);
         }

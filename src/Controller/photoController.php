@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Photo;
 use App\Form\PhotoFormType;
-use App\services\Curl;
+use App\Services\Curl;
 use App\Controller\RequeteController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,17 +21,18 @@ class photoController extends AbstractController
     {
         $photo = new Photo();
 
-        $form = $this->createForm(PhotoFormType::class,$photo);
+        $form = $this->createForm(PhotoFormType::class, $photo);
 
         $form->handleRequest($req);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $photoData = $form->getData();
 
             $photoDataToSend = json_encode([
                 'legende_photo' => $photoData->getLegendePhoto(),
                 'id_user' => '8',
-                'id_event' => '9']);
+                'id_event' => '9'
+            ]);
 
             $file = $req->files->get("photo_form")["file_photo"];
 
@@ -44,7 +45,7 @@ class photoController extends AbstractController
 
         try {
             return $this->render('photoCreate.html.twig', [
-                'form' =>$form->createView()
+                'form' => $form->createView()
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();

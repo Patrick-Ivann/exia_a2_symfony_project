@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\services\Curl;
+use App\Services\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -27,14 +27,15 @@ class userController extends AbstractController
 
     /**
      * Allow users to create their account.
-     * @Route("/register")
+     * @Route("/register", name="register")
      * @param Request $req
      * @param RequeteController $requeteController
      * @param Curl $crl
      * @return string|\Symfony\Component\HttpFoundation\Response
      */
-    public function register(Request $req, RequeteController $requeteController, Curl $crl) {
-        $user = New User();
+    public function register(Request $req, RequeteController $requeteController, Curl $crl)
+    {
+        $user = new User();
 
         $errors = "";
 
@@ -44,7 +45,7 @@ class userController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $userData = $form->getData();
 
-            if($userData->getMotdepasse() === $userData->getMotDePasseVerif()) {
+            if ($userData->getMotdepasse() === $userData->getMotDePasseVerif()) {
                 $userDataToSend = json_encode([
                     'prenom' => $userData->getPrenom(),
                     'nom' => $userData->getNom(),
@@ -55,7 +56,7 @@ class userController extends AbstractController
 
                 $requeteController->ajouterUtilisateur($userDataToSend, $crl);
 
-                return $this->redirect("/exia_a2_symfony_project/public/login");
+                return $this->redirect("login");
             } else {
                 $errors = "Les mots de passe renseignés ne correspondent pas.";
             }
@@ -63,8 +64,8 @@ class userController extends AbstractController
         }
 
         try {
-            return $this->render('CreateUser.html.twig',[
-                'form' =>$form->createView(),
+            return $this->render('CreateUser.html.twig', [
+                'form' => $form->createView(),
                 'erreur' => $errors
             ]);
         } catch (\Exception $ex) {
@@ -74,20 +75,21 @@ class userController extends AbstractController
 
     /**
      * Allow users to log in.
-     * @Route("/login")
+     * @Route("/login" , name="login")
      * @param Request $req
      * @param RequeteController $requeteController
      * @param Curl $crl
      * @param SessionInterface $session
      * @return string|\Symfony\Component\HttpFoundation\Response
      */
-    public function login(Request $req, RequeteController $requeteController, Curl $crl, SessionInterface $session) {
+    public function login(Request $req, RequeteController $requeteController, Curl $crl, SessionInterface $session)
+    {
 
         if ($session->get("mail") != null) {
-            return $this->redirect("/exia_a2_symfony_project/public/home");
+            return $this->redirect("home");
         }
 
-        $user = New User();
+        $user = new User();
 
         $errors = "";
 
@@ -117,7 +119,7 @@ class userController extends AbstractController
                 $session->set("url_avatar", $response[0]->url_avatar);
                 $session->set("id_user", $response[0]->id_user);
 
-                return $this->redirect("/exia_a2_symfony_project/public/home");
+                return $this->redirect("home");
             } else {
                 $errors = "Le mot de passe renseigné est incorrect.";
             }
@@ -125,7 +127,7 @@ class userController extends AbstractController
 
         try {
             return $this->render('login.html.twig', [
-                'form' =>$form->createView(),
+                'form' => $form->createView(),
                 'erreur' => $errors
             ]);
         } catch (\Exception $ex) {
@@ -137,17 +139,18 @@ class userController extends AbstractController
 
     /**
      * Allow users to log out
-     * @Route("/logout")
+     * @Route("/logout", name="logout")
      * @param Request $req
      * @param RequeteController $requeteController
      * @param Curl $crl
      * @param SessionInterface $session
      * @return string|\Symfony\Component\HttpFoundation\Response
      */
-    public function logout(Request $req, RequeteController $requeteController, Curl $crl, SessionInterface $session) {
+    public function logout(Request $req, RequeteController $requeteController, Curl $crl, SessionInterface $session)
+    {
 
         if ($session->get("mail") == null) {
-            return $this->redirect("/exia_a2_symfony_project/public/home");
+            return $this->redirect("home");
         }
 
         $session->remove("mail");
@@ -157,7 +160,7 @@ class userController extends AbstractController
         $session->remove("url_avatar");
         $session->remove("id_user");
 
-        return $this->redirect("/exia_a2_symfony_project/public/home");
+        return $this->redirect("home");
     }
 
 }

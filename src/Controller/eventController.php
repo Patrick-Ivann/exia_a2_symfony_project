@@ -91,7 +91,7 @@ class eventController extends AbstractController
     public function delete($id_event, RequeteController $rctrl, Curl $crl)
     {
         $rctrl->supprimerEvenement($id_event, $crl);
-        return $this->redirectToRoute("displayEvent");
+        return $this->redirectToRoute("events");
     }
 
     /**

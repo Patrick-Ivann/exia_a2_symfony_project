@@ -10,7 +10,7 @@ use App\Services\Curl;
 class RequeteController extends AbstractController
 {
 
-    private $ip = "10.131.50.3";
+    private $ip = "localhost";
     private $port = "5000";
 
     /**
@@ -49,6 +49,8 @@ class RequeteController extends AbstractController
     {
         return $query = $crl->faireRequeteAvecHeader("DELETE", "http://" . $this->ip . ":5000/api/evenement/supprimer/{$id}", "application/javascript");
     }
+
+
 
 
     /**+
@@ -239,6 +241,13 @@ class RequeteController extends AbstractController
     }
 
 
+    public function participerUnEvenementParId($data, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":5000/api/participer/ajouter", "application/javascript", $data);
+
+    }
+
+
     /**
      * PHOTO
      */
@@ -261,6 +270,14 @@ class RequeteController extends AbstractController
     {
         $response = $curl->faireRequeteAvecFichier("POST", "http://" . $this->ip . ":5000/api/produit/ajouter", "application/javascript", $data, $path, $type);
     }
+
+    public function signalerUnePhotoParId($data, curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":5000/api/signaler/ajouter", "application/javascript", $data);
+
+    }
+
+
 
 
     /**

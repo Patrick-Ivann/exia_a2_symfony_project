@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services;
+namespace App\services;
 
 
 class Curl
@@ -107,6 +107,7 @@ class Curl
         $result[] = substr($response, 0);
         return $result[0];
     }
+
     public function faireRequeteAvecFichier($method, $url, $token, $data = false, $path, $type)
     {
         $curlObject = curl_init();
@@ -135,8 +136,9 @@ class Curl
                             'formulaire' => $data
                         );
                     } else {
+                        $decoded_data = json_decode($data);
                         $postfields = array(
-                            $path->guessExtension() => new \CURLFile($path, $path->getMimeType(), 'petit.png'),
+                            $path->guessExtension() => new \CURLFile($path, $path->getMimeType(), $decoded_data->id_event . '_' . date("YmdHis") . '.png'),
                             'formulaire' => $data
                         );
                     }

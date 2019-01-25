@@ -3,14 +3,12 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Services\Curl;
+use App\services\Curl;
 
 class RequeteController extends AbstractController
 {
 
-    private $ip = "localhost";
+    private $ip = "10.131.129.4";
     private $port = "5000";
 
     /**
@@ -99,7 +97,7 @@ class RequeteController extends AbstractController
 
     public function publierUnLikeSurPhoto($data, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":5000/api/achete/ajouter", "application/javascript", $data);
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":5000/api/aime/ajouter", "application/javascript", $data);
     }
 
     /**
@@ -140,7 +138,7 @@ class RequeteController extends AbstractController
 
     public function recupererEventIdeeAime($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/aime_idee/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/aime_idee/recuperer/event/{$id}", 'application/javascript');
     }
 
     public function publierUnLikeSurEventIdee($data, curl $curl)
@@ -169,7 +167,7 @@ class RequeteController extends AbstractController
     }
     public function ajouterCommentaire($data, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":5000/api/commenter/ajouter", "application/javascript", $data);
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":5000/api/commentaire/ajouter", "application/javascript", $data);
     }
 
 
@@ -268,7 +266,7 @@ class RequeteController extends AbstractController
     }
     public function ajouterPhoto($data, $path, $type, curl $curl)
     {
-        $response = $curl->faireRequeteAvecFichier("POST", "http://" . $this->ip . ":5000/api/produit/ajouter", "application/javascript", $data, $path, $type);
+        $response = $curl->faireRequeteAvecFichier("POST", "http://" . $this->ip . ":5000/api/photo/ajouter", "application/javascript", $data, $path, $type);
     }
 
     public function signalerUnePhotoParId($data, curl $curl)
@@ -296,13 +294,12 @@ class RequeteController extends AbstractController
         $response = $curl->faireRequeteAvecFichier("POST", "http://" . $this->ip . ":5000/api/produit/ajouter", "application/javascript", $data, $path, $type);
         echo $response;
     }
-}
 /**
  *
  * UTILISATEUR
  */
 
-/*
+
     public function recupererTousLesUtilisateur(curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader("GET", "http://".$this->ip.":5000/api/utilisateur/recuperer", "application/javascript");
@@ -310,13 +307,14 @@ class RequeteController extends AbstractController
 
     public function recupererUtilisateurParId($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
     }
 
     public function recupererUtilisateurParMail($id, curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
-    }*/
+    }
+}
 
 /*
     public function ajouterUtilisateur($data, curl $curl)

@@ -2,16 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Idee;
 use App\Entity\Produit;
-use App\Form\IdeeFormType;
 use App\Form\ProduitFormType;
-use App\Services\Curl;
-use App\Controller\RequeteController;
+use App\services\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -41,11 +36,12 @@ class boutiqueController extends AbstractController
               //  'extension' => $req->files->get("produit_form")["avatar"]->guessExtension()
             ]);
 
-            $file = $req->files->get("produit_form")["avatar"];
+            dump($req->files);
+            $file = $req->files->get("produit_form")["photo_produit"];
 
+            $type = "produit";
 
-
-            $rctrl->ajouterProduit($produitDataToSend, $file, $crl);
+            $rctrl->ajouterProduit($produitDataToSend, $file, $type, $crl);
         }
 
         try {
@@ -59,13 +55,13 @@ class boutiqueController extends AbstractController
 
     /**
      * @Route("/boutique", name="boutique")
-     * @param \App\Controller\RequeteController $rctrl
+     * @param RequeteController $rctrl
      * @param Curl $crl
-     * @return string|Response
+     * @return Response
      */
-    function display()
+    function display(RequeteController $rctrl, Curl $crl)
     {
-        $produits = '[{"nom_produit": "T-shirt","prix_produit" : "20"}, {"nom_produit": "Sweatshirt","prix_produit" : "30"}]';
+        $produits = $rctrl->recupererTousLesProduits($crl);
 
         $produitsToDisplay = json_decode($produits);
 
@@ -74,12 +70,14 @@ class boutiqueController extends AbstractController
             $produitsToDisplay = json_decode($produits);
         }
 
+        dump($produitsToDisplay);
+
         try {
             return $this->render('produitDisplay.html.twig', [
                 'produits' => $produitsToDisplay
             ]);
         } catch (\Exception $ex) {
-            return $ex->getMessage();
+            return new Response($ex->getMessage());
         }
     }
 

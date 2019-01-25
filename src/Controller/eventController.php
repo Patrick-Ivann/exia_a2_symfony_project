@@ -7,8 +7,7 @@ use App\Entity\Photo;
 use App\Form\CommentaireFormType;
 use App\Form\EventFormType;
 use App\Form\PhotoFormType;
-use App\Controller\RequeteController;
-use App\Services\Curl;
+use App\services\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -100,7 +99,7 @@ class eventController extends AbstractController
      * @param Curl $crl
      * @return string|Response
      */
-    public function displayById($id_event, Request $req, RequeteController $rctrl, Curl $crl)
+    public function displayById($id_event, Request $req, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
         $events = $rctrl->recupererEvenementParId($id_event, $crl);
 
@@ -110,14 +109,13 @@ class eventController extends AbstractController
 
         $photoToDisplay = json_decode($photo);
 
-        dump($photoToDisplay);
+        dump($photo);
 
-        foreach ($photoToDisplay as $photo) {
+        foreach ($photoToDisplay as $photos) {
 
-            $commentaire[] = $rctrl->recupererCommentaireParIdPhoto($photo->{"id_photo"}, $crl);
+            $commentaire[] = $rctrl->recupererCommentaireParIdPhoto($photos->{"id_photo"}, $crl);
 
-            $formComm[] = $this->createFormCommentaire(1, $req, $rctrl, $crl);
-
+            $formComm[] = $this->createFormCommentaire($photos->id_photo, $req, $rctrl, $crl, $session);
         }
 /*
         foreach ($commentaire as $commentaire)
@@ -128,6 +126,7 @@ class eventController extends AbstractController
 
         foreach ($formComm as $form) {
             $formCommCreated[] = $form->createView();
+
         }
 
         dump($formCommCreated);
@@ -137,7 +136,7 @@ class eventController extends AbstractController
          */
 
         //Form en cas d'ajout photo
-        $formPhoto = $this->createFormPhoto($id_event, $req, $rctrl, $crl);
+        $formPhoto = $this->createFormPhoto($id_event, $req, $rctrl, $crl, $session);
 
         //Form en cas d'ajout de commentaire
 
@@ -154,7 +153,7 @@ class eventController extends AbstractController
         }
     }
 
-    function createFormPhoto($id_event, $req, $rctrl, $crl)
+    function createFormPhoto($id_event, $req, $rctrl, $crl, SessionInterface $session)
     {
         $photo = new Photo();
 
@@ -165,9 +164,12 @@ class eventController extends AbstractController
         if ($formPhoto->isSubmitted() && $formPhoto->isValid()) {
             $photoData = $formPhoto->getData();
 
+
+            $id_user = $session->get("id_user");
+
             $photoDataToSend = json_encode([
                 'legende_photo' => $photoData->getLegendePhoto(),
-                'id_user' => '8',
+                'id_user' => $id_user,
                 'id_event' => $id_event
             ]);
 
@@ -181,7 +183,7 @@ class eventController extends AbstractController
         return $formPhoto;
     }
 
-    function createFormCommentaire($id_photo, $req, $rctrl, $crl)
+    function createFormCommentaire($id_photo, $req, $rctrl, $crl, SessionInterface $session)
     {
         $commentaire = new Commentaire();
 
@@ -193,7 +195,7 @@ class eventController extends AbstractController
 
             $commentaireData = $formComm->getData();
 
-            $id_user = "";
+            $id_user = $session->get("id_user");
 
             $CommentaireDataToSend = json_encode([
                 'texte_commentaire' => $commentaireData->getTexteCommentaire(),

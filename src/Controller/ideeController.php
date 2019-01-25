@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Idee;
 use App\Form\IdeeFormType;
-use App\Services\Curl;
-use App\Controller\RequeteController;
+use App\services\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +15,11 @@ class ideeController extends AbstractController
 {
 
     /**
-     * @Route("/ideeAdd", name="ideeAdd")
+     * @Route("/ideas/add", name="ideeAdd")
+     * @param Request $req
+     * @param RequeteController $rctrl
+     * @param Curl $crl
+     * @return string|Response
      */
     public function add(Request $req, RequeteController $rctrl, Curl $crl)
     {
@@ -54,8 +57,10 @@ class ideeController extends AbstractController
     }
 
     /**
-     * @Route("/idees", name="idees")
-     *
+     * @Route("/ideas", name="idees")
+     * @param RequeteController $rctrl
+     * @param Curl $crl
+     * @return Response
      */
     public function display(RequeteController $rctrl, Curl $crl)
     {
@@ -69,12 +74,28 @@ class ideeController extends AbstractController
             $ideesToDisplay = json_decode($idees);
         }
         dump($ideesToDisplay);
+
+        $users = array();
+        foreach ($ideesToDisplay as $idea) {
+            $users[$idea->id_user] = json_decode($rctrl->recupererUtilisateurParId($idea->id_user, $crl));
+        }
+        dump($users);
+
+        $likes = array();
+        foreach ($ideesToDisplay as $idea) {
+            $likes[$idea->id_event_idee] = json_decode($rctrl->recupererEventIdeeAime($idea->id_event_idee, $crl));
+        }
+
+        dump($likes);
+
         try {
             return $this->render('ideeDisplay.html.twig', [
-                'idees' => $ideesToDisplay
+                'idees' => $ideesToDisplay,
+                'users' => $users,
+                'likes' => $likes
             ]);
         } catch (\Exception $ex) {
-            return $ex->getMessage();
+            return new Response($ex->getMessage() );
         }
 
     }
@@ -99,4 +120,3 @@ class ideeController extends AbstractController
 
 
 }
-?>

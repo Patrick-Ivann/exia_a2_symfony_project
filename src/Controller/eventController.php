@@ -188,11 +188,25 @@ class eventController extends AbstractController
 
         $formComm = $this->createFormCommentaire($id_photo, $req, $rctrl, $crl, $id_user);
 
+        if(is_array($commentaireToDisplay))
+        {
+            foreach ($commentaireToDisplay as $com){
+                $com->name_user = json_decode($rctrl->recupererUtilisateurParId($com->id_user, $crl))->prenom;
+                $alone = false;
+            }
+        }else if (is_object($commentaireToDisplay)){
+            $commentaireToDisplay->name_user = json_decode($rctrl->recupererUtilisateurParId($commentaireToDisplay->id_user, $crl))->prenom;
+            $alone = true;
+        }
+
+        dump($commentaireToDisplay);
+
         try {
             return $this->render('photoDisplayID.html.twig', [
                 'photo' => $photoToDisplay,
                 'commentaire' => $commentaireToDisplay,
                 'formComm' => $formComm->createView(),
+                'alone' => $alone
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();

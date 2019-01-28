@@ -11,12 +11,20 @@
         <h1>id : {{ photo.id_photo }}</h1>
         <hr>
 
-        {% for com in commentaire %}
+        {% if alone == false %}
 
-            <p>{{ com.texte_commentaire }} </p>
+            {% for com in commentaire %}
+                <p>{{ com.name_user }}</p>
+                    <p>{{ com.texte_commentaire }} </p>
 
-        {% endfor %}
+            {% endfor %}
 
+        {% else %}
+
+        <p>{{ commentaire.name_user }} :</p>
+            <p>{{ commentaire.texte_commentaire }}</p>
+
+        {% endif %}
 
         {{ form_start(formComm) }}
         {{ form_widget(formComm) }}

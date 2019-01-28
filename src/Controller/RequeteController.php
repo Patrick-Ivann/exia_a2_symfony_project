@@ -10,7 +10,7 @@ use App\services\Curl;
 class RequeteController extends AbstractController
 {
 
-    private $ip = "10.131.129.4";
+    private $ip = "10.131.129.114";
     private $port = "5000";
 
     /**
@@ -259,7 +259,7 @@ class RequeteController extends AbstractController
     }
     public function ajouterPhoto($data, $path, $type, curl $curl)
     {
-        $response = $curl->faireRequeteAvecFichier("POST", "http://".$this->ip.":5000/api/produit/ajouter", "application/javascript", $data, $path, $type);
+        $response = $curl->faireRequeteAvecFichier("POST", "http://".$this->ip.":5000/api/photo/ajouter", "application/javascript", $data, $path, $type);
     }
 
 
@@ -279,7 +279,7 @@ class RequeteController extends AbstractController
         $response = $curl->faireRequeteAvecFichier("POST", "http://".$this->ip.":5000/api/produit/ajouter", "application/javascript", $data, $path, $type);
         echo $response;
     }
-}
+
     /**
      *
      * UTILISATEUR
@@ -290,12 +290,13 @@ class RequeteController extends AbstractController
     {
         return $response = $curl->faireRequeteAvecHeader("GET", "http://".$this->ip.":5000/api/utilisateur/recuperer", "application/javascript");
     }
-
+*/
     public function recupererUtilisateurParId($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://". $this->ip.":5000/api/utilisateur/recuperer/{$id}", 'application/javascript');
     }
-
+}
+    /*
     public function recupererUtilisateurParMail($id, curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader('GET', "http://10.131.129.13:5000/api/utilisateur/recuperer/{$id}", 'application/javascript');

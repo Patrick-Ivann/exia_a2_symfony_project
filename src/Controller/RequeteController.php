@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use App\services\Curl;
 
 class RequeteController extends AbstractController
@@ -47,9 +49,6 @@ class RequeteController extends AbstractController
     {
         return $query = $crl->faireRequeteAvecHeader("DELETE", "http://" . $this->ip . ":5000/api/evenement/supprimer/{$id}", "application/javascript");
     }
-
-
-
 
     /**+
      * IDEE
@@ -272,7 +271,6 @@ class RequeteController extends AbstractController
     public function signalerUnePhotoParId($data, curl $curl)
     {
         return $response = $curl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":5000/api/signaler/ajouter", "application/javascript", $data);
-
     }
 
 
@@ -294,6 +292,7 @@ class RequeteController extends AbstractController
         $response = $curl->faireRequeteAvecFichier("POST", "http://" . $this->ip . ":5000/api/produit/ajouter", "application/javascript", $data, $path, $type);
         echo $response;
     }
+
 /**
  *
  * UTILISATEUR

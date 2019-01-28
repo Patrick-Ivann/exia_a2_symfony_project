@@ -7,11 +7,11 @@ use App\Entity\Photo;
 use App\Form\CommentaireFormType;
 use App\Form\EventFormType;
 use App\Form\PhotoFormType;
+use App\Controller\RequeteController;
 use App\services\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -31,7 +31,6 @@ class eventController extends AbstractController
         $form = $this->createForm(EventFormType::class, $event);
 
         $form->handleRequest($req);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -92,7 +91,7 @@ class eventController extends AbstractController
     public function delete($id_event, RequeteController $rctrl, Curl $crl)
     {
         $rctrl->supprimerEvenement($id_event, $crl);
-        return $this->redirectToRoute("events");
+        return $this->redirectToRoute("displayEvent");
     }
 
     /**
@@ -103,6 +102,8 @@ class eventController extends AbstractController
      */
     public function displayById($id_event, Request $req, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
+        $id_user = $session->get("id_user");
+
         $events = $rctrl->recupererEvenementParId($id_event, $crl);
 
         $eventToDisplay = json_decode($events);
@@ -111,34 +112,21 @@ class eventController extends AbstractController
 
         $photoToDisplay = json_decode($photo);
 
-        foreach ($photoToDisplay as $photos) {
+        $commentaire = [];
 
-            $commentaire[] = $rctrl->recupererCommentaireParIdPhoto($photos->{"id_photo"}, $crl);
+        if($photo) {
 
-            $formComm[] = $this->createFormCommentaire($photos->id_photo, $req, $rctrl, $crl, $session);
+            foreach ($photoToDisplay as $key=>$photo)
+            {
+                $commentaire[] = $rctrl->recupererCommentaireParIdPhoto($photo->{"id_photo"}, $crl);
+            }
         }
-/*
-        foreach ($commentaire as $commentaire)
-        {
-            $commentaireToDisplay[] = json_decode($commentaire);
-        }
-        dump($commentaireToDisplay); */
-
-        foreach ($formComm as $form) {
-            $formCommCreated[] = $form->createView();
-
-        }
-
-        dump($formCommCreated);
-        dump($commentaire);
         /*
             Faire le traitement pour choper l'image et son nom
          */
 
         //Form en cas d'ajout photo
-        $formPhoto = $this->createFormPhoto($id_event, $req, $rctrl, $crl, $session);
-
-        //Form en cas d'ajout de commentaire
+        $formPhoto = $this->createFormPhoto($id_event, $req, $rctrl, $crl, $id_user);
 
         try {
             return $this->render('eventDisplayID.html.twig', [
@@ -146,14 +134,13 @@ class eventController extends AbstractController
                 'photo' => $photoToDisplay,
                 'commentaire' => $commentaire,
                 'formPhoto' => $formPhoto->createView(),
-                'formCommCreated' => $formCommCreated
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
     }
 
-    function createFormPhoto($id_event, $req, $rctrl, $crl, SessionInterface $session)
+    function createFormPhoto($id_event, $req, $rctrl, $crl, $id_user)
     {
         $photo = new Photo();
 
@@ -163,9 +150,6 @@ class eventController extends AbstractController
 
         if ($formPhoto->isSubmitted() && $formPhoto->isValid()) {
             $photoData = $formPhoto->getData();
-
-
-            $id_user = $session->get("id_user");
 
             $photoDataToSend = json_encode([
                 'legende_photo' => $photoData->getLegendePhoto(),
@@ -183,19 +167,62 @@ class eventController extends AbstractController
         return $formPhoto;
     }
 
-    function createFormCommentaire($id_photo, $req, $rctrl, $crl, SessionInterface $session)
+    /**
+     * @Route("/photos/{id_photo}" , name="photoById")
+     * @param \App\Controller\RequeteController $rctrl
+     * @param Curl $crl
+     * @return string|Response
+     */
+    public function photos($id_photo, Request $req, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
-        $commentaire = new Commentaire();
+        $id_user = $session->get("id_user");
 
-        $formComm = $this->createForm(CommentaireFormType::class, $commentaire);
+        $photo = $rctrl->recupererPhotoParId($id_photo, $crl);
+
+        $commentaire = $rctrl->recupererCommentaireParIdPhoto($id_photo, $crl);
+
+        $photoToDisplay = json_decode($photo);
+
+        $commentaireToDisplay = json_decode($commentaire);
+
+        $formComm = $this->createFormCommentaire($id_photo, $req, $rctrl, $crl, $id_user);
+
+        if(is_array($commentaireToDisplay))
+        {
+            foreach ($commentaireToDisplay as $com){
+                $com->name_user = json_decode($rctrl->recupererUtilisateurParId($com->id_user, $crl))->prenom;
+                $alone = false;
+            }
+        }else if (is_object($commentaireToDisplay)){
+            $commentaireToDisplay->name_user = json_decode($rctrl->recupererUtilisateurParId($commentaireToDisplay->id_user, $crl))->prenom;
+            $alone = true;
+        }
+
+        dump($commentaireToDisplay);
+
+        try {
+            return $this->render('photoDisplayID.html.twig', [
+                'photo' => $photoToDisplay,
+                'commentaire' => $commentaireToDisplay,
+                'formComm' => $formComm->createView(),
+                'alone' => $alone
+            ]);
+        } catch (\Exception $ex) {
+            return $ex->getMessage();
+        }
+    }
+
+    function createFormCommentaire($id_photo, $req, $rctrl, $crl, $id_user)
+    {
+        $comm = new Commentaire();
+
+        $formComm = $this->createForm(CommentaireFormType::class, $comm);
 
         $formComm->handleRequest($req);
 
         if ($formComm->isSubmitted() && $formComm->isValid()) {
 
             $commentaireData = $formComm->getData();
-
-            $id_user = $session->get("id_user");
 
             $CommentaireDataToSend = json_encode([
                 'texte_commentaire' => $commentaireData->getTexteCommentaire(),
@@ -205,6 +232,8 @@ class eventController extends AbstractController
 
             //foutre id_user de session
             $rctrl->ajouterCommentaire($CommentaireDataToSend, $crl);
+
+            $this->redirect($req->getUri());
         }
         return $formComm;
     }

@@ -13,24 +13,25 @@
         <a href="{{ path('downloadCSV', {id_event: event.id_event}) }}">Télécharger la liste des participants (CSV)</a>
     </div>
 
-    {% for key,photo in photo %}
+    {% if photo %}
+        {% for key,photo in photo %}
 
-        <p>
             <img src="http://10.131.129.4:5000/static/{{ photo.url_photo }}" alt="">
             <a href="{{ path('signaleById', {id_photo: photo.id_photo}) }}">Signaler</a>
             <a href="{{ path('likeById', {id_photo: photo.id_photo}) }}">Liker</a>
-            {#<a href="{{ path('signalebyId', {id_photo: photo.id_photo}) }}">Signaler</a>#}
+
+          <a href="{{ path('photoById', {id_photo: photo.id_photo}) }}">Consulter</a>
+
+        <p>Id photo {{ photo.id_photo }}
+            <a href="{{ path('likeById', {id_photo: photo.id_photo}) }}">Like</a>
+           {# <a href="{{ path('signalebyId', {id_photo: photo.id_photo}) }}">Signaler</a> #}
         </p>
 
-        <p>Commentaire</p>
-        <p> {{ commentaire[key] }} </p>
+        {% endfor %}
 
-        {{ form_start(formCommCreated[key]) }}
-        {{ form_widget(formCommCreated[key]) }}
-        <button>Ajouter</button>
-        {{ form_end(formCommCreated[key]) }}
-    {% endfor %}
-
+    {% else %}
+        <h1>Cet évenement ne comporte pas de photo(s)</h1>
+    {% endif %}
 
     {# Voici le formulaire pour ajouter une image sur l'evenement courant #}
 

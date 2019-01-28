@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\services;
-
 
 class Curl
 {
@@ -29,7 +27,6 @@ class Curl
         }
         curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curlObject);
-
 
         if ($response === false) {
             echo 'Erreur Curl : ' . curl_error($curlObject);
@@ -73,7 +70,6 @@ class Curl
                     curl_setopt($curlObject, CURLOPT_POSTFIELDS, $data);
                 break;
 
-
             case 'DELETE':
                 if ($data) {
                 }
@@ -89,7 +85,6 @@ class Curl
         curl_setopt($curlObject, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curlObject, CURLOPT_HEADER, false);
         $response = curl_exec($curlObject);
-
 
         if ($response === false) {
             echo 'Erreur Curl : ' . curl_error($curlObject);
@@ -107,7 +102,6 @@ class Curl
         $result[] = substr($response, 0);
         return $result[0];
     }
-
     public function faireRequeteAvecFichier($method, $url, $token, $data = false, $path, $type)
     {
         $curlObject = curl_init();
@@ -173,4 +167,3 @@ class Curl
         return $result[0];
     }
 }
-?>

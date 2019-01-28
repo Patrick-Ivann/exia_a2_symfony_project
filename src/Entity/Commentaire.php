@@ -25,7 +25,12 @@ class Commentaire
     {
         return $this->id;
     }
+    public function setId(int $id):self
+    {
+        $this->id = $id;
 
+        return $this;
+    }
     public function getTexteCommentaire(): ?string
     {
         return $this->texte_commentaire;

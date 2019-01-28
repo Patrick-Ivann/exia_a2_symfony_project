@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+   {# {% include 'bases/styles.html.twig' %}
+
+    {% include 'bases/header.html.twig' %}
+    #}
+
+    <div class="container mt-4">
+        <h1>id : {{ photo.id_photo }}</h1>
+        <hr>
+
+        {% if alone == false %}
+
+            {% for com in commentaire %}
+                <p>{{ com.name_user }}</p>
+                    <p>{{ com.texte_commentaire }} </p>
+
+            {% endfor %}
+
+        {% else %}
+
+        <p>{{ commentaire.name_user }} :</p>
+            <p>{{ commentaire.texte_commentaire }}</p>
+
+        {% endif %}
+
+        {{ form_start(formComm) }}
+        {{ form_widget(formComm) }}
+        <button>Ajouter</button>
+        {{ form_end(formComm) }}
+
+    </div>
+
+{#   {% include 'bases/footer.html.twig' %} #}
+
+{% endblock %}

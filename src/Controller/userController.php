@@ -102,6 +102,7 @@ class userController extends AbstractController
             ->add('login', SubmitType::class, ['label' => 'Connexion'])
             ->getForm();
 
+        dump($form);
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {

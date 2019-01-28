@@ -18,6 +18,11 @@
         {% endfor %}
     </div>
 
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button>Ajouter</button>
+    {{ form_end(form) }}
+
     {% include 'bases/footer.html.twig' %}
 
 {% endblock %}

@@ -213,10 +213,7 @@ class eventController extends AbstractController
         }
     }
 
-    public function commenter()
-    {
 
-    }
 
     function createFormCommentaire($id_photo, $req, $rctrl, $crl, $id_user)
     {

@@ -21,7 +21,7 @@ class ideeController extends AbstractController
      * @param Curl $crl
      * @return string|Response
      */
-    public function add(Request $req, RequeteController $rctrl, Curl $crl)
+    public function add(Request $req, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
 
         $idee = new Idee();
@@ -37,7 +37,7 @@ class ideeController extends AbstractController
             $ideeDataToSend = json_encode([
                 'nom_idee' => $ideeData->getNomIdee(),
                 'description_idee' => $ideeData->getDescriptionIdee(),
-                //Doit envoyer l'id user evoyer par la session
+                'id_user' => $session->get("id_user"),
                 'lieu' => $ideeData->getLieu()
             ]);
 

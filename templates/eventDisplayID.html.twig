@@ -8,7 +8,9 @@
         <h2>{{ event.prix }}</h2>
         <h3>{{ event.date_debut_event }}</h3>
         <h3>{{ event.date_fin_event }}</h3>
-        <a href="{{ path('participeById', {id_event: event.id_event}) }}">Participer a cet évenement</a>
+        <a href="{{ path('participeById', {id_event: event.id_event}) }}">Participer a cet évenement</a><br>
+        <a href="{{ path('downloadPDF', {id_event: event.id_event}) }}">Télécharger la liste des participants (PDF)</a>
+        <a href="{{ path('downloadCSV', {id_event: event.id_event}) }}">Télécharger la liste des participants (CSV)</a>
     </div>
 
     {% for key,photo in photo %}

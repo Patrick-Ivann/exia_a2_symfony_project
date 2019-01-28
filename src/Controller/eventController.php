@@ -11,6 +11,7 @@ use App\services\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -30,6 +31,7 @@ class eventController extends AbstractController
         $form = $this->createForm(EventFormType::class, $event);
 
         $form->handleRequest($req);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -108,8 +110,6 @@ class eventController extends AbstractController
         $photo = $rctrl->recupererPhotoParIdEvent($id_event, $crl);
 
         $photoToDisplay = json_decode($photo);
-
-        dump($photo);
 
         foreach ($photoToDisplay as $photos) {
 
@@ -262,5 +262,54 @@ class eventController extends AbstractController
 
         return $this->redirectToRoute("events");
     }
+
+    /**
+     * @Route("/download/{id_event}" , name="downloadPDF")
+     */
+    function telecharge_en_pdf($id_event, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    {
+        /*$id_user = $session->get("id_user");
+
+        $participe = json_encode([
+            'id_event' => $id_event,
+            'id_user' => $id_user
+        ]);
+
+        $rctrl->participerUnEvenementParId($participe, $crl);*/
+
+        //return $this->redirectToRoute("events");
+
+        $participants = json_decode($rctrl->recupererEvenementParticipe($id_event, $crl));
+
+        $pdf = new \FPDF();
+
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+
+        $pdf->Text(80, 20, "Liste des inscrits");
+
+        $gap = 0;
+
+        foreach ($participants as $participant) {
+            $pdf->Text(40, 40+$gap, "Nom : ");
+            $pdf->Text(100, 50+$gap, $participant->nom);
+            $pdf->Text(40, 60+$gap, "Prenom : ");
+            $pdf->Text(100, 40+$gap, $participant->prenom);
+            $pdf->Text(40, 50+$gap, "Adresse mail : ");
+            $pdf->Text(100, 60+$gap, $participant->adresse_mail);
+            $gap += 50;
+        }
+
+        return new Response($pdf->Output(), 200, array(
+            'Content-Type' => 'application/pdf'));
+    }
+
+    /**
+     * @Route("/downloadcsv/{id_event}" , name="downloadCSV")
+     */
+    function telecharge_en_csv($id_event, RequeteController $rctrl, Curl $crl)
+    {
+        $participants = json_decode($rctrl->recupererEvenementParticipe($id_event, $crl));
+
+    }
 }
-?>

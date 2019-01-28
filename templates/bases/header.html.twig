@@ -1,30 +1,50 @@
 {% block header %}
-    <div class="jumbotron mb-0">
-        <h1>BDE Cesi Toulouse</h1>
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#">Navbar</a>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-lighter">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-            </ul>
+        <div class="collapse navbar-collapse container" id="navbarTogglerDemo02">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0"></ul>
             <div class="form-inline my-2 my-lg-0">
                 {% if app.session.get("mail") == null %}
-                    <button class="btn btn-warning my-2 my-sm-0 mr-2" onclick="login()"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
-                    <button class="btn btn-warning my-2 my-sm-0" onclick="register()"><i class="fas fa-user-plus"></i> S'inscrire</button>
+                    <button class="btn btn-light my-2 my-sm-0 mr-2" onclick="login()"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+                    <button class="btn btn-light my-2 my-sm-0" onclick="register()"><i class="fas fa-user-plus"></i> S'inscrire</button>
                 {% else %}
-                    <button class="btn btn-warning my-2 my-sm-0 mr-2" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Se déconnecter</button>
-                    <button class="btn btn-warning my-2 my-sm-0" type="submit"><i class="fas fa-bell"></i> {{ app.session.get("mail") }}</button>
+                    <button class="btn btn-light my-2 my-sm-0 mr-2" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Se déconnecter</button>
+                    <button class="btn btn-light my-2 my-sm-0" type="submit"><i class="fas fa-bell"></i> {{ app.session.get("mail") }}</button>
                 {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="jumbotron mb-0">
+        <div class="container">
+            <img src="logo_moodle.png" alt="">
+            <img class="ml-4" src="logobde.png" width="70" alt="">
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">BDE</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="events">Événements</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ideas">Boîte à idées</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="boutique">Boutique</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>

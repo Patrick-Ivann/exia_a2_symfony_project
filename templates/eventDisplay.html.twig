@@ -1,20 +1,56 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="jumbotron">
-        <h1>Tout les évenements</h1>
-    </div>
 
-    {% for event in events %}
+    {% include 'bases/styles.html.twig' %}
 
-    <p><a href="{{ path('eventById', {id_event:event.id_event}) }}">{{ event.nom_event }}</a>
-       <a href="{{ path('deleteShop', {id_event: event.id_event}) }}">
-           Supprimer
-       </a>
-   </p>
+    {% include 'bases/header.html.twig' %}
 
+    <main class="container mt-3">
 
+        {% for event in events %}
 
-    {% endfor %}
+            <p><a href="{{ path('eventById', {id_event:event.id_event}) }}">{{ event.nom_event }}</a>
+                <a href="{{ path('deleteShop', {id_event: event.id_event}) }}">
+                    Supprimer
+                </a>
+            </p>
+
+            {# dump(event) #}
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <h1 class="text-center">{{ event.nom_event }}</h1>
+                    {% if (event.type_event > 1) %}
+                        <p>Du {{ event.date_debut_event|date('d/m') }} au {{ event.date_fin_event|date('d/m') }} de chaque mois</p>
+                    {% else %}
+                        <p>Du {{ event.date_debut_event|date('d/m/Y') }} au {{ event.date_fin_event|date('d/m/Y') }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-sm-4">
+                    <ul class="list-unstyled">
+                        <li><strong class="amount">Prix : <span class="big">{{ event.prix }},00€</span></strong></li>
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <button type="button" class="btn1 btn1-primary btn1-lg round">Réserver ma place</button>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </main>
+
+    <script type="text/javascript">
+        function createIdea() {
+            location.href = "http://localhost/exia_a2_symfony_project/public/ideas/add";
+        }
+        function transformIdea() {
+            location.href = "http://localhost/exia_a2_symfony_project/public/home";
+        }
+    </script>
+
+    {% include 'bases/footer.html.twig' %}
 
 {% endblock %}

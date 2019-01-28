@@ -7,7 +7,9 @@
     {% include 'bases/header.html.twig' %}
 
     <main class="container mt-3">
-        <button onclick="createIdea()" class="btn btn-outline-primary float-right mt-2"><i class="fas fa-plus"></i> Ajouter une idée</button>
+        {% if (app.session.get("mail") != null) %}
+            <button onclick="createIdea()" class="btn btn-outline-primary float-right mt-2"><i class="fas fa-plus"></i> Ajouter une idée</button>
+        {% endif %}
         <h1>Boîte à idées</h1>
         <hr>
 
@@ -28,16 +30,17 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-sm-12">
-                                {#<button type="button" class="btn btn-danger"><i class="fas fa-heart"></i></button>#}
 
-                                {% if (likes[idee.id_event_idee]|length != 0) %}
-                                    {% for like in likes[idee.id_event_idee] %}
-                                        {% if (app.session.get("id_user") != like.id_user) %}
-                                            <a href="{{ path('voteById', {id_event_idee: idee.id_event_idee}) }}"><i class="fas fa-heart"></i></a>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% else %}
-                                    <a href="{{ path('voteById', {id_event_idee: idee.id_event_idee}) }}"><i class="fas fa-heart"></i></a>
+                                {% if (app.session.get("mail") != null) %}
+                                    {% if (likes[idee.id_event_idee]|length != 0) %}
+                                        {% for like in likes[idee.id_event_idee] %}
+                                            {% if (app.session.get("id_user") != like.id_user) %}
+                                                <a href="{{ path('voteById', {id_event_idee: idee.id_event_idee}) }}"><i class="fas fa-heart"></i></a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        <a href="{{ path('voteById', {id_event_idee: idee.id_event_idee}) }}"><i class="fas fa-heart"></i></a>
+                                    {% endif %}
                                 {% endif %}
 
                                 {% if (likes[idee.id_event_idee]|length <= 1) %}
@@ -45,7 +48,12 @@
                                 {% else %}
                                     {{ likes[idee.id_event_idee]|length }} personnes aiment ceci.
                                 {% endif %}
-                                <button onclick="transformIdea()" class="btn btn-outline-primary float-right mt-2"><i class="fas fa-plus"></i> Créer un événement</button>
+
+                                {% if (app.session.get("mail") != null) %}
+                                    {% if (app.session.get("rang") >= 1) %}
+                                        <button onclick="transformIdea()" class="btn btn-outline-primary float-right mt-2"><i class="fas fa-plus"></i> Créer un événement</button>
+                                    {% endif %}
+                                {% endif %}
                             </div>
                         </div>
                     </div>

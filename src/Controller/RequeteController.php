@@ -8,7 +8,7 @@ use App\services\Curl;
 class RequeteController extends AbstractController
 {
 
-    private $ip = "10.131.129.4";
+    private $ip = "10.131.129.114";
     private $port = "5000";
 
     /**
@@ -223,19 +223,19 @@ class RequeteController extends AbstractController
 
     public function recupererToutesParticipation(curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("GET", "http://" . $this->ip . ":5000/api/participation/recuperer", "application/javascript");
+        return $response = $curl->faireRequeteAvecHeader("GET", "http://" . $this->ip . ":5000/api/participer/recuperer", "application/javascript");
     }
 
 
     public function recupererUilisateurParticipant($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/participation/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/participer/recuperer/{$id}", 'application/javascript');
     }
 
 
     public function recupererEvenementParticipe($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/participation/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/participer/recuperer/event/{$id}", 'application/javascript');
     }
 
 

@@ -23,6 +23,10 @@ class ideeController extends AbstractController
      */
     public function add(Request $req, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
+        $notifs = null;
+        if ($session->get("mail") != null) {
+            $notifs = json_decode($rctrl->recupererUtilisateurNotif($session->get("id_user"), $crl));
+        }
 
         $idee = new Idee();
 
@@ -48,7 +52,8 @@ class ideeController extends AbstractController
         {
             try {
                 return $this->render('ideeCreate.html.twig', [
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'notifs' => $notifs
                 ]);
             } catch (\Exception $ex) {
                 return $ex->getMessage();
@@ -62,8 +67,12 @@ class ideeController extends AbstractController
      * @param Curl $crl
      * @return Response
      */
-    public function display(RequeteController $rctrl, Curl $crl)
+    public function display(RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
+        $notifs = null;
+        if ($session->get("mail") != null) {
+            $notifs = json_decode($rctrl->recupererUtilisateurNotif($session->get("id_user"), $crl));
+        }
 
         $idees = $rctrl->recupererIdee($crl);
 
@@ -92,7 +101,8 @@ class ideeController extends AbstractController
             return $this->render('ideeDisplay.html.twig', [
                 'idees' => $ideesToDisplay,
                 'users' => $users,
-                'likes' => $likes
+                'likes' => $likes,
+                'notifs' => $notifs
             ]);
         } catch (\Exception $ex) {
             return new Response($ex->getMessage() );

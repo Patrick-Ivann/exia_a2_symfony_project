@@ -22,10 +22,6 @@ class userController extends AbstractController
 {
 
     /**
-     * TODO: Commenter entièrement la classe
-     */
-
-    /**
      * Allow users to create their account.
      * @Route("/register", name="register")
      * @param Request $req
@@ -33,8 +29,13 @@ class userController extends AbstractController
      * @param Curl $crl
      * @return string|\Symfony\Component\HttpFoundation\Response
      */
-    public function register(Request $req, RequeteController $requeteController, Curl $crl)
+    public function register(Request $req, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
+        $notifs = null;
+        if ($session->get("mail") != null) {
+            $notifs = json_decode($rctrl->recupererUtilisateurNotif($session->get("id_user"), $crl));
+        }
+
         $user = new User();
 
         $errors = "";
@@ -54,19 +55,22 @@ class userController extends AbstractController
                     'lieu' => $userData->getNomLieu()
                 ]);
 
-                $requeteController->ajouterUtilisateur($userDataToSend, $crl);
+                $rctrl->ajouterUtilisateur($userDataToSend, $crl);
 
                 return $this->redirect("login");
             } else {
                 $errors = "Les mots de passe renseignés ne correspondent pas.";
             }
 
+        } elseif($form->isSubmitted() && !$form->isValid()) {
+            $errors = "Le mot de passe n'est pas valide.";
         }
 
         try {
             return $this->render('CreateUser.html.twig', [
                 'form' => $form->createView(),
-                'erreur' => $errors
+                'erreur' => $errors,
+                'notifs' => $notifs
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
@@ -84,7 +88,6 @@ class userController extends AbstractController
      */
     public function login(Request $req, RequeteController $requeteController, Curl $crl, SessionInterface $session)
     {
-
         if ($session->get("mail") != null) {
             return $this->redirect("home");
         }
@@ -148,7 +151,6 @@ class userController extends AbstractController
      */
     public function logout(Request $req, RequeteController $requeteController, Curl $crl, SessionInterface $session)
     {
-
         if ($session->get("mail") == null) {
             return $this->redirect("home");
         }

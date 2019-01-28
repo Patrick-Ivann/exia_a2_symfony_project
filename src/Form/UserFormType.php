@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,6 +22,11 @@ class UserFormType extends AbstractType
             ->add('mot_de_passe', PasswordType::class)
             ->add('mot_de_passe_verif', PasswordType::class, ['label'=>'Retaper le mot de passe'])
             //->add('avatar', FileType::class)
+            ->add('rules', CheckboxType::class, [
+                'label'    => "J'accepte les conditions du règlement du site.",
+                'required' => true,
+                'mapped' => false
+            ])
         ;
     }
 

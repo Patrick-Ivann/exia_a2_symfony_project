@@ -7,29 +7,35 @@ use App\Entity\Photo;
 use App\Form\CommentaireFormType;
 use App\Form\EventFormType;
 use App\Form\PhotoFormType;
-use App\Controller\RequeteController;
 use App\services\Curl;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
 
 class eventController extends AbstractController
 {
     /**
-     * @Route("/events/add")
+     * @Route("/events/add", name="event_add")
      * @param Request $req
      * @param \App\Controller\RequeteController $rctrl
      * @param Curl $crl
      * @return string|Response
      */
-    public function add(Request $req, RequeteController $rctrl, Curl $crl)
+    public function add(Request $req, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
+        $notifs = null;
+        if ($session->get("mail") != null) {
+            $notifs = json_decode($rctrl->recupererUtilisateurNotif($session->get("id_user"), $crl));
+        }
+
         $event = new Event();
-
         $form = $this->createForm(EventFormType::class, $event);
-
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -46,10 +52,23 @@ class eventController extends AbstractController
             ]);
 
             $rctrl->ajouterEvenement($eventDataToSend, $crl);
+
+            if ($req->get("id_user") != null) {
+                $data = json_encode([
+                    'id_event_idee' => $req->get("id_event_idee"),
+                    'id_user' => $req->get("id_user")
+                ]);
+
+                $rctrl->publierUnUtilisateurANotifie($data, $crl);
+            }
         }
+
+        dump($req->get("name"));
         try {
             return $this->render('eventCreate.html.twig', [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'post' => $req->get("name"),
+                'notifs' => $notifs
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
@@ -62,8 +81,13 @@ class eventController extends AbstractController
      * @param Curl $crl
      * @return string|Response
      */
-    public function display(RequeteController $rctrl, Curl $crl)
+    public function display(RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
+        $notifs = null;
+        if ($session->get("mail") != null) {
+            $notifs = json_decode($rctrl->recupererUtilisateurNotif($session->get("id_user"), $crl));
+        }
+
         $events = $rctrl->recupererEvenement(null, $crl);
 
         $eventToDisplay = json_decode($events);
@@ -75,7 +99,8 @@ class eventController extends AbstractController
 
         try {
             return $this->render('eventDisplay.html.twig', [
-                'events' => $eventToDisplay
+                'events' => $eventToDisplay,
+                'notifs' => $notifs
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
@@ -83,7 +108,7 @@ class eventController extends AbstractController
     }
 
     /**
-     * @Route("/deleteShop/{id_event}" , name="deleteShop")
+     * @Route("/deleteShop/{id_event}" , name="deleteEvent")
      * @param \App\Controller\RequeteController $rctrl
      * @param Curl $crl
      * @return string|Response
@@ -91,7 +116,7 @@ class eventController extends AbstractController
     public function delete($id_event, RequeteController $rctrl, Curl $crl)
     {
         $rctrl->supprimerEvenement($id_event, $crl);
-        return $this->redirectToRoute("displayEvent");
+        return $this->redirectToRoute("events");
     }
 
     /**
@@ -102,6 +127,11 @@ class eventController extends AbstractController
      */
     public function displayById($id_event, Request $req, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
+        $notifs = null;
+        if ($session->get("mail") != null) {
+            $notifs = json_decode($rctrl->recupererUtilisateurNotif($session->get("id_user"), $crl));
+        }
+
         $id_user = $session->get("id_user");
 
         $events = $rctrl->recupererEvenementParId($id_event, $crl);
@@ -134,6 +164,7 @@ class eventController extends AbstractController
                 'photo' => $photoToDisplay,
                 'commentaire' => $commentaire,
                 'formPhoto' => $formPhoto->createView(),
+                'notifs' => $notifs
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
@@ -175,6 +206,11 @@ class eventController extends AbstractController
      */
     public function photos($id_photo, Request $req, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
+        $notifs = null;
+        if ($session->get("mail") != null) {
+            $notifs = json_decode($rctrl->recupererUtilisateurNotif($session->get("id_user"), $crl));
+        }
+
         $id_user = $session->get("id_user");
 
         $photo = $rctrl->recupererPhotoParId($id_photo, $crl);
@@ -205,7 +241,8 @@ class eventController extends AbstractController
                 'photo' => $photoToDisplay,
                 'commentaire' => $commentaireToDisplay,
                 'formComm' => $formComm->createView(),
-                'alone' => $alone
+                'alone' => $alone,
+                'notifs' => $notifs
             ]);
         } catch (\Exception $ex) {
             return $ex->getMessage();
@@ -277,6 +314,11 @@ class eventController extends AbstractController
 
     /**
      * @Route("/participe/{id_event}" , name="participeById")
+     * @param $id_event
+     * @param RequeteController $rctrl
+     * @param Curl $crl
+     * @param SessionInterface $session
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     function participe($id_event, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
@@ -319,6 +361,8 @@ class eventController extends AbstractController
 
         $gap = 0;
 
+        dump($participants);
+
         foreach ($participants as $participant) {
             $pdf->Text(40, 40+$gap, "Nom : ");
             $pdf->Text(100, 50+$gap, $participant->nom);
@@ -339,6 +383,46 @@ class eventController extends AbstractController
     function telecharge_en_csv($id_event, RequeteController $rctrl, Curl $crl)
     {
         $participants = json_decode($rctrl->recupererEvenementParticipe($id_event, $crl));
+        $formattedParticipants = array();
 
+        foreach ($participants as $key => $participant) {
+            $formattedParticipants[$key] = (array) $participant;
+        }
+
+        dump($formattedParticipants);
+
+        $encoder = new CsvEncoder();
+        $csv = $encoder->encode($formattedParticipants, 'csv');
+
+        $spreadsheet = new Spreadsheet();
+
+        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Nom');
+        $sheet->setCellValue('B1', 'Prénom');
+        $sheet->setCellValue('C1', 'Mail');
+
+        $temp = 1;
+
+        foreach ($formattedParticipants as $key => $user) {
+            dump($user);
+            $sheet->setCellValue('A'. ($temp), $user["nom"]);
+            $sheet->setCellValue('B'. ($temp), $user["prenom"]);
+            $sheet->setCellValue('C'. ($temp), $user["adresse_mail"]);
+            $temp++;
+        }
+
+        // Create the instance
+        $writer = new Xlsx($spreadsheet);
+
+        // Create a Temporary file in the system
+        $fileName = 'export_participants.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+
+        // Create the excel file in the tmp directory of the system
+        $writer->save($temp_file);
+
+        // Return the excel file as an attachment
+        return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
     }
 }

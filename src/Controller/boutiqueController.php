@@ -16,8 +16,7 @@ class boutiqueController extends AbstractController
 {
 
     /**
-     * @Route("/produitAdd")
-     *
+     * @Route("/product/add")
      */
     function add(Request $req, RequeteController $rctrl, Curl $crl)
     {
@@ -54,7 +53,21 @@ class boutiqueController extends AbstractController
     }
 
     /**
-     * @Route("/boutique", name="boutique")
+     * @Route("/product/delete/{id_produit}", name="supprimer_produit")
+     */
+    function delete($id_produit, Request $req, RequeteController $rctrl, Curl $crl)
+    {
+        $rctrl->supprimerProduit($id_produit, $crl);
+
+        try {
+            return $this->redirectToRoute("products");
+        } catch (\Exception $ex) {
+            return new Response($ex->getMessage());
+        }
+    }
+
+    /**
+     * @Route("/boutique", name="products")
      * @param RequeteController $rctrl
      * @param Curl $crl
      * @return Response

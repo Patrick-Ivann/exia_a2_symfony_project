@@ -6,7 +6,12 @@
     </div>
 
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_widget(form.nom_event, {'value': post}) }}<br>
+    {{ form_widget(form.date_debut_event) }}<br>
+    {{ form_widget(form.date_fin_event) }}<br>
+    {{ form_widget(form.nom_lieu) }}<br>
+    {{ form_widget(form.type_event) }}<br>
+    {{ form_widget(form.prix) }}<br>
     <button>Ajouter</button>
     {{ form_end(form) }}
 

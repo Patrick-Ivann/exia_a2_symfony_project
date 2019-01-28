@@ -1,18 +1,35 @@
 {% block header %}
     <nav class="navbar navbar-expand-lg navbar-dark navbar-lighter">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse container" id="navbarTogglerDemo02">
+        <div class="collapse navbar-collapse container" id="navbarTogglerDemo00">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0"></ul>
             <div class="form-inline my-2 my-lg-0">
                 {% if app.session.get("mail") == null %}
                     <button class="btn btn-light my-2 my-sm-0 mr-2" onclick="login()"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
                     <button class="btn btn-light my-2 my-sm-0" onclick="register()"><i class="fas fa-user-plus"></i> S'inscrire</button>
                 {% else %}
-                    <button class="btn btn-light my-2 my-sm-0 mr-2" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Se déconnecter</button>
-                    <button class="btn btn-light my-2 my-sm-0" type="submit"><i class="fas fa-bell"></i> {{ app.session.get("mail") }}</button>
+                    {% if notifs is defined %}
+                        {% if (notifs|length > 0) %}
+                            <button class="btn btn-light my-2 my-sm-0 mr-2" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Se déconnecter</button>
+                            <div class="dropdown">
+                                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-bell"></i> {{ app.session.get("prenom") }}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    {% for key, notif in notifs %}
+                                        <button class="dropdown-item" type="button">Votre idée (#{{ notifs[key].id_event_idee }}) a été retenue par le BDE.</button
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <button class="btn btn-light my-2 my-sm-0 mr-2" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Se déconnecter</button>
+                            <button class="btn btn-light my-2 my-sm-0" type="submit"><i class="fas fa-bell"></i> {{ app.session.get("prenom") }}</button>
+                        {% endif %}
+                    {% else %}
+                        <button class="btn btn-light my-2 my-sm-0 mr-2" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Se déconnecter</button>
+                        <button class="btn btn-light my-2 my-sm-0" type="submit"><i class="fas fa-bell"></i> {{ app.session.get("prenom") }}</button>
+                    {% endif %}
+
+
                 {% endif %}
             </div>
         </div>

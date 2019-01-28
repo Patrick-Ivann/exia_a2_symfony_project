@@ -7,35 +7,39 @@
     {% include 'bases/header.html.twig' %}
 
     <main class="container mt-3">
+        {% if (app.session.get("mail") != null) %}
+            <button onclick="createEvent()" class="btn btn-outline-primary float-right mt-2"><i class="fas fa-plus"></i> Ajouter un événement</button>
+            <a href="http://10.131.129.114:5000/api/photo/telecharger"><button onclick="createEvent()" class="btn btn-outline-danger float-right mt-2 mr-1">Télécharger les images</button></a>
+        {% endif %}
+        <h1>Événements du BDE</h1>
+        <hr>
 
         {% for event in events %}
 
-            <p><a href="{{ path('eventById', {id_event:event.id_event}) }}">{{ event.nom_event }}</a>
-                <a href="{{ path('deleteShop', {id_event: event.id_event}) }}">
-                    Supprimer
-                </a>
-            </p>
-
-            {# dump(event) #}
-
-            <div class="row">
-                <div class="col-sm-4">
-                    <h1 class="text-center">{{ event.nom_event }}</h1>
-                    {% if (event.type_event > 1) %}
-                        <p>Du {{ event.date_debut_event|date('d/m') }} au {{ event.date_fin_event|date('d/m') }} de chaque mois</p>
-                    {% else %}
-                        <p>Du {{ event.date_debut_event|date('d/m/Y') }} au {{ event.date_fin_event|date('d/m/Y') }}</p>
-                    {% endif %}
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="margin-left: -50%; width: 200%;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><a href="{{ path('eventById', {id_event:event.id_event}) }}">{{ event.nom_event }}</a></h5>
+                        <a href="{{ path('deleteEvent', {id_event: event.id_event}) }}"><button class="btn btn-outline-danger float-right">Supprimer</button></a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {% if (event.type_event > 1) %}
+                                    <p>Du {{ event.date_debut_event|date('d/m') }} au {{ event.date_fin_event|date('d/m') }} de chaque mois</p>
+                                {% else %}
+                                    <p>Du {{ event.date_debut_event|date('d/m/Y') }} au {{ event.date_fin_event|date('d/m/Y') }}</p>
+                                {% endif %}
+                                <strong class="amount">Prix : <span class="big">{{ event.prix }},00€</span></strong>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <a href="{{ path('participeById', {id_event: event.id_event}) }}"><button class="btn btn-primary float-right">Participer à cet événement</button></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-4">
-                    <ul class="list-unstyled">
-                        <li><strong class="amount">Prix : <span class="big">{{ event.prix }},00€</span></strong></li>
-                    </ul>
-                </div>
-                <div class="col-sm-4">
-                    <button type="button" class="btn1 btn1-primary btn1-lg round">Réserver ma place</button>
-                </div>
-
             </div>
 
         {% endfor %}
@@ -43,11 +47,8 @@
     </main>
 
     <script type="text/javascript">
-        function createIdea() {
+        function createEvent() {
             location.href = "http://localhost/exia_a2_symfony_project/public/ideas/add";
-        }
-        function transformIdea() {
-            location.href = "http://localhost/exia_a2_symfony_project/public/home";
         }
     </script>
 

@@ -195,23 +195,23 @@ class RequeteController extends AbstractController
 
     public function recupererToutesLesNotifS(curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("GET", "http://" . $this->ip . ":5000/api/notif/recuperer", "application/javascript");
+        return $response = $curl->faireRequeteAvecHeader("GET", "http://" . $this->ip . ":5000/api/notifie/recuperer", "application/javascript");
     }
 
     public function recupererIdeeNotif($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/notif/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/notifie/recuperer/{$id}", 'application/javascript');
     }
 
 
     public function recupererUtilisateurNotif($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/notif/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/notifie/recuperer/utilisateur/{$id}", 'application/javascript');
     }
 
     public function publierUnUtilisateurANotifie($data, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":5000/api/notif/ajouter", "application/javascript", $data);
+        return $response = $curl->faireRequeteAvecHeader("POST", "http://" . $this->ip . ":5000/api/notifie/ajouter", "application/javascript", $data);
     }
 
 
@@ -291,6 +291,10 @@ class RequeteController extends AbstractController
     {
         $response = $curl->faireRequeteAvecFichier("POST", "http://" . $this->ip . ":5000/api/produit/ajouter", "application/javascript", $data, $path, $type);
         echo $response;
+    }
+    public function supprimerProduit($id, Curl $crl)
+    {
+        return $query = $crl->faireRequeteAvecHeader("DELETE", "http://" . $this->ip . ":5000/api/produit/supprimer/{$id}", "application/javascript");
     }
 
 /**

@@ -48,8 +48,4 @@ class photoController extends AbstractController
             return $ex->getMessage();
         }
     }
-
-
 }
-
-?>

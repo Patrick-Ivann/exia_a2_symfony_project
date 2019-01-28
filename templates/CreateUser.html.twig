@@ -6,14 +6,64 @@
 
   {% include 'bases/header.html.twig' %}
 
-  {% if erreur %}
-    <h4>{{ erreur }}</h4>
-  {% endif %}
+  <div class="container mt-4">
+    <h1>Création de compte</h1>
+    <hr>
+    {% if erreur != "" %}
+      <div class="alert alert-danger" role="alert">
+        {{ erreur }}
+      </div>
+    {% endif %}
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6">
 
-  {{ form_start(form) }}
-  {{ form_widget(form) }}
-  <button>Ajouter</button>
-  {{ form_end(form) }}
+        {{ form_start(form) }}
+
+        <div class="form-group">
+          <label>Adresse mail</label>
+          {{ form_widget(form.adresse_mail, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre adresse mail'}}) }}
+          <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+        </div>
+
+        <div class="form-group">
+          <label>Identité</label>
+          <div class="row">
+            <div class="col-sm-6 pr-1">{{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre nom'}}) }}</div>
+            <div class="col-sm-6 pl-1">{{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre prénom'}}) }}</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Localisation</label>
+          {{ form_widget(form.nom_lieu, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la ville de votre centre CESI'}}) }}
+        </div>
+
+        <div class="form-group">
+          <label>Sécurité</label>
+          <div class="row">
+            <div class="col-sm-6 pr-1">{{ form_widget(form.mot_de_passe, {'attr': {'class': 'form-control', 'placeholder': 'Entrez un mot de passe'}}) }}</div>
+            <div class="col-sm-6 pl-1">{{ form_widget(form.mot_de_passe_verif, {'attr': {'class': 'form-control', 'placeholder': 'Répétez votre mot de passe'}}) }}</div>
+            <small class="form-text text-muted ml-3">Le mot de passe doit contenir au minimum 8 caractères, dont une majuscule, une minuscule et un chiffre.</small>
+          </div>
+        </div>
+
+        <div class="form-group form-check">
+          {{ form_widget(form.rules, {'attr': {'class': 'form-check-input'}}) }}
+          <label class="form-check-label" for="exampleCheck1">J'accepte les conditions du <a href="#" target="_blank">règlement du site</a>.</label>
+        </div>
+
+        <div class="form-group form-check">
+          <label class="form-check-label" for="exampleCheck1">Je prends également connaissance des <a href="#" target="_blank">mentions légales</a>.</label>
+        </div>
+
+        <div class="col-sm-12 text-center">
+          <button type="submit" class="btn btn-primary">Créer mon compte</button>
+        </div>
+        {{ form_end(form) }}
+      </div>
+    </div>
+  </div>
 
   {% include 'bases/footer.html.twig' %}
 

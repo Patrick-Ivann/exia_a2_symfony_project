@@ -47,6 +47,8 @@ class ideeController extends AbstractController
 
 
             $rctrl->ajouterIdee($ideeDataToSend, $crl);
+
+            $this->redirectToRoute("idees");
         }
 
         {

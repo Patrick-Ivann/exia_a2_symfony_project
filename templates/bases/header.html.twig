@@ -36,8 +36,8 @@
     </nav>
     <div class="jumbotron mb-0">
         <div class="container">
-            <img src="logo_moodle.png" alt="">
-            <img class="ml-4" src="logobde.png" width="70" alt="">
+            <img src="http://localhost/exia_a2_symfony_project/public/logo_moodle.png" alt="">
+            <img class="ml-4" src="http://localhost/exia_a2_symfony_project/public/logobde.png" width="70" alt="">
         </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -50,21 +50,37 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="home">Accueil</a>
+                        <a class="nav-link" href="http://localhost/exia_a2_symfony_project/public/home">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="events">Événements</a>
+                        <a class="nav-link" href="http://localhost/exia_a2_symfony_project/public/events">Événements</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="ideas">Boîte à idées</a>
+                        <a class="nav-link" href="http://localhost/exia_a2_symfony_project/public/ideas">Boîte à idées</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="boutique">Boutique</a>
+                        <a class="nav-link" href="http://localhost/exia_a2_symfony_project/public/boutique">Boutique</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+    <div id="myModal" class="modal" role="dialog">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 style="align-content: center;" class="modal-title">Ce site utilise des cookies</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Ce site utilise des cookies pour son bon fonctionnement, si vous n'acceptez pas les cookies vous risquez d'alterer l'expérience de navigation et les options d'achats de la boutique.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="setCookie('cacceptation', 1, 30)">J'accepte les cookies</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="setCookie('cacceptation', 0, 30)">Je n'accepte pas les cookies</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 <script type="text/javascript">
@@ -77,4 +93,34 @@
     function register() {
         location.href = "http://localhost/exia_a2_symfony_project/public/register";
     }
+</script>
+<script>
+    function setCookie(name, value, days) {
+        var d = new Date();
+        d.setTime(d.getTime() + (days*24*60*60*1000));
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = name+"="+value+expires+"; path=/";
+    }
+
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1,c.length);
+            }
+            if (c.indexOf(nameEQ) == 0) {
+                return c.substring(nameEQ.length,c.length);
+            }
+        }
+        return null;
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        if(getCookie("cacceptation") == null) {
+            $("#myModal").modal("show");
+        }
+    });
 </script>

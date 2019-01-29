@@ -23,9 +23,14 @@ class HomeController extends AbstractController
             $notifs = json_decode($rctrl->recupererUtilisateurNotif($session->get("id_user"), $crl));
         }
 
+        $products = json_decode($rctrl->recupererProduitLesPlusVendus($crl));
+
+        dump($products);
+
         try {
             return $this->render('pages/home.html.twig', [
-                'notifs' => $notifs
+                'notifs' => $notifs,
+                'products' => $products
             ]);
         } catch (\Exception $ex) {
             return new Response($ex->getMessage());

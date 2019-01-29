@@ -38,6 +38,7 @@ class photoController extends AbstractController
 
             $rctrl->ajouterPhoto($photoDataToSend, $file, $type, $crl);
 
+            $this->redirectToRoute("events");
         }
 
         try {

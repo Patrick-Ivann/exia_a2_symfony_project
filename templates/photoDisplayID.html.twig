@@ -2,37 +2,57 @@
 
 {% block body %}
 
-   {# {% include 'bases/styles.html.twig' %}
+    {% include 'bases/styles.html.twig' %}
 
     {% include 'bases/header.html.twig' %}
-    #}
 
-    <div class="container mt-4">
-        <h1>id : {{ photo.id_photo }}</h1>
+    <main class="container mt-4">
+        <h1>{{ photo.legende_photo }}</h1>
         <hr>
 
-        {% if alone == false %}
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <img src="http://10.131.129.156:5000/static/{{ photo.url_photo }}" alt="">
+            </div>
+        </div>
 
-            {% for com in commentaire %}
-                <p>{{ com.name_user }}</p>
-                    <p>{{ com.texte_commentaire }} </p>
+        <br><br>
 
-            {% endfor %}
+        <div class="row mb-3">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <h5>Commentaires</h5>
+                {% if alone != null %}
+                    {% if alone == false %}
+                        {% for com in commentaire %}
+                            <strong>{{ com.name_user }}</strong> : {{ com.texte_commentaire }} <br>
+                        {% endfor %}
+                    {% else %}
+                        <strong>{{ commentaire.name_user }}</strong> : {{ commentaire.texte_commentaire }} <br>
+                    {% endif %}
+                {% else %}
+                    Aucun commentaire.
+                {% endif %}
+            </div>
+        </div>
 
-        {% else %}
+        <br><br><br>
 
-        <p>{{ commentaire.name_user }} :</p>
-            <p>{{ commentaire.texte_commentaire }}</p>
+        <div class="row mb-3">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <h5>Ajouter un commentaire</h5>
+                {{ form_start(formComm) }}
+                <div class="form-group">
+                    {{ form_widget(formComm.texte_commentaire, {'attr': {'class': 'form-control', 'placeholder': 'Entrez une légende'}}) }}
+                </div>
+                <button class="btn btn-primary">Commenter</button>
+                {{ form_end(formComm) }}
+            </div>
+        </div>
 
-        {% endif %}
+    </main>
 
-        {{ form_start(formComm) }}
-        {{ form_widget(formComm) }}
-        <button>Ajouter</button>
-        {{ form_end(formComm) }}
-
-    </div>
-
-{#   {% include 'bases/footer.html.twig' %} #}
+    {% include 'bases/footer.html.twig' %}
 
 {% endblock %}

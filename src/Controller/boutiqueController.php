@@ -47,6 +47,8 @@ class boutiqueController extends AbstractController
             $type = "produit";
 
             $rctrl->ajouterProduit($produitDataToSend, $file, $type, $crl);
+
+            $this->redirectToRoute("products");
         }
         try {
             return $this->render('produitCreate.html.twig', [

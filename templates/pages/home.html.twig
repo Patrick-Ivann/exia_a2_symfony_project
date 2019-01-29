@@ -6,10 +6,6 @@
 
     {% include 'bases/header.html.twig' %}
 
-    <!--
-        CONTENU DE LA PAGE
-    -->
-
     <main class="mt-3">
 
         <div class="container">
@@ -17,74 +13,35 @@
             <hr>
 
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-8 mb-4">
                     <section class="content-section" id="portfolio">
                         <div class="content-section-heading text-center">
-                            <h2>Les évènements du mois</h2>
+                            <h2>Les événements du BDE</h2>
                         </div>
                         <div class="row no-gutters">
-                            <div class="col-lg-6">
-                                <a class="portfolio-item" href="#">
-                                    <span class="caption caption-content mb-0"><strong>Gala</strong></span>
-                                    <img class="img-fluid" src="./assets/img/s3.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="col-lg-6">
-                                <a class="portfolio-item" href="#">
-                                    <span class="caption caption-content mb-0"><strong>Gala</strong></span>
-                                    <img class="img-fluid" src="./assets/img/s3.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="col-lg-6">
-                                <a class="portfolio-item" href="#">
-                                    <span class="caption caption-content mb-0"><strong>Gala</strong></span>
-                                    <img class="img-fluid" src="./assets/img/s3.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="col-lg-6">
-                                <a class="portfolio-item" href="#">
-                                    <span class="caption caption-content mb-0"><strong>Gala</strong></span>
-                                    <img class="img-fluid" src="./assets/img/s3.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="col-lg-6">
-                                <a class="portfolio-item" href="#">
-                                    <span class="caption caption-content mb-0"><strong>Gala</strong></span>
-                                    <img class="img-fluid" src="./assets/img/s3.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="col-lg-6">
-                                <a class="portfolio-item" href="#">
-                                    <span class="caption caption-content mb-0"><strong>Gala</strong></span>
-                                    <img class="img-fluid" src="./assets/img/s3.jpg" alt="">
+                            <div class="col-lg-12">
+                                <a class="portfolio-item" href="events">
+                                    <img class="img-fluid" width="100%" src="event.jpg" alt="">
                                 </a>
                             </div>
                         </div>
                     </section>
                 </div>
                 <div class="col-md-4">
-                    <aside>
-                        <div style="margin-top:20px" class="col-sm-12">
+                    <a href="boutique" style="text-decoration: none; color: black;"><aside>
+                        <div class="col-sm-12">
                             <div class="team-member">
-                                <h2>Produits en ventes</h2>
-                                <div class="border1">
-                                    <img class="mx-auto rounded-circle" src="./assets/img/casq.jpg" alt="///">
-                                    <p><strong>Superbe casquette BDE</strong></p>
-                                </div>
-                                <br>
-                                <div class="border1">
-                                    <img class="mx-auto rounded-circle" src="./assets/img/casq.jpg" alt="///">
-                                    <p><strong>Superbe casquette BDE</strong></p>
-                                </div>
-                                <br>
-                                <div class="border1">
-                                    <img class="mx-auto rounded-circle" src="./assets/img/casq.jpg" alt="///">
-                                    <p><strong>Superbe casquette BDE</strong></p>
-                                </div>
+                                <h2>Produits en vente</h2>
+                                {% for product in products %}
+                                    <div class="border1">
+                                        <img class="mx-auto rounded-circle border border-dark" src="http://10.131.129.156:5000/static/{{ product.url_image_produit }}" alt="">
+                                        <p><strong>{{ product.nom_produit }}</strong></p>
+                                    </div><br>
+                                {% endfor %}
                                 <hr class="d-sm-none">
                             </div>
                         </div>
-                    </aside>
+                    </aside></a>
                 </div>
             </div>
         </div>
@@ -95,8 +52,6 @@
                     <h1 style="font-family : fantasy; text-align : center; margin-top: 40px; color : white;">NOTRE ÉQUIPE</h1>
                     <img class="mx-auto rounded-circle" src="avatar.png" alt="">
                     <p style="color : white;">Président</p>
-                    <img class="mx-auto rounded-circle" src="avatar.png" alt="">
-
                     <img class="mx-auto rounded-circle" src="avatar.png" alt="">
 
                     <img class="mx-auto rounded-circle" src="avatar.png" alt="">

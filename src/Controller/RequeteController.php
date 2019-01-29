@@ -10,7 +10,7 @@ use App\services\Curl;
 class RequeteController extends AbstractController
 {
 
-    private $ip = "10.131.129.114";
+    private $ip = "10.131.129.156";
     private $port = "5000";
 
     /**
@@ -86,7 +86,7 @@ class RequeteController extends AbstractController
 
     public function recupererPhotoAimee($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/aime/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/aime/recuperer/photo/{$id}", 'application/javascript');
     }
 
     public function recupererUtilisateurAimant($id, curl $curl)
@@ -112,11 +112,15 @@ class RequeteController extends AbstractController
     }
     public function recupererProduit($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/achate/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/achete/recuperer/{$id}", 'application/javascript');
     }
     public function recupererAcheteur($id, curl $curl)
     {
-        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/achate/recuperer/{$id}", 'application/javascript');
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/achete/recuperer/{$id}", 'application/javascript');
+    }
+    public function recupererProduitLesPlusVendus(curl $curl)
+    {
+        return $response = $curl->faireRequeteAvecHeader('GET', "http://" . $this->ip . ":5000/api/achete/recuperer/produit/top", 'application/javascript');
     }
 
 

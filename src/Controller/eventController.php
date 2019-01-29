@@ -61,6 +61,8 @@ class eventController extends AbstractController
 
                 $rctrl->publierUnUtilisateurANotifie($data, $crl);
             }
+
+            $this->redirectToRoute("events");
         }
 
         try {
@@ -88,8 +90,24 @@ class eventController extends AbstractController
         }
 
         $events = $rctrl->recupererEvenement(null, $crl);
-
         $eventToDisplay = json_decode($events);
+
+        $participants = array();
+        foreach ($eventToDisplay as $event) {
+            $participants[$event->id_event] = json_decode($rctrl->recupererEvenementParticipe($event->id_event, $crl));
+        }
+
+
+        $participantsToDisplay = array();
+        foreach ($participants as $key => $participant) {
+            foreach ($participant as $user) {
+                if ($session->get("id_user") == $user->id_user) {
+                    $participantsToDisplay[$key] = $user;
+                }
+            }
+        }
+
+        dump($participantsToDisplay);
 
         if (is_object($eventToDisplay)) {
             $events = '[' . $events . ']';
@@ -99,6 +117,8 @@ class eventController extends AbstractController
         try {
             return $this->render('eventDisplay.html.twig', [
                 'events' => $eventToDisplay,
+                'participantsList' => $participants,
+                'participants' => $participantsToDisplay,
                 'notifs' => $notifs
             ]);
         } catch (\Exception $ex) {
@@ -142,14 +162,15 @@ class eventController extends AbstractController
         $photoToDisplay = json_decode($photo);
 
         $commentaire = [];
+        $likes = array();
 
         if($photo) {
-
-            foreach ($photoToDisplay as $key=>$photo)
-            {
+            foreach ($photoToDisplay as $key=>$photo) {
                 $commentaire[] = $rctrl->recupererCommentaireParIdPhoto($photo->{"id_photo"}, $crl);
+                $likes[$photo->id_photo] = json_decode($rctrl->recupererPhotoAimee($photo->id_photo, $crl));
             }
         }
+
         /*
             Faire le traitement pour choper l'image et son nom
          */
@@ -157,16 +178,46 @@ class eventController extends AbstractController
         //Form en cas d'ajout photo
         $formPhoto = $this->createFormPhoto($id_event, $req, $rctrl, $crl, $id_user);
 
+        $participants = json_decode($rctrl->recupererEvenementParticipe($id_event, $crl));
+
+        $participantsToDisplay = array();
+        foreach ($participants as $key => $participant) {
+            if ($participant->id_user == $session->get("id_user")) {
+                $participantsToDisplay[$key] = $participant;
+            }
+        }
+
+        $event_passe = false;
+        $date = new \DateTime($eventToDisplay->date_debut_event);
+        $date = $date->format('d/m/Y');
+        $now = date('d/m/Y');
+
+        $date_a = explode('/', $date);
+        $now_a = explode('/', $now);
+
+        if ((int)$date_a[2] <= (int)$now_a[2]) {
+            if ((int)$date_a[1] <= (int)$now_a[1]) {
+                if ((int)$date_a[0] <= (int)$now_a[0]) {
+                    $event_passe = true;
+                }
+            }
+        }
+
+        dump($event_passe);
+
         try {
             return $this->render('eventDisplayID.html.twig', [
                 'event' => $eventToDisplay,
                 'photo' => $photoToDisplay,
                 'commentaire' => $commentaire,
                 'formPhoto' => $formPhoto->createView(),
-                'notifs' => $notifs
+                'notifs' => $notifs,
+                'participants' => $participantsToDisplay,
+                'likes' => $likes,
+                'date' => $event_passe
             ]);
         } catch (\Exception $ex) {
-            return $ex->getMessage();
+            return new Response($ex->getMessage());
         }
     }
 
@@ -222,13 +273,14 @@ class eventController extends AbstractController
 
         $formComm = $this->createFormCommentaire($id_photo, $req, $rctrl, $crl, $id_user);
 
+        $alone = null;
         if(is_array($commentaireToDisplay))
         {
             foreach ($commentaireToDisplay as $com){
                 $com->name_user = json_decode($rctrl->recupererUtilisateurParId($com->id_user, $crl))->prenom;
                 $alone = false;
             }
-        }else if (is_object($commentaireToDisplay)){
+        } else if (is_object($commentaireToDisplay)){
             $commentaireToDisplay->name_user = json_decode($rctrl->recupererUtilisateurParId($commentaireToDisplay->id_user, $crl))->prenom;
             $alone = true;
         }

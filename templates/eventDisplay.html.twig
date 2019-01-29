@@ -8,8 +8,11 @@
 
     <main class="container mt-3">
         {% if (app.session.get("mail") != null) %}
-            <button onclick="createEvent()" class="btn btn-outline-primary float-right mt-2"><i class="fas fa-plus"></i> Ajouter un événement</button>
-            <a href="http://10.131.129.114:5000/api/photo/telecharger"><button onclick="createEvent()" class="btn btn-outline-danger float-right mt-2 mr-1">Télécharger les images</button></a>
+            {% if (app.session.get("rang") == 1) %}
+                <button onclick="createEvent()" class="btn btn-outline-primary float-right mt-2"><i class="fas fa-plus"></i> Ajouter un événement</button>
+            {% elseif (app.session.get("rang") == 2) %}
+                <a href="http://10.131.129.156:5000/api/photo/telecharger"><button class="btn btn-outline-danger float-right mt-2 mr-1">Télécharger les images</button></a>
+            {% endif %}
         {% endif %}
         <h1>Événements du BDE</h1>
         <hr>
@@ -20,7 +23,10 @@
                 <div class="modal-content" style="margin-left: -50%; width: 200%;">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel"><a href="{{ path('eventById', {id_event:event.id_event}) }}">{{ event.nom_event }}</a></h5>
-                        <a href="{{ path('deleteEvent', {id_event: event.id_event}) }}"><button class="btn btn-outline-danger float-right">Supprimer</button></a>
+
+                        {% if (app.session.get("rang") == 1) %}
+                            <a href="{{ path('deleteEvent', {id_event: event.id_event}) }}"><button class="btn btn-outline-danger float-right">Supprimer</button></a>
+                        {% endif %}
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -35,7 +41,16 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-sm-12">
-                                <a href="{{ path('participeById', {id_event: event.id_event}) }}"><button class="btn btn-primary float-right">Participer à cet événement</button></a>
+                                {{  participantsList[event.id_event]|length }} participant(s).
+                                {% if (participants[event.id_event] is defined) %}
+                                    {% for participant in participants[event.id_event] %}
+                                        {% if (app.session.get("id_user") != participant.id_user) %}
+                                            <a href="{{ path('participeById', {id_event: event.id_event}) }}"><button class="btn btn-primary float-right">Participer à cet événement</button></a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <a href="{{ path('participeById', {id_event: event.id_event}) }}"><button class="btn btn-primary float-right">Participer à cet événement</button></a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

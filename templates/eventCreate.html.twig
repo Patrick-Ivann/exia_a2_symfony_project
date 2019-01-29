@@ -1,19 +1,58 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="jumbotron">
-        <h1>Créer Evenement</h1>
-    </div>
 
-    {{ form_start(form) }}
-    {{ form_widget(form.nom_event, {'value': post}) }}<br>
-    {{ form_widget(form.date_debut_event) }}<br>
-    {{ form_widget(form.date_fin_event) }}<br>
-    {{ form_widget(form.nom_lieu) }}<br>
-    {{ form_widget(form.type_event) }}<br>
-    {{ form_widget(form.prix) }}<br>
-    <button>Ajouter</button>
-    {{ form_end(form) }}
+    {% include 'bases/styles.html.twig' %}
 
+    {% include 'bases/header.html.twig' %}
+
+    <main class="container mt-3">
+        <h1>Ajouter un événement</h1>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+
+                {{ form_start(form) }}
+
+                <div class="form-group">
+                    <label>Nom de l'événement</label>
+                    {{ form_widget(form.nom_event, {'value': post, 'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label>Date de début</label>
+                    {{ form_widget(form.date_debut_event, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label>Date de fin</label>
+                    {{ form_widget(form.date_fin_event, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label>Lieu de l'événement</label>
+                    {{ form_widget(form.nom_lieu, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label>Type d'événement</label>
+                    {{ form_widget(form.type_event, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label>Prix de la participation</label>
+                    {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="col-sm-12 text-center mb-4">
+                    <button type="submit" class="btn btn-primary">Ajouter l'événement</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </main>
+
+    {% include 'bases/footer.html.twig' %}
 
 {% endblock %}

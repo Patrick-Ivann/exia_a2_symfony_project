@@ -11,7 +11,7 @@
         <hr>
         {% for produit in produits %}
 
-            <img src="http://10.131.129.114:5000/static/{{ produit.url_image_produit }}" alt="">
+            <img src="http://10.131.129.156:5000/static/{{ produit.url_image_produit }}" alt="">
             {{ produit.nom_produit }} <a href=" {{ path('buyById',  {id_produit : produit.id_produit}) }} ">Acheter ce produit</a>
             <a href=" {{ path('supprimer_produit',  {id_produit : produit.id_produit}) }} ">Supprimer ce produit</a> </br>
 

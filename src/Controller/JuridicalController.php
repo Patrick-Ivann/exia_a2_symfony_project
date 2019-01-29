@@ -52,10 +52,10 @@ class JuridicalController extends AbstractController
     }
 
     /**
-     * @Route("/personaldata")
+     * @Route("/rules")
      * @return Response
      */
-    public function personalData(RequeteController $rctrl, Curl $crl, SessionInterface $session): Response
+    public function rules(RequeteController $rctrl, Curl $crl, SessionInterface $session): Response
     {
         $notifs = null;
         if ($session->get("mail") != null) {
@@ -63,7 +63,7 @@ class JuridicalController extends AbstractController
         }
 
         try {
-            return $this->render('pages/personal_data.html.twig', [
+            return $this->render('pages/rules.html.twig', [
                 'notifs' => $notifs
             ]);
         } catch (\Exception $ex) {

@@ -31,6 +31,7 @@ class userController extends AbstractController
      */
     public function register(Request $req, RequeteController $rctrl, Curl $crl, SessionInterface $session)
     {
+        // Check if notifications are available
         $notifs = null;
         if ($session->get("mail") != null) {
             $notifs = json_decode($rctrl->recupererUtilisateurNotif($session->get("id_user"), $crl));
@@ -40,9 +41,11 @@ class userController extends AbstractController
 
         $errors = "";
 
+        // Create form
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($req);
 
+        // On form submit
         if ($form->isSubmitted() && $form->isValid()) {
             $userData = $form->getData();
 
@@ -55,17 +58,20 @@ class userController extends AbstractController
                     'lieu' => $userData->getNomLieu()
                 ]);
 
+                // Create the new user
                 $rctrl->ajouterUtilisateur($userDataToSend, $crl);
 
+                // Redirect to login
                 return $this->redirect("login");
             } else {
                 $errors = "Les mots de passe renseignés ne correspondent pas.";
             }
 
-        } elseif($form->isSubmitted() && !$form->isValid()) {
+        } elseif ($form->isSubmitted() && !$form->isValid()) {
             $errors = "Le mot de passe n'est pas valide.";
         }
 
+        // Render the page
         try {
             return $this->render('CreateUser.html.twig', [
                 'form' => $form->createView(),
@@ -88,6 +94,7 @@ class userController extends AbstractController
      */
     public function login(Request $req, RequeteController $requeteController, Curl $crl, SessionInterface $session)
     {
+        // If user is connected
         if ($session->get("mail") != null) {
             return $this->redirect("home");
         }
@@ -96,6 +103,7 @@ class userController extends AbstractController
 
         $errors = "";
 
+        // Create login form
         $form = $this->createFormBuilder($user)
             ->add('adresse_mail', TextType::class)
             ->add('mot_de_passe', PasswordType::class)
@@ -105,6 +113,7 @@ class userController extends AbstractController
         dump($form);
         $form->handleRequest($req);
 
+        // On form submit
         if ($form->isSubmitted() && $form->isValid()) {
             $userData = $form->getData();
 
@@ -115,7 +124,7 @@ class userController extends AbstractController
             $response = json_decode($requeteController->connexionUtilisateur($userDataToSend, $crl));
 
             if (password_verify($user->getMotDePasse(), $response[0]->mot_de_passe)) {
-
+                // Define session attributes
                 $session->set("mail", $response[0]->adresse_mail);
                 $session->set("prenom", $response[0]->prenom);
                 $session->set("nom", $response[0]->nom);
@@ -123,12 +132,14 @@ class userController extends AbstractController
                 $session->set("url_avatar", $response[0]->url_avatar);
                 $session->set("id_user", $response[0]->id_user);
 
+                // Redirect to homepage
                 return $this->redirect("home");
             } else {
                 $errors = "Le mot de passe renseigné est incorrect.";
             }
         }
 
+        // Render the page
         try {
             return $this->render('login.html.twig', [
                 'form' => $form->createView(),
@@ -138,8 +149,6 @@ class userController extends AbstractController
             return new Response($ex->getMessage());
         }
     }
-
-
 
     /**
      * Allow users to log out
@@ -152,10 +161,12 @@ class userController extends AbstractController
      */
     public function logout(Request $req, RequeteController $requeteController, Curl $crl, SessionInterface $session)
     {
+        // If user is connected
         if ($session->get("mail") == null) {
             return $this->redirect("home");
         }
 
+        // Unset the session attributes
         $session->remove("mail");
         $session->remove("rang");
         $session->remove("prenom");
@@ -163,6 +174,7 @@ class userController extends AbstractController
         $session->remove("url_avatar");
         $session->remove("id_user");
 
+        // Redirect to homepage
         return $this->redirect("home");
     }
 

@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Class Photo
+ * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PhotoRepository")
  */
 class Photo
@@ -28,16 +30,26 @@ class Photo
      */
     private $file_photo;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLegendePhoto(): ?string
     {
         return $this->legende_photo;
     }
 
+    /**
+     * @param string $legende_photo
+     * @return Photo
+     */
     public function setLegendePhoto(string $legende_photo): self
     {
         $this->legende_photo = $legende_photo;
@@ -45,11 +57,18 @@ class Photo
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getFilePhoto()
     {
         return $this->file_photo;
     }
 
+    /**
+     * @param $file_photo
+     * @return Photo
+     */
     public function setFilePhoto($file_photo): self
     {
         $this->file_photo = $file_photo;

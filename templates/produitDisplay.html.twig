@@ -7,22 +7,70 @@
     {% include 'bases/header.html.twig' %}
 
     <div class="container mt-4">
+        <div class="input-group float-right col-sm-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+            </div>
+            <input onkeyup="searchFunction()" id="searchbar" type="text" class="form-control" placeholder="Recherche..." aria-label="Recherche..." aria-describedby="basic-addon1">
+        </div>
         <h1>Les produits de la boutique</h1>
         <hr>
-        {% for produit in produits %}
+        {{ form_start(form) }}
+        <div class="row">
+            {% for key,produit in produits %}
 
-            <img src="http://10.131.129.156:5000/static/{{ produit.url_image_produit }}" alt="">
-            {{ produit.nom_produit }} <a href=" {{ path('buyById',  {id_produit : produit.id_produit}) }} ">Acheter ce produit</a>
-            <a href=" {{ path('supprimer_produit',  {id_produit : produit.id_produit}) }} ">Supprimer ce produit</a> </br>
+                {% for child in form.children %}
+                    {% if loop.index0 == key %}
+                        <div class="col-sm product" id="{{ produit.nom_produit }}_{{ produit.prix_produit }}">
+                            <div class="col">
+                                <div class="container2" id="product">
+                                    <img class="image" src="http://10.131.129.156:5000/static/{{ produit.url_image_produit }}" alt="">
+                                    <div class="overlay">
+                                        <div class="text">{{ produit.nom_produit }}</div>
+                                        <div class="price">{{ produit.prix_produit }} &#8364;</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    {{ form_row(child) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
 
-        {% endfor %}
+                {% endfor %}
+                {#<a href=" {{ path('buyById',  {id_produit : produit.id_produit}) }} ">Acheter ce produit</a>
+                <a href=" {{ path('supprimer_produit',  {id_produit : produit.id_produit}) }} ">Supprimer ce produit</a> </br>#}
+
+            {% endfor %}
+        </div>
     </div>
-
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
     <button>Ajouter</button>
     {{ form_end(form) }}
 
+
+
+
+
+    <img src="paypal.png" width="150" alt="">
+
     {% include 'bases/footer.html.twig' %}
+
+    <script>
+
+        function searchFunction() {
+            var search = document.getElementById("searchbar").value;
+            console.log(search);
+
+            var products = document.getElementsByClassName("product");
+            for (var i = 0; i < products.length; i++) {
+                if (products[i].id.toLowerCase().includes(search.toLowerCase())) {
+                    products[i].style.display = "block";
+                } else {
+                    products[i].style.display = "none";
+                }
+            }
+        }
+
+    </script>
 
 {% endblock %}

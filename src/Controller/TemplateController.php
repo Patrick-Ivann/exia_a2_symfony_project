@@ -6,10 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class TemplateController
+ * @package App\Controller
+ */
 class TemplateController extends AbstractController
 {
 
     /**
+     * Template function with rendering method
      * @Route("/template")
      * @return Response
      */
@@ -17,7 +22,7 @@ class TemplateController extends AbstractController
         try {
             return $this->render('template.html.twig');
         } catch (\Exception $ex) {
-            return $ex->getMessage();
+            return new Response($ex->getMessage());
         }
     }
 

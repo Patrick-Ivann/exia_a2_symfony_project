@@ -147,3 +147,207 @@ body {
         clip-path: inset(0.7rem);
     }
 }
+
+
+
+
+/**
+BOUTIQUE
+ */
+
+
+.buy {
+    background-color: #000;
+    color: white;
+    padding: 14px 20px;
+    margin-left: 35%;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    border: none;
+    cursor: pointer;
+    display: block;
+}
+
+.buy:hover {
+    opacity: 0.8;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* IMAGES */
+
+.container2 {
+    position: relative;
+    width: 100%;
+    display: inline-block;
+}
+
+.image {
+    margin-left: 30%;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    display: block;
+    width: 250px;
+    height: 300px;
+}
+
+.overlay {
+    margin-left: 30%;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 250px;
+    height: 300px;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #008CBA;
+}
+
+.container2:hover .overlay {
+    opacity: 1;
+}
+
+.text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.price {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.menu {
+    margin-left: 50px;
+    position: absolute;
+    left: 0;
+}
+
+
+
+.panier {
+    position: absolute;
+    margin-right: 100px;
+    right: 0;
+    font-size : xx-large;
+}
+
+.searchbar {
+    margin-top: 50px;
+    margin-left: 25px;
+}
+
+.paypal {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    display: block;
+    width: 75px;
+    height: 75px;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="col-"] {
+        width: 100%;
+    }
+
+    .image {
+        margin-top: 40px;
+        margin-bottom: 20px;
+        display: block;
+        width: 125px;
+        height: 175px;
+    }
+
+    .overlay {
+        margin-top: 40px;
+        margin-bottom: 20px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 125px;
+        height: 175px;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: #008CBA;
+    }
+
+    .container2:hover .overlay {
+        opacity: 1;
+    }
+
+    .buy {
+        background-color: #000;
+        color: white;
+        margin-left: 10%;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        border: none;
+        cursor: pointer;
+        display: block;
+    }
+
+    .price {
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        top: 80%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+}

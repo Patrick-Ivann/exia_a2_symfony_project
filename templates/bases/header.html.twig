@@ -28,8 +28,6 @@
                         <button class="btn btn-light my-2 my-sm-0 mr-2" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Se déconnecter</button>
                         <button class="btn btn-light my-2 my-sm-0" type="submit"><i class="fas fa-bell"></i> {{ app.session.get("prenom") }}</button>
                     {% endif %}
-
-
                 {% endif %}
             </div>
         </div>
@@ -83,7 +81,7 @@
     </div>
 {% endblock %}
 
-<script type="text/javascript">
+<script>
     function logout() {
         location.href = "http://localhost/exia_a2_symfony_project/public/logout";
     }
@@ -93,8 +91,7 @@
     function register() {
         location.href = "http://localhost/exia_a2_symfony_project/public/register";
     }
-</script>
-<script>
+
     function setCookie(name, value, days) {
         var d = new Date();
         d.setTime(d.getTime() + (days*24*60*60*1000));
@@ -116,8 +113,7 @@
         }
         return null;
     }
-</script>
-<script>
+
     $(document).ready(function () {
         if(getCookie("cacceptation") == null) {
             $("#myModal").modal("show");

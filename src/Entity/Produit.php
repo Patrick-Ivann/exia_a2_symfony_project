@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Class Produit
+ * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository")
  */
 class Produit
@@ -35,16 +37,26 @@ class Produit
      */
     private $photo_produit;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getNomProduit(): ?string
     {
         return $this->nom_produit;
     }
 
+    /**
+     * @param string $nom_produit
+     * @return Produit
+     */
     public function setNomProduit(string $nom_produit): self
     {
         $this->nom_produit = $nom_produit;
@@ -52,11 +64,18 @@ class Produit
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getPrixProduit(): ?int
     {
         return $this->prix_produit;
     }
 
+    /**
+     * @param int $prix_produit
+     * @return Produit
+     */
     public function setPrixProduit(int $prix_produit): self
     {
         $this->prix_produit = $prix_produit;
@@ -64,11 +83,18 @@ class Produit
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getPhotoProduit()
     {
         return $this->photo_produit;
     }
 
+    /**
+     * @param $photo_produit
+     * @return Produit
+     */
     public function setPhotoProduit($photo_produit) : self
     {
         $this->$photo_produit = $photo_produit;

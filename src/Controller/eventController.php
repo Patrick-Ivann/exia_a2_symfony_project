@@ -93,12 +93,17 @@ class eventController extends AbstractController
         $eventToDisplay = json_decode($events);
 
         $participants = array();
-        foreach ($eventToDisplay as $event) {
-            $participants[$event->id_event] = json_decode($rctrl->recupererEvenementParticipe($event->id_event, $crl));
+        $participantsToDisplay = array();
+
+        if (is_array($eventToDisplay)) {
+            dump("ok");
+            foreach ($eventToDisplay as $event) {
+                $participants[$event->id_event] = json_decode($rctrl->recupererEvenementParticipe($event->id_event, $crl));
+            }
+        } else {
+            $participants[$eventToDisplay->id_event] = json_decode($rctrl->recupererEvenementParticipe($eventToDisplay->id_event, $crl));
         }
 
-
-        $participantsToDisplay = array();
         foreach ($participants as $key => $participant) {
             foreach ($participant as $user) {
                 if ($session->get("id_user") == $user->id_user) {
@@ -160,15 +165,23 @@ class eventController extends AbstractController
         $photo = $rctrl->recupererPhotoParIdEvent($id_event, $crl);
 
         $photoToDisplay = json_decode($photo);
+        $finalPhotos = json_decode($photo);
 
         $commentaire = [];
         $likes = array();
 
-        if($photo) {
-            foreach ($photoToDisplay as $key=>$photo) {
-                $commentaire[] = $rctrl->recupererCommentaireParIdPhoto($photo->{"id_photo"}, $crl);
+        dump($photoToDisplay);
+
+        if(is_array($photoToDisplay)) {
+            foreach ($photoToDisplay as $key => $photo) {
+                //$commentaire[] = $rctrl->recupererCommentaireParIdPhoto($photo->{"id_photo"}, $crl);
                 $likes[$photo->id_photo] = json_decode($rctrl->recupererPhotoAimee($photo->id_photo, $crl));
             }
+        } else {
+            $finalPhotos = array();
+            $finalPhotos[0] = $photoToDisplay;
+
+            $likes[$photoToDisplay->id_photo] = json_decode($rctrl->recupererPhotoAimee($photoToDisplay->id_photo, $crl));
         }
 
         /*
@@ -203,12 +216,10 @@ class eventController extends AbstractController
             }
         }
 
-        dump($event_passe);
-
         try {
             return $this->render('eventDisplayID.html.twig', [
                 'event' => $eventToDisplay,
-                'photo' => $photoToDisplay,
+                'photo' => $finalPhotos,
                 'commentaire' => $commentaire,
                 'formPhoto' => $formPhoto->createView(),
                 'notifs' => $notifs,
@@ -347,7 +358,7 @@ class eventController extends AbstractController
     /**
      * @Route("/signale/{id_photo}" , name="signaleById")
      */
-    function signale($id_photo, RequeteController $rctrl, Curl $crl, SessionInterface $session)
+    function signale($id_photo, RequeteController $rctrl, Curl $crl, SessionInterface $session, \Swift_Mailer $mailer)
     {
         $id_user = $session->get("id_user");
 
@@ -356,9 +367,17 @@ class eventController extends AbstractController
             'id_user' => $id_user
         ]);
 
-
-        //Creer cet requête
         $rctrl->signalerUnePhotoParId($signale, $crl);
+
+        $user = json_decode($rctrl->recupererUtilisateurParId($id_user, $crl));
+        dump($user);
+
+        $message = (new \Swift_Message('[BDE] Signalement'))
+            ->setFrom('bde-tls@cesi.fr')
+            ->setTo('julien.griffoul@viacesi.fr')
+            ->setBody("Une image a été signalée");
+
+        $mailer->send($message);
 
         return $this->redirectToRoute("events");
     }

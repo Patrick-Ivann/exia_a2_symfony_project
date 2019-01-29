@@ -2,6 +2,10 @@
 
 namespace App\services;
 
+/**
+ * Class Curl
+ * @package App\services
+ */
 class Curl
 {
 

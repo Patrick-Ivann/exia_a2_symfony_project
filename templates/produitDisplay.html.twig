@@ -6,21 +6,38 @@
 
     {% include 'bases/header.html.twig' %}
     #}
-
     <div class="container mt-4">
+        {{ form_start(form) }}
         <h1>Les produits de la boutique</h1>
         <hr>
-        {% for produit in produits %}
+        {% set tst = 0 %}
+        {% set formJson =  form|json_encode|raw  %}
+        {% for key,produit in produits %}
 
-            {{ produit.nom_produit }} <a href="{{ path('buyById',  {id_produit : produit.id_produit}) }}">Acheter ce produit</a> </br>
+            {% set done = 'false' %}
+
+                {% for child in form.children %}
+
+                   {% if loop.index0 == key and done == 'false' %}
+
+                           {#
+                            {{ dump(produit.nom_produit) }}
+                            {{ dump(child) }}
+                            #}
+                            {{ produit.nom_produit }} <a href="{{ path('buyById',  {id_produit : produit.id_produit}) }}">Acheter ce produit</a> </br>
+
+                            {{ form_row(child) }}
+                    {% endif %}
+                {% endfor %}
 
         {% endfor %}
+
+        <button>Ajouter</button>
+
+        {{ form_end(form) }}
     </div>
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button>Ajouter</button>
-    {{ form_end(form) }}
+
 
 {#   {% include 'bases/footer.html.twig' %} #}
 

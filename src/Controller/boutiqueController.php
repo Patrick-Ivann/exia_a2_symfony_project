@@ -75,7 +75,7 @@ class boutiqueController extends AbstractController
         }
 
         $formPanier = $this->panier($rctrl, $req,$produitsToDisplay, $crl, $id_user);
-
+        dump($formPanier);
         try {
             return $this->render('produitDisplay.html.twig', [
                 'produits' => $produitsToDisplay,
@@ -99,7 +99,7 @@ class boutiqueController extends AbstractController
                 $form->add('article'.$produit->id_produit, CheckboxType::class, [
                     'label'    => 'Acheter',
                     'required' => false,
-                ]);
+                ]) ;
             }
         }
 
